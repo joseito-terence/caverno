@@ -4,31 +4,23 @@ import { MotiView } from 'moti';
 export default function Index() {
   return (
     <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      className="flex-1 justify-center items-center"
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
       <MotiView
         from={{
-          opacity: 0,
-          scale: 0.5,
+          translateX: -12,
         }}
         animate={{
-          opacity: 1,
-          scale: 1,
+          translateX: 0,
         }}
         transition={{
           type: 'timing',
+          repeat: 5,
+          repeatReverse: true,
         }}
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: 'blue',
-        }}
-    />
+      >
+        <Text>Edit app/index.tsx to edit this screen.</Text>
+      </MotiView>
     </View>
   );
 }
