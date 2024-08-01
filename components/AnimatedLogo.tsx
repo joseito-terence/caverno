@@ -25,7 +25,7 @@ const AnimatedLogo = () => {
         scale: 1,
       }}
       animate={{
-        translateX: (SCREEN.width - 200) / 2,
+        translateX: (SCREEN.width - 180) / 2,
         translateY: -(SCREEN.height - 200) / 2,
         scale: 0.4,
       }}
