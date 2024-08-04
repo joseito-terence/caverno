@@ -1,3 +1,4 @@
+import React from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { View } from "react-native";
 import { BlurView } from 'expo-blur';
@@ -5,6 +6,7 @@ import { MotiView, MotiImage } from "moti";
 import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
+import ZStack from "@/components/ZStack";
 
 export default function Index() {
   return (
@@ -64,6 +66,20 @@ export default function Index() {
             style={{ height: 100, width: '100%', position: 'absolute', bottom: 0 }}
           />
           <View className="absolute left-0 right-0 -bottom-16">
+            <ZStack className="absolute bottom-[50%] w-full items-center">
+              <AnimatedMusicSymbol position={[-120, -100]}>
+                <SemiQuavers size={30} color='rgba(255, 255, 255, 0.5)' />
+              </AnimatedMusicSymbol>
+              <AnimatedMusicSymbol position={[-50, -170]}>
+                <Quavers size={60} color='rgba(255, 255, 255, 0.5)' />
+              </AnimatedMusicSymbol>
+              <AnimatedMusicSymbol position={[40, -170]}>
+                <SemiQuavers size={30} color='rgba(255, 255, 255, 0.5)' />
+              </AnimatedMusicSymbol>
+              <AnimatedMusicSymbol position={[120, -150]}>
+                <TrebleClef size={20} color='rgba(255, 255, 255, 0.5)' />
+              </AnimatedMusicSymbol>
+            </ZStack>
             <MotiImage 
               source={require("../assets/images/keyboard.png")}
               className="w-[350px] mx-auto"
@@ -74,13 +90,29 @@ export default function Index() {
             />
           </View>
         </View>
-
-        <View className="flex-row">
-          <TrebleClef size={20} />
-          <SemiQuavers size={30} />
-          <Quavers size={60} />
-        </View>
       </MotiView>
     </View>
   );
 }
+
+const AnimatedMusicSymbol = ({ 
+  position = [0, 0],
+  children
+} : {
+  position: number[],
+  children: React.ReactNode
+}) => (
+  <MotiView
+    from={{ translateX: 0, translateY: 0, opacity: 0 }}
+    animate={{ translateX: position[0], translateY: position[1], opacity: 1 }}
+    transition={{ type: 'timing', duration: 1000, delay: 3000 }}
+  >
+    <MotiView
+      from={{ rotate: '-10deg' }}
+      animate={{ rotate: '10deg' }}
+      transition={{ type: 'timing', duration: 1000, loop: true, delay: parseInt(Math.random() * 1000 + '')  }}
+    >
+      {children}
+    </MotiView>
+  </MotiView>
+)
