@@ -4,6 +4,7 @@ import { BlurView } from 'expo-blur';
 import { MotiView, MotiImage } from "moti";
 import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
+import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 
 export default function Index() {
   return (
@@ -72,6 +73,12 @@ export default function Index() {
               transition={{ type: 'timing', duration: 1000, delay: 2000 }}
             />
           </View>
+        </View>
+
+        <View className="flex-row">
+          <TrebleClef size={20} />
+          <SemiQuavers size={30} />
+          <Quavers size={60} />
         </View>
       </MotiView>
     </View>
