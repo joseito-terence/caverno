@@ -2,6 +2,8 @@ import React from 'react'
 import { Svg, Path } from "react-native-svg"
 import { IconProps } from './typs'
 
+const aspectRatio = 308 / 117
+
 const TrebleClef = ({
   size = 117,
   color = "#FCFCFC",
@@ -9,7 +11,7 @@ const TrebleClef = ({
 }: IconProps) => (
   <Svg
     width={size}
-    height={308}
+    height={size * aspectRatio}
     viewBox="0 0 117 308"
     fill="none"
     {...props}
