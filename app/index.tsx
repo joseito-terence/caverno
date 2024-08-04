@@ -25,7 +25,7 @@ export default function Index() {
         transition={{ type: 'timing', duration: 1000, delay: 2000 }}
         className="w-full flex-1"
       >
-        <View className="items-cente flex-row py-20 overflow-hidden">
+        <View className="items-center flex-row py-20 overflow-hidden">
           <MotiView 
             from={{ translateY: -20, translateX: 10, scale: 0.9 }}
             animate={{ translateY: 0, translateX: 0, scale: 1 }}
@@ -56,6 +56,7 @@ export default function Index() {
           </MotiView>
           <BlurView 
             intensity={80}
+            tint="dark"
             experimentalBlurMethod="dimezisBlurView"
             className="w-full flex-1 absolute top-0 left-0 right-0 bottom-0"
           />
