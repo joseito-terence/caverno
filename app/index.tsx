@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
+import SlideToUnlock from "@/components/SlideToUnlock";
 
 export default function Index() {
   return (
@@ -15,7 +16,8 @@ export default function Index() {
     >
       <View className="
         absolute top-0 left-0 right-0 bottom-0 z-50
-        w-full flex-1 justify-center items-center">
+        w-full flex-1 justify-center items-center
+      ">
         <AnimatedLogo />
       </View>
 
@@ -23,10 +25,10 @@ export default function Index() {
         from={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ type: 'timing', duration: 1000, delay: 2000 }}
-        className="w-full flex-1"
+        className="w-full"
       >
         <View className="items-center flex-row py-20 overflow-hidden">
-          <MotiView 
+          <MotiView
             from={{ translateY: -20, translateX: 10, scale: 0.9 }}
             animate={{ translateY: 0, translateX: 0, scale: 1 }}
             transition={{ type: 'timing', duration: 3000, loop: true }}
@@ -40,7 +42,7 @@ export default function Index() {
               <Circle size={500} colors={['#1dc9de 0%', '#0a3b41 100%']} />
             </MotiView>
           </MotiView>
-          <MotiView 
+          <MotiView
             from={{ translateY: -20, translateX: -20, scale: 0.8 }}
             animate={{ translateY: 20, translateX: 0, scale: 1 }}
             transition={{ type: 'timing', delay: 2000, duration: 3000, loop: true }}
@@ -54,7 +56,7 @@ export default function Index() {
               <Circle size={450} colors={['#41a9e3 10%', '#183f54 100%']} />
             </MotiView>
           </MotiView>
-          <BlurView 
+          <BlurView
             intensity={80}
             tint="dark"
             experimentalBlurMethod="dimezisBlurView"
@@ -81,7 +83,7 @@ export default function Index() {
                 <TrebleClef size={20} color='rgba(255, 255, 255, 0.5)' />
               </AnimatedMusicSymbol>
             </ZStack>
-            <MotiImage 
+            <MotiImage
               source={require("../assets/images/keyboard.png")}
               className="w-[350px] mx-auto"
               resizeMode="contain"
@@ -91,12 +93,12 @@ export default function Index() {
             />
           </View>
         </View>
-        <View>
+        <View className="px-10">
           <MotiText
             from={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ type: 'timing', duration: 1000, delay: 3500 }}
-            className="text-white/70 text-xl font-bold tracking-wider px-8 mb-4"
+            className="text-white/70 text-xl font-bold tracking-wider mb-4"
           >
             Perform Your
           </MotiText>
@@ -104,20 +106,23 @@ export default function Index() {
             from={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ type: 'timing', duration: 1000, delay: 3800 }}
-            className="text-white text-6xl font-bold tracking-wider px-8"
+            className="text-white text-6xl font-bold tracking-wider"
           >
             Favourite Music
           </MotiText>
         </View>
       </MotiView>
+      <View className="z-[1000] px-10 flex-1 justify-center items-center">
+        <SlideToUnlock />
+      </View>
     </View>
   );
 }
 
-const AnimatedMusicSymbol = ({ 
+const AnimatedMusicSymbol = ({
   position = [0, 0],
   children
-} : {
+}: {
   position: number[],
   children: React.ReactNode
 }) => (
@@ -129,7 +134,7 @@ const AnimatedMusicSymbol = ({
     <MotiView
       from={{ rotate: '-10deg' }}
       animate={{ rotate: '10deg' }}
-      transition={{ type: 'timing', duration: 1000, loop: true, delay: parseInt(Math.random() * 1000 + '')  }}
+      transition={{ type: 'timing', duration: 1000, loop: true, delay: parseInt(Math.random() * 1000 + '') }}
     >
       {children}
     </MotiView>
