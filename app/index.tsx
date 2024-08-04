@@ -2,7 +2,7 @@ import React from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { View } from "react-native";
 import { BlurView } from 'expo-blur';
-import { MotiView, MotiImage } from "moti";
+import { MotiView, MotiImage, MotiText } from "moti";
 import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
@@ -89,6 +89,24 @@ export default function Index() {
               transition={{ type: 'timing', duration: 1000, delay: 2000 }}
             />
           </View>
+        </View>
+        <View>
+          <MotiText
+            from={{ opacity: 0, translateX: 20 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            transition={{ type: 'timing', duration: 1000, delay: 3500 }}
+            className="text-white/70 text-xl font-bold tracking-wider px-8 mb-4"
+          >
+            Perform Your
+          </MotiText>
+          <MotiText
+            from={{ opacity: 0, translateX: 20 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            transition={{ type: 'timing', duration: 1000, delay: 3800 }}
+            className="text-white text-6xl font-bold tracking-wider px-8"
+          >
+            Favourite Music
+          </MotiText>
         </View>
       </MotiView>
     </View>
