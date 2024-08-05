@@ -3,27 +3,41 @@ import { Text, Dimensions } from 'react-native'
 import { LinearGradient } from "expo-linear-gradient";
 import { MotiView } from 'moti';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { runOnJS, SharedValue, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const SCREEN = Dimensions.get('screen')
-const SLIDER_WIDTH = SCREEN.width - 80
+export const SLIDER_WIDTH = SCREEN.width - 80
 const SLIDER_HEIGHT = 60
 const SLIDER_PADDING = 6
 const SWIPABLE_DIMENSIONS = SLIDER_HEIGHT - 2 * SLIDER_PADDING
 
 const H_SWIPE_RANGE = SLIDER_WIDTH - 2 * SLIDER_PADDING - SWIPABLE_DIMENSIONS
 
-export default function SlideToUnlock() {
+interface SlideToUnlockProps {
+  onUnlock?: () => void
+  translateX?: SharedValue<number>
+}
+
+export default function SlideToUnlock({
+  onUnlock = () => { },
+  translateX: translateXProp,
+}: SlideToUnlockProps) {
   const translateX = useSharedValue(0)
   const gesture = Gesture.Pan()
     .onChange(e => {
+      if (translateXProp) {
+        translateXProp.value = e.translationX
+      }
       translateX.value = e.translationX
     })
     .onEnd(() => {
       if (translateX.value < SLIDER_WIDTH / 2 - SWIPABLE_DIMENSIONS / 2) {
-        translateX.value = withSpring(0)
+        translateX.value = withSpring(0, { damping: 14 })
+        translateXProp && (translateXProp.value = withSpring(0, { damping: 14 }))
       } else {
-        translateX.value = withSpring(H_SWIPE_RANGE)
+        translateXProp && (translateXProp.value = withSpring(H_SWIPE_RANGE, { damping: 14 }))
+        translateX.value = withSpring(H_SWIPE_RANGE, { damping: 14 })
+        runOnJS(onUnlock)()
       }
     })
 

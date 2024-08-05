@@ -1,31 +1,55 @@
 import React from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import { View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { BlurView } from 'expo-blur';
 import { MotiView, MotiImage, MotiText } from "moti";
 import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
-import SlideToUnlock from "@/components/SlideToUnlock";
+import SlideToUnlock, { SLIDER_WIDTH } from "@/components/SlideToUnlock";
+import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import { useRouter } from "expo-router";
+
+const SCREEN = Dimensions.get('screen')
 
 export default function Index() {
+  const router = useRouter()
+  const translateX = useSharedValue(0)
+
+  const rStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{
+        translateX: interpolate(
+          translateX.value,
+          [0, SLIDER_WIDTH],
+          [0, -SCREEN.width]
+        )
+      }],
+      opacity: interpolate(
+        translateX.value,
+        [0, SLIDER_WIDTH],
+        [1, 0]
+      )
+    }
+  }, [])
+
   return (
-    <View
-      className="flex-1"
-    >
-      <View className="
+    <View className="flex-1">
+      <Animated.View style={rStyle} className="
         absolute top-0 left-0 right-0 bottom-0 z-50
         w-full flex-1 justify-center items-center
       ">
         <AnimatedLogo />
-      </View>
+      </Animated.View>
 
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ type: 'timing', duration: 1000, delay: 2000 }}
         className="w-full"
+        style={rStyle}
+
       >
         <View className="items-center flex-row py-20 overflow-hidden">
           <MotiView
@@ -112,8 +136,12 @@ export default function Index() {
           </MotiText>
         </View>
       </MotiView>
+
       <View className="z-[1000] px-10 flex-1 justify-center items-center">
-        <SlideToUnlock />
+        <SlideToUnlock
+          translateX={translateX}
+          onUnlock={() => router.replace('/home')}
+        />
       </View>
     </View>
   );
