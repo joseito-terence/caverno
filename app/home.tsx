@@ -6,16 +6,18 @@ import Entypo from '@expo/vector-icons/Entypo'
 import { LinearGradient } from 'expo-linear-gradient'
 import SongsCarousel from '@/components/SongsCarousel'
 import { MotiView } from 'moti'
+import { useRouter } from 'expo-router'
 
 const SCREEN = Dimensions.get('screen')
 
 export default function Home() {
   const insets = useSafeAreaInsets()
+  const router = useRouter()
 
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
       <View className='flex-row justify-between items-center px-8 py-4'>
-        <Button>
+        <Button onPress={() => router.push('/song/add')}>
           <Entypo name="plus" size={24} color="white" />
         </Button>
 
