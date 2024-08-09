@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Entypo from '@expo/vector-icons/Entypo'
 import { LinearGradient } from 'expo-linear-gradient'
 import SongsCarousel from '@/components/SongsCarousel'
+import { MotiView } from 'moti'
 
 const SCREEN = Dimensions.get('screen')
 
@@ -27,7 +28,12 @@ export default function Home() {
         </Button>
       </View>
 
-      <View className='flex-1 bg-gray-500 rounded-t-[55px] mt-8 overflow-hidden'>
+      <MotiView
+        className='flex-1 bg-gray-500 rounded-t-[55px] mt-8 overflow-hidden'
+        from={{ translateY: SCREEN.height }}
+        animate={{ translateY: 0 }}
+        transition={{ type: 'timing', duration: 1000 }}
+      >
 
         <Image
           source={{ uri: 'https://images.unsplash.com/photo-1483000805330-4eaf0a0d82da?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }}
@@ -53,15 +59,32 @@ export default function Home() {
               Recently Played
             </Text>
 
-            <Text className='text-white text-lg font-semibold mt-4 pl-8'>
+            <Text className='text-white/60 text-lg font-semibold mt-4 pl-8'>
               See all
             </Text>
           </View>
-          <View className='flex-1 items-center justify-center'>
+          <MotiView
+            className='flex-1 items-center justify-center'
+            from={{
+              opacity: 0,
+              rotate: '20deg',
+              scale: 0,
+            }}
+            animate={{
+              opacity: 1,
+              rotate: '0deg',
+              scale: 1,
+            }}
+            transition={{
+              type: 'timing',
+              delay: 1000,
+              duration: 1000,
+            }}
+          >
             <SongsCarousel />
-          </View>
+          </MotiView>
         </View>
-      </View>
+      </MotiView>
     </View>
   )
 }
