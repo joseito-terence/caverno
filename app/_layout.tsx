@@ -6,8 +6,8 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={DarkTheme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
           <Stack.Screen name="home" options={{ animation: 'ios' }} />
         </Stack>
       </ThemeProvider>
