@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
       <View className='flex-row justify-between items-center px-8 py-4'>
-        <Button onPress={() => router.push('/song/add')}>
+        <Button onPress={() => router.push('/songs/add')}>
           <Entypo name="plus" size={24} color="white" />
         </Button>
 

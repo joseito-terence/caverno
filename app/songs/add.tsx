@@ -4,8 +4,23 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
 import { router } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useForm, Controller } from "react-hook-form"
 
 export default function Add() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: '',
+      style: '',
+      tempo: '',
+      category: '',
+      lyrics: '',
+    },
+  })
+
   return (
     <SafeAreaView className='flex-1'>
       <View className='flex-row justify-between items-center px-8 py-4'>
