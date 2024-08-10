@@ -1,5 +1,6 @@
-import { Dimensions, View, Image } from 'react-native'
+import { Dimensions, View, Image, Text } from 'react-native'
 import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated'
+import Entypo from '@expo/vector-icons/Entypo';
 
 const SCREEN = Dimensions.get('screen')
 
@@ -32,6 +33,7 @@ const SongsCarousel = ({
           <SongCard
             key={index}
             index={index}
+            title={`Song ${index + 1}`}
             image={`https://picsum.photos/seed/picsum${index + 1}/600/800`}
             scrollOffset={scrollOffset}
           />
@@ -47,13 +49,15 @@ const SONG_CARD_WIDTH = SCREEN.width * 0.8
 const SONG_CARD_HEIGHT = SONG_CARD_WIDTH * 1.3
 
 export interface SongCardProps {
-  index: number
-  image: string
-  scrollOffset: SharedValue<number>
+  index: number;
+  title: string;
+  image: string;
+  scrollOffset: SharedValue<number>;
 }
 
 export const SongCard = ({
   index,
+  title,
   image,
   scrollOffset
 }: SongCardProps) => {
@@ -100,6 +104,24 @@ export const SongCard = ({
         className='rounded-[20px] absolute'
         resizeMode='cover'
       />
+
+      <View 
+        className='
+          absolute bottom-0 rounded-[20px] bg-black h-20 px-8
+          flex-row justify-between items-center
+        '
+        style={{
+          width: SONG_CARD_WIDTH,
+        }}
+      >
+        <Text className='text-white text-lg font-semibold'>
+          {title}
+        </Text>
+
+        <View className='w-12 h-12 rounded-full bg-gray-800/95 justify-center items-center'>
+          <Entypo name="controller-play" size={24} color="white" />
+        </View>
+      </View>
     </Animated.View>
   )
 }
