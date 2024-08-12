@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
 import { router } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useForm, Controller } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form"
+import InputController from '@/components/InputController'
 
 export default function Add() {
   const {
@@ -21,6 +22,10 @@ export default function Add() {
     },
   })
 
+  const onSubmit: SubmitHandler<typeof control._defaultValues> = (data) => {
+    console.warn(data)
+  }
+
   return (
     <SafeAreaView className='flex-1'>
       <View className='flex-row justify-between items-center px-8 py-4'>
@@ -32,39 +37,53 @@ export default function Add() {
           Add
         </Text>
 
-        <Button onPress={() => { }}>
+        <Button onPress={handleSubmit(onSubmit)}>
           <AntDesign name="check" size={22} color="white" />
         </Button>
       </View>
 
       <View className='flex-1'>
         <ScrollView keyboardDismissMode='on-drag'>
-          <View className='px-8 gap-8'>
-            <TextInput
-              placeholder='Title of the Song'
-              className='text-white  py-4 text-3xl'
+          <View className='px-8 pt-4 gap-8'>
+            <InputController
+              name='title'
+              placeholder='Title of the Song*'
+              className='text-white text-3xl'
+              control={control}
+              errors={errors}
               multiline
+              required
             />
 
-            <TextInput
-              placeholder='Style (e.g. Rock, Pop, Hip-Hop)'
-              className='text-white text-2xl'
+            <InputController
+              name='style'
+              placeholder='Style* (e.g. Rock, Pop, Hip-Hop)'
+              control={control}
+              errors={errors}
+              required
             />
 
-            <TextInput
-              placeholder='Tempo (e.g. 120 BPM)'
-              className='text-white text-2xl'
+            <InputController
+              name='tempo'
+              placeholder='Tempo* (e.g. 120 BPM)'
+              control={control}
+              errors={errors}
+              required
             />
 
-            <TextInput
+            <InputController
+              name='category'
               placeholder='Category'
-              className='text-white text-2xl'
+              control={control}
+              errors={errors}
             />
 
-            <TextInput
+            <InputController
+              name='lyrics'
               placeholder={`Lyrics
 (e.g. Verse 1: ...)`}
-              className='text-white text-2xl'
+              control={control}
+              errors={errors}
               multiline
             />
           </View>
