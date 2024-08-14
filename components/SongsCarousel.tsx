@@ -1,12 +1,19 @@
 import { Dimensions, View, Image, Text } from 'react-native'
 import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated'
 import Entypo from '@expo/vector-icons/Entypo';
+import { Database } from '@/utils/database.types';
 
 const SCREEN = Dimensions.get('screen')
 
+type TSong = Database['public']['Tables']['songs']['Row']
+
+interface Props {
+  songs: TSong[];
+}
+
 const SongsCarousel = ({
-  songs = Array(10).fill(0)
-}) => {
+  songs = []
+}: Props) => {
   const scrollViewRef = useAnimatedRef<Animated.ScrollView>()
   const scrollOffset = useScrollViewOffset(scrollViewRef)
   const ListPadding = SCREEN.width - SONG_CARD_WIDTH
@@ -29,12 +36,11 @@ const SongsCarousel = ({
           width: SONG_CARD_WIDTH * songs.length + ListPadding,
         }}
       >
-        {songs.map((_, index) => (
+        {songs.map((song, index) => (
           <SongCard
             key={index}
             index={index}
-            title={`Song ${index + 1}`}
-            image={`https://picsum.photos/seed/picsum${index + 1}/600/800`}
+            song={song}
             scrollOffset={scrollOffset}
           />
         ))}
@@ -50,15 +56,13 @@ const SONG_CARD_HEIGHT = SONG_CARD_WIDTH * 1.3
 
 export interface SongCardProps {
   index: number;
-  title: string;
-  image: string;
+  song: TSong;
   scrollOffset: SharedValue<number>;
 }
 
 export const SongCard = ({
   index,
-  title,
-  image,
+  song,
   scrollOffset
 }: SongCardProps) => {
   const rContainerStyle = useAnimatedStyle(() => {
@@ -98,7 +102,7 @@ export const SongCard = ({
       ]}
     >
       <Image
-        source={{ uri: image }}
+        source={{ uri: song.cover_image! }}
         width={SONG_CARD_WIDTH}
         height={SONG_CARD_HEIGHT}
         className='rounded-[20px] absolute'
@@ -115,7 +119,7 @@ export const SongCard = ({
         }}
       >
         <Text className='text-white text-lg font-semibold'>
-          {title}
+          {song.title}
         </Text>
 
         <View className='w-12 h-12 rounded-full bg-gray-800/95 justify-center items-center'>

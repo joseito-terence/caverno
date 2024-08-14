@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
 import { supabase } from '@/utils/supabase'
 import { unsplash } from '@/utils/unsplash'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const DEFAULT_VALUES = {
   title: '',
@@ -29,6 +30,7 @@ type SongFormProps = {
 
 export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true
+  const queryClient = useQueryClient()
   const {
     control,
     handleSubmit,
@@ -37,17 +39,25 @@ export default function SongForm(props: SongFormProps) {
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   })
 
+  const mutation = useMutation({
+    mutationFn: async (data: TSong) => supabase.from('songs').insert(data),
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['songs'] })
+      router.back()
+    },
+  })
+
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (data) => {
     const result = await unsplash.photos.getRandom({ query: 'music' })
     
     if (result.type === 'error') return;
 
-    supabase.from('songs').insert({
+    mutation.mutate({
       ...data,
       title: data.title!,
       // @ts-ignore
-      cover_image: result.response.urls.regular,
-    }).then(router.back)
+      cover_image: result.response.urls.regular!,
+    })
   }
 
   return (
@@ -77,6 +87,7 @@ export default function SongForm(props: SongFormProps) {
               errors={errors}
               multiline
               required
+              disabled={mutation.isPending}
             />
 
             <InputController
@@ -84,6 +95,7 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Style* (e.g. Rock, Pop, Hip-Hop)'
               control={control}
               errors={errors}
+              disabled={mutation.isPending}
             />
 
             <InputController
@@ -91,7 +103,7 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Tempo* (e.g. 120 BPM)'
               control={control}
               errors={errors}
-              required
+              disabled={mutation.isPending}
             />
 
             <InputController
@@ -99,7 +111,7 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Transpose* (e.g. -4)'
               control={control}
               errors={errors}
-              required
+              disabled={mutation.isPending}
             />
 
             <InputController
@@ -107,6 +119,7 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Category'
               control={control}
               errors={errors}
+              disabled={mutation.isPending}
             />
 
             <InputController
@@ -116,6 +129,7 @@ export default function SongForm(props: SongFormProps) {
               control={control}
               errors={errors}
               multiline
+              disabled={mutation.isPending}
             />
           </View>
         </ScrollView>

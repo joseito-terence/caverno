@@ -7,12 +7,21 @@ import { LinearGradient } from 'expo-linear-gradient'
 import SongsCarousel from '@/components/SongsCarousel'
 import { MotiView } from 'moti'
 import { useRouter } from 'expo-router'
+import { useQuery } from '@tanstack/react-query'
+import { supabase } from '@/utils/supabase'
 
 const SCREEN = Dimensions.get('screen')
 
 export default function Home() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
+  const { data } = useQuery({
+    queryKey: ['songs'],
+    queryFn: async () => {
+      const { data } = await supabase.from('songs').select('*')
+      return data
+    },
+  })
 
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
@@ -83,7 +92,7 @@ export default function Home() {
               duration: 1000,
             }}
           >
-            <SongsCarousel />
+            <SongsCarousel songs={data!} />
           </MotiView>
         </View>
       </MotiView>

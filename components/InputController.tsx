@@ -7,6 +7,7 @@ interface InputControllerProps extends TextInputProps {
   required?: boolean;
   control: Control<any>;
   errors: FieldErrors<any>;
+  disabled?: boolean;
 }
 
 export default function InputController({
@@ -14,6 +15,7 @@ export default function InputController({
   required = false,
   control,
   errors,
+  disabled = false,
   ...props
 }: InputControllerProps) {
   return (
@@ -21,6 +23,7 @@ export default function InputController({
       <Controller
         name={name}
         control={control}
+        disabled={disabled}
         rules={{
           required,
         }}
