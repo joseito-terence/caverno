@@ -38,8 +38,6 @@ export default function SongForm(props: SongFormProps) {
   })
 
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (data) => {
-    console.warn(data)
-
     const result = await unsplash.photos.getRandom({ query: 'music' })
     
     if (result.type === 'error') return;
