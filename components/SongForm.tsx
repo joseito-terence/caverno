@@ -18,7 +18,7 @@ const DEFAULT_VALUES = {
   lyrics: '',
 }
 
-type TSong = typeof DEFAULT_VALUES;
+export type TSong = typeof DEFAULT_VALUES;
 
 type SongFormProps = {
   edit: true;
