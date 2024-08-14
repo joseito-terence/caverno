@@ -10,7 +10,8 @@ import InputController from '@/components/InputController'
 const DEFAULT_VALUES = {
   title: '',
   style: '',
-  tempo: '',
+  tempo: 0,
+  transpose: 0,
   category: '',
   lyrics: '',
 }
@@ -78,6 +79,14 @@ export default function SongForm(props: SongFormProps) {
             <InputController
               name='tempo'
               placeholder='Tempo* (e.g. 120 BPM)'
+              control={control}
+              errors={errors}
+              required
+            />
+
+            <InputController
+              name='transpose'
+              placeholder='Transpose* (e.g. -4)'
               control={control}
               errors={errors}
               required
