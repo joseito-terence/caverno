@@ -6,6 +6,8 @@ import { router } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
+import { supabase } from '@/utils/supabase'
+import { unsplash } from '@/utils/unsplash'
 
 const DEFAULT_VALUES = {
   title: '',
@@ -35,8 +37,19 @@ export default function SongForm(props: SongFormProps) {
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   })
 
-  const onSubmit: SubmitHandler<typeof control._defaultValues> = (data) => {
+  const onSubmit: SubmitHandler<typeof control._defaultValues> = async (data) => {
     console.warn(data)
+
+    const result = await unsplash.photos.getRandom({ query: 'music' })
+    
+    if (result.type === 'error') return;
+
+    supabase.from('songs').insert({
+      ...data,
+      title: data.title!,
+      // @ts-ignore
+      cover_image: result.response.urls.regular,
+    }).then(router.back)
   }
 
   return (
@@ -73,7 +86,6 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Style* (e.g. Rock, Pop, Hip-Hop)'
               control={control}
               errors={errors}
-              required
             />
 
             <InputController
