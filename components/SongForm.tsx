@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
@@ -8,7 +8,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
 import { supabase } from '@/utils/supabase'
 import { unsplash } from '@/utils/unsplash'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import SelectDropdown from 'react-native-select-dropdown'
 
 const DEFAULT_VALUES = {
   title: '',
@@ -33,31 +34,28 @@ export default function SongForm(props: SongFormProps) {
   const queryClient = useQueryClient()
   const {
     control,
+    setValue,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   })
 
-  const mutation = useMutation({
-    mutationFn: async (data: TSong) => supabase.from('songs').insert(data),
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ['songs'] })
-      router.back()
-    },
-  })
-
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (data) => {
     const result = await unsplash.photos.getRandom({ query: 'music' })
-    
+
     if (result.type === 'error') return;
 
-    mutation.mutate({
+    return supabase.from('songs').insert({
       ...data,
       title: data.title!,
       // @ts-ignore
       cover_image: result.response.urls.regular!,
     })
+      .then(() => {
+        queryClient.refetchQueries({ queryKey: ['songs'] })
+        router.back()
+      })
   }
 
   return (
@@ -72,7 +70,10 @@ export default function SongForm(props: SongFormProps) {
         </Text>
 
         <Button onPress={handleSubmit(onSubmit)}>
-          <AntDesign name="check" size={22} color="white" />
+          {isSubmitting 
+            ? <ActivityIndicator color='white' />
+            : <AntDesign name="check" size={22} color="white" />
+          }
         </Button>
       </View>
 
@@ -87,7 +88,7 @@ export default function SongForm(props: SongFormProps) {
               errors={errors}
               multiline
               required
-              disabled={mutation.isPending}
+              disabled={isSubmitting}
             />
 
             <InputController
@@ -95,7 +96,7 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Style* (e.g. Rock, Pop, Hip-Hop)'
               control={control}
               errors={errors}
-              disabled={mutation.isPending}
+              disabled={isSubmitting}
             />
 
             <InputController
@@ -103,7 +104,7 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Tempo* (e.g. 120 BPM)'
               control={control}
               errors={errors}
-              disabled={mutation.isPending}
+              disabled={isSubmitting}
             />
 
             <InputController
@@ -111,15 +112,11 @@ export default function SongForm(props: SongFormProps) {
               placeholder='Transpose* (e.g. -4)'
               control={control}
               errors={errors}
-              disabled={mutation.isPending}
+              disabled={isSubmitting}
             />
 
-            <InputController
-              name='category'
-              placeholder='Category'
-              control={control}
-              errors={errors}
-              disabled={mutation.isPending}
+            <CategoryPicker
+              setSelected={(val) => setValue('category', val)}
             />
 
             <InputController
@@ -129,12 +126,69 @@ export default function SongForm(props: SongFormProps) {
               control={control}
               errors={errors}
               multiline
-              disabled={mutation.isPending}
+              disabled={isSubmitting}
             />
           </View>
         </ScrollView>
       </View>
 
     </SafeAreaView>
+  )
+}
+
+const CategoryPicker = ({
+  setSelected,
+}: {
+  setSelected: (val: string) => void
+}) => {
+  const { data } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const { data } = await supabase.from('categories').select('*')
+      return data
+    },
+    select: (data) => {
+      if (!data) return []
+      return data.map((category: any) => ({
+        label: category.name,
+        value: category.id,
+      }))
+    },
+  })
+
+  return (
+    <View className='px-8 mt-8'>
+      <SelectDropdown
+        data={data ?? []}
+        onSelect={(selectedItem) => setSelected(selectedItem.value)}
+        renderButton={(selectedItem) => {
+          return (
+            <View>
+              {selectedItem ? (
+                <Text className='text-white text-2xl'>
+                  {selectedItem.label}
+                </Text>
+              ) : (
+                <Text className='text-white/30 text-2xl'>
+                  Select Category
+                </Text>
+              )}
+            </View>
+          );
+        }}
+        renderItem={(item, index, isSelected) => {
+          return (
+            <View style={{ ...(isSelected && { backgroundColor: '#141e22' }) }}>
+              <Text className='p-2 text-white'>{item.label}</Text>
+            </View>
+          );
+        }}
+        showsVerticalScrollIndicator={false}
+        dropdownStyle={{
+          backgroundColor: '#303030',
+          borderRadius: 8,
+        }}
+      />
+    </View>
   )
 }
