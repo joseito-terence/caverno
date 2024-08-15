@@ -127,6 +127,7 @@ export default function SongForm(props: SongFormProps) {
               errors={errors}
               multiline
               disabled={isSubmitting}
+              className='text-white text-sm'
             />
           </View>
         </ScrollView>
