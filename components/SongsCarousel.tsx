@@ -104,7 +104,7 @@ export const SongCard = ({
       ]}
     >
       <TouchableOpacity
-        activeOpacity={0.9}
+        activeOpacity={1}
         onPress={() => router.push(`/songs/${song.id}`)}
         className='h-full'
       >
