@@ -10,10 +10,12 @@ import ZStack from "@/components/ZStack";
 import SlideToUnlock, { SLIDER_WIDTH } from "@/components/SlideToUnlock";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { useRouter } from "expo-router";
+import { usePrefetchCategories } from "@/hooks/useCategories";
 
 const SCREEN = Dimensions.get('screen')
 
 export default function Index() {
+  usePrefetchCategories()
   const router = useRouter()
   const translateX = useSharedValue(0)
 

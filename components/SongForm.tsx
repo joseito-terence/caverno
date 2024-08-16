@@ -8,8 +8,9 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
 import { supabase } from '@/utils/supabase'
 import { unsplash } from '@/utils/unsplash'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import SelectDropdown from 'react-native-select-dropdown'
+import { useCategories } from '@/hooks/useCategories'
 
 const DEFAULT_VALUES = {
   title: '',
@@ -142,20 +143,12 @@ const CategoryPicker = ({
 }: {
   setSelected: (val: string) => void
 }) => {
-  const { data } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => {
-      const { data } = await supabase.from('categories').select('*')
-      return data
-    },
-    select: (data) => {
-      if (!data) return []
-      return data.map((category: any) => ({
-        label: category.name,
-        value: category.id,
-      }))
-    },
-  })
+  const categories = useCategories()
+
+  const data = categories.data?.map((category: any) => ({
+    label: category.name,
+    value: category.id,
+  }))
 
   return (
     <View className='px-8 mt-8'>
@@ -177,7 +170,7 @@ const CategoryPicker = ({
             </View>
           );
         }}
-        renderItem={(item, index, isSelected) => {
+        renderItem={(item, _, isSelected) => {
           return (
             <View style={{ ...(isSelected && { backgroundColor: '#141e22' }) }}>
               <Text className='p-2 text-white'>{item.label}</Text>
