@@ -6,10 +6,18 @@ import { Button } from '@/components/Button'
 import { supabase } from '@/utils/supabase'
 import { AntDesign } from '@expo/vector-icons'
 import { useQuery } from '@tanstack/react-query'
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetScrollView,
+  BottomSheetBackgroundProps,
+} from '@gorhom/bottom-sheet';
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const CARD_SIZE = 300
+const SNAP_POINTS = [150, 300, '100%']
 
 export default function Song() {
   const { id } = useLocalSearchParams()
@@ -52,14 +60,15 @@ export default function Song() {
           />
         </View>
         <BottomSheet
-          snapPoints={[150, 300, '100%']}
+          snapPoints={SNAP_POINTS}
+          backgroundComponent={CustomBackground}
         >
           <BottomSheetScrollView>
             <View className='p-6'>
               <View className='flex-row items-center justify-between'
                 style={{ display: song?.style ? 'flex' : 'none' }}
               >
-                <Text className='text-black text-lg font-semibold'>
+                <Text className='text-white text-lg font-semibold'>
                   {song?.style}
                 </Text>
 
@@ -67,23 +76,23 @@ export default function Song() {
                   <View className='flex-row items-center'
                     style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
                   >
-                    <MaterialCommunityIcons name="music-note-quarter" size={22} color="black" />
-                    <Text className='text-black text-lg font-semibold'>
+                    <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
+                    <Text className='text-white text-lg font-semibold'>
                       = {song?.tempo} {typeof song?.tempo}
                     </Text>
                   </View>
                 {/* )} */}
               </View>
 
-              <Text className='text-black text-3xl font-bold capitalize'>
+              <Text className='text-white text-3xl font-bold capitalize'>
                 {song?.title}
               </Text>
 
               <View className='mt-10'>
-                <Text className='text-black text-lg font-semibold'>
+                <Text className='text-white text-lg font-semibold'>
                   Lyrics
                 </Text>
-                <Text className='text-black text-sm font-semibold'>
+                <Text className='text-white text-sm font-semibold'>
                   {song?.lyrics}
                 </Text>
               </View>
@@ -95,3 +104,16 @@ export default function Song() {
     </SafeAreaView>
   )
 }
+
+
+const CustomBackground = ({ animatedIndex, style }: BottomSheetBackgroundProps) => {
+  const rStyles = useAnimatedStyle(
+    () => {
+      return animatedIndex.value == SNAP_POINTS.length - 1
+        ? { borderTopRightRadius: withTiming(0), borderTopLeftRadius: withTiming(0) }
+        : { borderTopRightRadius: withTiming(15), borderTopLeftRadius: withTiming(15) }
+    }, []
+  );
+
+  return <Animated.View style={[style, { backgroundColor: '#303030' }, rStyles]} />;
+};
