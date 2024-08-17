@@ -13,6 +13,8 @@ import BottomSheet, {
 import Animated, {
   useAnimatedStyle,
   withTiming,
+  useSharedValue,
+  interpolate,
 } from 'react-native-reanimated'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -33,35 +35,56 @@ export default function Song() {
     },
   })
 
+
+  const bottomsheetAnimatedIndex = useSharedValue(0)
+
+  const rCardStyles = useAnimatedStyle(() => {
+    return {
+      transform: [{
+        scale: interpolate(
+          bottomsheetAnimatedIndex.value,
+          [0, 1],
+          [1, 0.5]
+        )
+      }, {
+        translateY: interpolate(
+          bottomsheetAnimatedIndex.value,
+          [0, SNAP_POINTS.length - 1],
+          [0, -CARD_SIZE / 2]
+        )
+      }]
+    }
+  })
+
   return (
     <SafeAreaView className='flex-1'>
       <View className='flex-row justify-between items-center px-8 py-4'>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
         </Button>
-
-        <Text className='text-white text-lg font-semibold'>
-
-        </Text>
-        <View className='w-5' />
       </View>
 
       <View className='flex-1 items-center justify-center'>
-        <View
-          className='bg-gray-800 rounded-[20px] overflow-hidden'
-          style={{ width: CARD_SIZE, height: CARD_SIZE, marginBottom: 150 }}
-        >
-          <Image
-            source={{ uri: song?.cover_image! }}
-            width={CARD_SIZE}
-            height={CARD_SIZE}
-            className='rounded-[20px] absolute'
-            resizeMode='cover'
-          />
-        </View>
+        <Animated.Image
+          source={{ uri: song?.cover_image! }}
+          width={CARD_SIZE}
+          height={CARD_SIZE}
+          resizeMode='cover'
+          className='rounded-[20px]'
+          style={[
+            rCardStyles,
+            {
+              width: CARD_SIZE,
+              height: CARD_SIZE,
+              aspectRatio: 1,
+              marginBottom: 150,
+            }
+          ]}
+        />
         <BottomSheet
           snapPoints={SNAP_POINTS}
           backgroundComponent={CustomBackground}
+          animatedIndex={bottomsheetAnimatedIndex}
         >
           <BottomSheetScrollView>
             <View className='p-6'>
@@ -73,14 +96,14 @@ export default function Song() {
                 </Text>
 
                 {/* {(song?.tempo && song?.tempo > 0) && ( */}
-                  <View className='flex-row items-center'
-                    style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
-                  >
-                    <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
-                    <Text className='text-white text-lg font-semibold'>
-                      = {song?.tempo} {typeof song?.tempo}
-                    </Text>
-                  </View>
+                <View className='flex-row items-center'
+                  style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
+                >
+                  <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
+                  <Text className='text-white text-lg font-semibold'>
+                    = {song?.tempo} {typeof song?.tempo}
+                  </Text>
+                </View>
                 {/* )} */}
               </View>
 
