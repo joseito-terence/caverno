@@ -3,6 +3,8 @@ import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedRef, useA
 import Entypo from '@expo/vector-icons/Entypo';
 import { Database } from '@/utils/database.types';
 import { router } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 const SCREEN = Dimensions.get('screen')
 
@@ -66,6 +68,7 @@ export const SongCard = ({
   song,
   scrollOffset
 }: SongCardProps) => {
+  const queryClient = useQueryClient()
   const rContainerStyle = useAnimatedStyle(() => {
     const activeIndex = scrollOffset.value / SONG_CARD_WIDTH
     const paddingLeft = (SCREEN.width - SONG_CARD_WIDTH) / 3
@@ -92,6 +95,13 @@ export const SongCard = ({
       ]
     }
   }, [])
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ['songs', song.id],
+      queryFn: () => song
+    })
+  }, [song])
 
   return (
     <Animated.View
