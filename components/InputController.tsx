@@ -33,7 +33,7 @@ export default function InputController({
             onChangeText={onChange}
             value={value}
             className='text-white text-2xl'
-            placeholderTextColor={errors[name] && 'red'}
+            placeholderTextColor={errors[name] ? 'red' : '#fffefe4d'}
             {...props}
           />
         )}
