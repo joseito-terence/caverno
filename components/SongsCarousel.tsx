@@ -97,11 +97,8 @@ export const SongCard = ({
   }, [])
 
   useEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: ['songs', song.id],
-      queryFn: () => song
-    })
-  }, [song])
+    queryClient.setQueryData(['songs', song.id], song)
+  }, [])
 
   return (
     <Animated.View
