@@ -18,7 +18,11 @@ export default function Home() {
   const { data } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => {
-      const { data } = await supabase.from('songs').select('*')
+      const { data = [] } = await supabase
+        .from('songs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10)
       return data
     },
   })
