@@ -79,7 +79,12 @@ export default function Song() {
           className='absolute top-0 left-0 right-0 bottom-0'
           style={rBlurStyles}
         >
-          <BlurView intensity={100} experimentalBlurMethod='dimezisBlurView' className='w-full h-full' />
+          <BlurView
+            intensity={100}
+            tint="dark"
+            experimentalBlurMethod='dimezisBlurView'
+            className='w-full h-full'
+          />
         </Animated.View>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
@@ -123,7 +128,6 @@ export default function Song() {
                   {song?.style}
                 </Text>
 
-                {/* {(song?.tempo && song?.tempo > 0) && ( */}
                 <View className='flex-row items-center'
                   style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
                 >
@@ -132,7 +136,6 @@ export default function Song() {
                     = {song?.tempo} {typeof song?.tempo}
                   </Text>
                 </View>
-                {/* )} */}
               </View>
 
               <Text className='text-white text-3xl font-bold capitalize'>
