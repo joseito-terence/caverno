@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -26,6 +26,14 @@ const SNAP_POINTS = [150, 300, '100%']
 export default function Song() {
   const { id } = useLocalSearchParams()
   const insets = useSafeAreaInsets()
+  const [renderBlur, setRenderBlur] = useState(false)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRenderBlur(true)
+    }, 1000)
+  }, [])
+
   const { data: song } = useQuery({
     queryKey: ['songs', id],
     queryFn: async () => {
@@ -79,12 +87,14 @@ export default function Song() {
           className='absolute top-0 left-0 right-0 bottom-0'
           style={rBlurStyles}
         >
-          <BlurView
-            intensity={100}
-            tint="dark"
-            experimentalBlurMethod='dimezisBlurView'
-            className='w-full h-full'
-          />
+          {renderBlur &&
+            <BlurView
+              intensity={100}
+              tint="dark"
+              experimentalBlurMethod='dimezisBlurView'
+              className='w-full h-full'
+            />
+          }
         </Animated.View>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
@@ -92,7 +102,7 @@ export default function Song() {
 
         <View className='w-8' />
 
-        <Button onPress={() => {}}>
+        <Button onPress={() => { }}>
           <Entypo name="edit" size={20} color="white" />
         </Button>
       </View>
