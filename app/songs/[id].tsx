@@ -16,8 +16,9 @@ import Animated, {
   useSharedValue,
   interpolate,
 } from 'react-native-reanimated'
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import { BlurView } from 'expo-blur'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
+import Entypo from '@expo/vector-icons/Entypo'
 
 const CARD_SIZE = 300
 const SNAP_POINTS = [150, 300, '100%']
@@ -82,6 +83,12 @@ export default function Song() {
         </Animated.View>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
+        </Button>
+
+        <View className='w-8' />
+
+        <Button onPress={() => {}}>
+          <Entypo name="edit" size={20} color="white" />
         </Button>
       </View>
 
