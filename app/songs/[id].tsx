@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
 import { supabase } from '@/utils/supabase'
 import { AntDesign } from '@expo/vector-icons'
@@ -16,13 +16,15 @@ import Animated, {
   useSharedValue,
   interpolate,
 } from 'react-native-reanimated'
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
+import { BlurView } from 'expo-blur'
 
 const CARD_SIZE = 300
 const SNAP_POINTS = [150, 300, '100%']
 
 export default function Song() {
   const { id } = useLocalSearchParams()
+  const insets = useSafeAreaInsets()
   const { data: song } = useQuery({
     queryKey: ['songs', id],
     queryFn: async () => {
@@ -43,22 +45,41 @@ export default function Song() {
       transform: [{
         scale: interpolate(
           bottomsheetAnimatedIndex.value,
-          [0, 1],
-          [1, 0.5]
+          [0, 1, 2],
+          [1, 0.9, 0.5]
         )
       }, {
         translateY: interpolate(
           bottomsheetAnimatedIndex.value,
-          [0, SNAP_POINTS.length - 1],
-          [0, -CARD_SIZE / 2]
+          [0, 1, 2],
+          [0, -CARD_SIZE / 3, -CARD_SIZE * 2]
         )
       }]
     }
   })
 
+  const rBlurStyles = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        bottomsheetAnimatedIndex.value,
+        [0, 1, 2],
+        [0, 0.1, 1]
+      )
+    }
+  })
+
   return (
-    <SafeAreaView className='flex-1'>
-      <View className='flex-row justify-between items-center px-8 py-4'>
+    <View className='flex-1'>
+      <View
+        style={{ paddingTop: insets.top }}
+        className='flex-row justify-between items-center px-8 py-4 z-50'
+      >
+        <Animated.View
+          className='absolute top-0 left-0 right-0 bottom-0'
+          style={rBlurStyles}
+        >
+          <BlurView intensity={100} className='w-full h-full' />
+        </Animated.View>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
         </Button>
@@ -124,7 +145,7 @@ export default function Song() {
           </BottomSheetScrollView>
         </BottomSheet>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
