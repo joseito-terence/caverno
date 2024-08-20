@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Text } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,26 +15,19 @@ import Animated, {
   withTiming,
   useSharedValue,
   interpolate,
+  interpolateColor,
 } from 'react-native-reanimated'
-import { BlurView } from 'expo-blur'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import Entypo from '@expo/vector-icons/Entypo'
 
 const CARD_SIZE = 300
-const SNAP_POINTS = [150, 300, '100%']
+const SNAP_POINTS = [150, 300 , '100%']
 
 export default function Song() {
   const { id } = useLocalSearchParams()
   const insets = useSafeAreaInsets()
-  const [renderBlur, setRenderBlur] = useState(false)
 
-  useEffect(() => {
-    setTimeout(() => {
-      setRenderBlur(true)
-    }, 1000)
-  }, [])
-
-  const { data: song } = useQuery({
+  const { data: song, isLoading } = useQuery({
     queryKey: ['songs', id],
     queryFn: async () => {
       const { data } = await supabase
@@ -48,54 +41,54 @@ export default function Song() {
 
 
   const bottomsheetAnimatedIndex = useSharedValue(0)
+  const blurIntensity = useSharedValue(0)
 
   const rCardStyles = useAnimatedStyle(() => {
+    if (bottomsheetAnimatedIndex.value >= 2) {
+      blurIntensity.value = withTiming(100)
+    } else {
+      blurIntensity.value = withTiming(0)
+    }
+
     return {
       transform: [{
         scale: interpolate(
           bottomsheetAnimatedIndex.value,
           [0, 1, 2],
-          [1, 0.9, 0.5]
+          [1, 0.9, 1.5]
         )
       }, {
         translateY: interpolate(
           bottomsheetAnimatedIndex.value,
           [0, 1, 2],
-          [0, -CARD_SIZE / 3, -CARD_SIZE * 2]
+          [0, -CARD_SIZE / 3, -CARD_SIZE * .75]
         )
       }]
     }
   })
 
-  const rBlurStyles = useAnimatedStyle(() => {
+  const rHeaderStyles = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
+      backgroundColor: interpolateColor(
         bottomsheetAnimatedIndex.value,
         [0, 1, 2],
-        [0, 0.1, 1]
-      )
-    }
+        ['transparent', 'transparent', '#000000af']
+      ),
+    };
   })
+
+  if (isLoading) {
+    return null
+  }
+
 
   return (
     <View className='flex-1'>
-      <View
-        style={{ paddingTop: insets.top + 16 }}
-        className='flex-row justify-between items-center px-8 py-4 z-50'
+
+      <Animated.View
+        style={[{ paddingTop: insets.top + 16 }, rHeaderStyles]}
+        className='flex-row justify-between items-center px-8 py-4 z-[4]'
       >
-        <Animated.View
-          className='absolute top-0 left-0 right-0 bottom-0'
-          style={rBlurStyles}
-        >
-          {renderBlur &&
-            <BlurView
-              intensity={100}
-              tint="dark"
-              experimentalBlurMethod='dimezisBlurView'
-              className='w-full h-full'
-            />
-          }
-        </Animated.View>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
         </Button>
@@ -105,7 +98,7 @@ export default function Song() {
         <Button onPress={() => { }}>
           <Entypo name="edit" size={20} color="white" />
         </Button>
-      </View>
+      </Animated.View>
 
       <View className='flex-1 items-center justify-center'>
         <Animated.Image
