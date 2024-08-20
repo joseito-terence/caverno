@@ -27,7 +27,7 @@ export default function Song() {
   const { id } = useLocalSearchParams()
   const insets = useSafeAreaInsets()
 
-  const { data: song, isLoading } = useQuery({
+  const { data: song } = useQuery({
     queryKey: ['songs', id],
     queryFn: async () => {
       const { data } = await supabase
@@ -76,11 +76,6 @@ export default function Song() {
       ),
     };
   })
-
-  if (isLoading) {
-    return null
-  }
-
 
   return (
     <View className='flex-1'>
