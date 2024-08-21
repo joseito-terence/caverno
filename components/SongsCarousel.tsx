@@ -132,7 +132,7 @@ export const SongCard = ({
             width: SONG_CARD_WIDTH,
           }}
         >
-          <Text className='text-white text-lg font-semibold'>
+          <Text numberOfLines={2} className='text-white text-lg font-semibold flex-1'>
             {song.title}
           </Text>
 
