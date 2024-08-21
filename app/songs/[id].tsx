@@ -16,6 +16,7 @@ import Animated, {
   useSharedValue,
   interpolate,
   interpolateColor,
+  Extrapolation,
 } from 'react-native-reanimated'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import Entypo from '@expo/vector-icons/Entypo'
@@ -55,13 +56,15 @@ export default function Song() {
         scale: interpolate(
           bottomsheetAnimatedIndex.value,
           [0, 1, 2],
-          [1, 0.9, 1.5]
+          [1, 0.9, 1.5],
+          Extrapolation.CLAMP
         )
       }, {
         translateY: interpolate(
           bottomsheetAnimatedIndex.value,
           [0, 1, 2],
-          [0, -CARD_SIZE / 3, -CARD_SIZE * .75]
+          [0, -CARD_SIZE / 3, -CARD_SIZE * .75],
+          Extrapolation.CLAMP
         )
       }]
     }
@@ -161,7 +164,7 @@ export default function Song() {
 const CustomBackground = ({ animatedIndex, style }: BottomSheetBackgroundProps) => {
   const rStyles = useAnimatedStyle(
     () => {
-      return animatedIndex.value == SNAP_POINTS.length - 1
+      return animatedIndex.value >= SNAP_POINTS.length - 1
         ? { borderTopRightRadius: withTiming(0), borderTopLeftRadius: withTiming(0) }
         : { borderTopRightRadius: withTiming(15), borderTopLeftRadius: withTiming(15) }
     }, []
