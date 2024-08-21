@@ -62,7 +62,7 @@ export default function Search() {
         <View className='w-8' />
       </View>
 
-      <View className='px-8 pb-8'>
+      <View className='px-8 pb-8 pt-2'>
         <View className='bg-gray-800 rounded-full px-4 py-3 flex-row items-center'>
           <AntDesign name="search1" size={22} color="white" />
           <TextInput
@@ -85,6 +85,7 @@ export default function Search() {
         <SectionList
           sections={sections}
           keyExtractor={(item) => item.id}
+          stickySectionHeadersEnabled
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => router.push(`/songs/${item.id}`)}>
               <View className='px-9 py-4'>
@@ -93,7 +94,7 @@ export default function Search() {
             </TouchableOpacity>
           )}
           renderSectionHeader={({ section }) => (
-            <View className='px-9 py-4 bg-gray-800/60'>
+            <View className='px-9 py-2 bg-[#121821]'>
               <Text className='text-white text-lg font-semibold'>{section.title}</Text>
             </View>
           )}
