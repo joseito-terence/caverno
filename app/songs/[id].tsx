@@ -21,7 +21,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import Entypo from '@expo/vector-icons/Entypo'
 
 const CARD_SIZE = 300
-const SNAP_POINTS = [150, 300 , '100%']
+const SNAP_POINTS = [150, 300, '100%']
 
 export default function Song() {
   const { id } = useLocalSearchParams()
@@ -117,30 +117,31 @@ export default function Song() {
           backgroundComponent={CustomBackground}
           animatedIndex={bottomsheetAnimatedIndex}
         >
-          <BottomSheetScrollView>
-            <View className='p-6'>
-              <View className='flex-row items-center justify-between'
-                style={{ display: song?.style ? 'flex' : 'none' }}
-              >
-                <Text className='text-white text-lg font-semibold'>
-                  {song?.style}
-                </Text>
-
-                <View className='flex-row items-center'
-                  style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
-                >
-                  <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
-                  <Text className='text-white text-lg font-semibold'>
-                    = {song?.tempo} {typeof song?.tempo}
-                  </Text>
-                </View>
-              </View>
-
-              <Text className='text-white text-3xl font-bold capitalize'>
-                {song?.title}
+          <View className='p-6'>
+            <View className='flex-row items-center justify-between'
+              style={{ display: song?.style ? 'flex' : 'none' }}
+            >
+              <Text className='text-white text-lg font-semibold'>
+                {song?.style}
               </Text>
 
-              <View className='mt-10'>
+              <View className='flex-row items-center'
+                style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
+              >
+                <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
+                <Text className='text-white text-lg font-semibold'>
+                  = {song?.tempo} {typeof song?.tempo}
+                </Text>
+              </View>
+            </View>
+
+            <Text className='text-white text-3xl font-bold capitalize mt-1'>
+              {song?.title}
+            </Text>
+          </View>
+
+            <BottomSheetScrollView>
+              <View className='p-6 mt-4'>
                 <Text className='text-white text-lg font-semibold'>
                   Lyrics
                 </Text>
@@ -148,9 +149,8 @@ export default function Song() {
                   {song?.lyrics}
                 </Text>
               </View>
+            </BottomSheetScrollView>
 
-            </View>
-          </BottomSheetScrollView>
         </BottomSheet>
       </View>
     </View>
