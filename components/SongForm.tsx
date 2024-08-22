@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView, ActivityIndicator, TextProps } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
@@ -71,7 +71,7 @@ export default function SongForm(props: SongFormProps) {
         </Text>
 
         <Button onPress={handleSubmit(onSubmit)}>
-          {isSubmitting 
+          {isSubmitting
             ? <ActivityIndicator color='white' />
             : <AntDesign name="check" size={22} color="white" />
           }
@@ -116,9 +116,11 @@ export default function SongForm(props: SongFormProps) {
               disabled={isSubmitting}
             />
 
-            <CategoryPicker
-              setSelected={(val) => setValue('category', val)}
-            />
+            <View className='mt-8'>
+              <CategoryPicker
+                setSelected={(val) => setValue('category', val)}
+              />
+            </View>
 
             <InputController
               name='lyrics'
@@ -138,10 +140,16 @@ export default function SongForm(props: SongFormProps) {
   )
 }
 
-const CategoryPicker = ({
+export const CategoryPicker = ({
   setSelected,
+  defaultValueByIndex,
+  titleProps,
+  optionTextProps,
 }: {
-  setSelected: (val: string) => void
+  setSelected: (val: string) => void;
+  defaultValueByIndex?: number;
+  titleProps?: TextProps;
+  optionTextProps?: TextProps;
 }) => {
   const categories = useCategories()
 
@@ -151,38 +159,37 @@ const CategoryPicker = ({
   }))
 
   return (
-    <View className='px-8 mt-8'>
-      <SelectDropdown
-        data={data ?? []}
-        onSelect={(selectedItem) => setSelected(selectedItem.value)}
-        renderButton={(selectedItem) => {
-          return (
-            <View>
-              {selectedItem ? (
-                <Text className='text-white text-2xl'>
-                  {selectedItem.label}
-                </Text>
-              ) : (
-                <Text className='text-white/30 text-2xl'>
-                  Select Category
-                </Text>
-              )}
-            </View>
-          );
-        }}
-        renderItem={(item, _, isSelected) => {
-          return (
-            <View style={{ ...(isSelected && { backgroundColor: '#141e22' }) }}>
-              <Text className='p-2 text-white'>{item.label}</Text>
-            </View>
-          );
-        }}
-        showsVerticalScrollIndicator={false}
-        dropdownStyle={{
-          backgroundColor: '#303030',
-          borderRadius: 8,
-        }}
-      />
-    </View>
+    <SelectDropdown
+      data={data ?? []}
+      defaultValueByIndex={defaultValueByIndex}
+      onSelect={(selectedItem) => setSelected(selectedItem.value)}
+      renderButton={(selectedItem) => {
+        return (
+          <View>
+            {selectedItem ? (
+              <Text className='text-white text-2xl' {...titleProps}>
+                {selectedItem.label}
+              </Text>
+            ) : (
+              <Text className='text-white/30 text-2xl'>
+                Select Category
+              </Text>
+            )}
+          </View>
+        );
+      }}
+      renderItem={(item, _, isSelected) => {
+        return (
+          <View style={{ ...(isSelected && { backgroundColor: '#141e22' }) }}>
+            <Text className='p-2 text-white' {...optionTextProps}>{item.label}</Text>
+          </View>
+        );
+      }}
+      showsVerticalScrollIndicator={false}
+      dropdownStyle={{
+        backgroundColor: '#303030',
+        borderRadius: 8,
+      }}
+    />
   )
 }

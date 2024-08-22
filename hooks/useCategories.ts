@@ -7,6 +7,7 @@ const queryFn = async () => {
   const { data = [] } = await supabase
     .from('categories')
     .select('*')
+    .order('name', { ascending: true })
   return data
 }
 

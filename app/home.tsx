@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, Image, Dimensions } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
 import { Button } from '@/components/Button'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Entypo from '@expo/vector-icons/Entypo'
@@ -9,20 +9,26 @@ import { MotiView } from 'moti'
 import { useRouter } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/utils/supabase'
+import { CategoryPicker } from '@/components/SongForm'
+import { useCategories } from '@/hooks/useCategories'
 
 const SCREEN = Dimensions.get('screen')
 
 export default function Home() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const { data: categories } = useCategories()
+  const defaultCategory = categories?.[0].id
+  const category = selectedCategory || defaultCategory
   const { data } = useQuery({
-    queryKey: ['songs'],
+    queryKey: ['songs', category],
     queryFn: async () => {
       const { data = [] } = await supabase
         .from('songs')
         .select('*')
-        .order('created_at', { ascending: false })
-        .limit(10)
+        .eq('category', category!)
+        .order('title', { ascending: true })
       return data
     },
   })
@@ -38,7 +44,7 @@ export default function Home() {
           Home
         </Text>
 
-        <Button>
+        <Button onPress={() => router.push('/songs')}>
           <Entypo name="magnifying-glass" size={22} color="white" />
         </Button>
       </View>
@@ -69,14 +75,21 @@ export default function Home() {
             height: SCREEN.height - 250,
           }}
         >
-          <View className='flex-row items-center p-8 pt-6'>
-            <Text className='flex-1 text-white text-4xl font-semibold mt-4'>
-              Recently Played
-            </Text>
+          <View className='flex-row items-center p-8 pt-6 mt-4'>
+            <View className='flex-1'>
+              <CategoryPicker
+                defaultValueByIndex={0}
+                setSelected={setSelectedCategory}
+                titleProps={{ className: 'text-white text-4xl font-semibold' }}
+                optionTextProps={{ className: 'p-4 text-white text-xl' }}
+              />
+            </View>
 
-            <Text className='text-white/60 text-lg font-semibold mt-4 pl-8'>
-              See all
-            </Text>
+            <TouchableOpacity onPress={() => router.push('/songs')}>
+              <Text className='text-white/60 text-lg font-semibold pl-8'>
+                See all
+              </Text>
+            </TouchableOpacity>
           </View>
           <MotiView
             className='flex-1 items-center justify-center'
