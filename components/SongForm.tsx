@@ -145,11 +145,13 @@ export const CategoryPicker = ({
   defaultValueByIndex,
   titleProps,
   optionTextProps,
+  showIndicator = false,
 }: {
   setSelected: (val: string) => void;
   defaultValueByIndex?: number;
   titleProps?: TextProps;
   optionTextProps?: TextProps;
+  showIndicator?: boolean;
 }) => {
   const categories = useCategories()
 
@@ -165,16 +167,17 @@ export const CategoryPicker = ({
       onSelect={(selectedItem) => setSelected(selectedItem.value)}
       renderButton={(selectedItem) => {
         return (
-          <View>
+          <View className=''>
             {selectedItem ? (
               <Text className='text-white text-2xl' {...titleProps}>
-                {selectedItem.label}
+                {selectedItem.label} {showIndicator && <AntDesign name="caretdown" size={24} color="white" />}
               </Text>
             ) : (
               <Text className='text-white/30 text-2xl'>
                 Select Category
               </Text>
             )}
+            
           </View>
         );
       }}

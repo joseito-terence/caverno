@@ -82,6 +82,7 @@ export default function Home() {
                 setSelected={setSelectedCategory}
                 titleProps={{ className: 'text-white text-4xl font-semibold' }}
                 optionTextProps={{ className: 'p-4 text-white text-xl' }}
+                showIndicator
               />
             </View>
 
