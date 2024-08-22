@@ -40,7 +40,7 @@ const SongsCarousel = ({
           snapDirection: 'left',
           stackInterval: 18,
         }}
-        customConfig={() => ({ type: "positive", viewCount: 0 })}
+        customConfig={() => ({ type: "positive", viewCount: 5 })}
         renderItem={renderItem}
       />
     </View>
