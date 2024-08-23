@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MotiView } from 'moti';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, SharedValue, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const SCREEN = Dimensions.get('screen')
 export const SLIDER_WIDTH = SCREEN.width - 80
@@ -60,6 +61,23 @@ export default function SlideToUnlock({
         className='rounded-full justify-center overflow-hidden'
         style={{ height: SLIDER_HEIGHT, width: SLIDER_WIDTH }}
       >
+        <MotiView className='flex-row items-center p-4 absolute right-0'>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <MotiView
+              from={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                type: 'timing',
+                duration: 1000 * i,
+                delay: i * 100,
+                loop: true,
+              }}
+            >
+              <MaterialIcons name="navigate-next" size={24} color="white" />
+            </MotiView>
+          ))}
+        </MotiView>
+
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSwipableStyle, {
             margin: SLIDER_PADDING,
