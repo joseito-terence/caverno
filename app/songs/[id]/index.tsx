@@ -3,9 +3,7 @@ import { View, Text } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
-import { supabase } from '@/utils/supabase'
 import { AntDesign } from '@expo/vector-icons'
-import { useQuery } from '@tanstack/react-query'
 import BottomSheet, {
   BottomSheetScrollView,
   BottomSheetBackgroundProps,
@@ -20,6 +18,7 @@ import Animated, {
 } from 'react-native-reanimated'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import Entypo from '@expo/vector-icons/Entypo'
+import { useSong } from '@/hooks/useSong'
 
 const CARD_SIZE = 300
 const SNAP_POINTS = [150, 300, '100%']
@@ -28,17 +27,7 @@ export default function Song() {
   const { id } = useLocalSearchParams()
   const insets = useSafeAreaInsets()
 
-  const { data: song } = useQuery({
-    queryKey: ['songs', id],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('songs')
-        .select('*')
-        .eq('id', id)
-        .single()
-      return data
-    },
-  })
+  const { data: song } = useSong(id as string)
 
 
   const bottomsheetAnimatedIndex = useSharedValue(0)
@@ -93,7 +82,7 @@ export default function Song() {
 
         <View className='w-8' />
 
-        <Button onPress={() => { }}>
+        <Button onPress={() => router.push(`/songs/${id}/edit`)}>
           <Entypo name="edit" size={20} color="white" />
         </Button>
       </Animated.View>
