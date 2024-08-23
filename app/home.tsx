@@ -80,7 +80,7 @@ export default function Home() {
               <CategoryPicker
                 defaultValueByIndex={0}
                 setSelected={setSelectedCategory}
-                titleProps={{ className: 'text-white text-4xl font-semibold' }}
+                titleProps={{ className: 'text-white text-3xl font-semibold' }}
                 optionTextProps={{ className: 'p-4 text-white text-xl' }}
                 showIndicator
               />
