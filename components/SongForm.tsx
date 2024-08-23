@@ -132,6 +132,7 @@ export default function SongForm(props: SongFormProps) {
 
             <View className='mt-8'>
               <CategoryPicker
+                defaultValue={isEdit ? props.song.category : undefined}
                 setSelected={(val) => setValue('category', val)}
               />
             </View>
@@ -157,12 +158,14 @@ export default function SongForm(props: SongFormProps) {
 export const CategoryPicker = ({
   setSelected,
   defaultValueByIndex,
+  defaultValue,
   titleProps,
   optionTextProps,
   showIndicator = false,
 }: {
   setSelected: (val: string) => void;
   defaultValueByIndex?: number;
+  defaultValue?: string;
   titleProps?: TextProps;
   optionTextProps?: TextProps;
   showIndicator?: boolean;
@@ -177,6 +180,7 @@ export const CategoryPicker = ({
   return (
     <SelectDropdown
       data={data ?? []}
+      defaultValue={defaultValue}
       defaultValueByIndex={defaultValueByIndex}
       onSelect={(selectedItem) => setSelected(selectedItem.value)}
       renderButton={(selectedItem) => {
