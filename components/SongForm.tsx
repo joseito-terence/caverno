@@ -25,7 +25,7 @@ export type TSong = typeof DEFAULT_VALUES;
 
 type SongFormProps = {
   edit: true;
-  song: TSong;
+  song: TSong & { id: string };
 } | {
   edit?: false;
 }
@@ -37,12 +37,26 @@ export default function SongForm(props: SongFormProps) {
     control,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   })
 
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (data) => {
+    if (!isDirty) return;
+    if (isEdit) {
+      console.warn('edit')
+      return supabase.from('songs').update({
+        ...data,
+        title: data.title!,
+      })
+        .eq('id', props.song.id)
+        .then(() => {
+          queryClient.refetchQueries({ queryKey: ['songs'] })
+          router.back()
+        })
+    }
+
     const result = await unsplash.photos.getRandom({ query: 'music' })
 
     if (result.type === 'error') return;
