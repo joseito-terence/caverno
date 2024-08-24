@@ -3,7 +3,7 @@ import { Text, Dimensions } from 'react-native'
 import { LinearGradient } from "expo-linear-gradient";
 import { MotiView } from 'moti';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, SharedValue, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { interpolate, runOnJS, SharedValue, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const SCREEN = Dimensions.get('screen')
@@ -55,6 +55,12 @@ export default function SlideToUnlock({
     }
   }, [])
 
+  const rSwipeIndicatorArrowsStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(adjustTranslateX.value, [0, H_SWIPE_RANGE], [1, 0]),
+    }
+  })
+
   return (
     <MotiView
       from={{ opacity: 0, translateX: 20 }}
@@ -68,7 +74,9 @@ export default function SlideToUnlock({
         className='rounded-full justify-center overflow-hidden'
         style={{ height: SLIDER_HEIGHT, width: SLIDER_WIDTH }}
       >
-        <MotiView className='flex-row items-center p-4 absolute right-0'>
+        <MotiView className='flex-row items-center p-4 absolute right-0'
+          style={rSwipeIndicatorArrowsStyle}
+        >
           {Array.from({ length: 3 }).map((_, i) => (
             <MotiView
               key={i}
