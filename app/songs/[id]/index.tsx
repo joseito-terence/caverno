@@ -111,19 +111,29 @@ export default function Song() {
         >
           <View className='p-6'>
             <View className='flex-row items-center justify-between'
-              style={{ display: song?.style ? 'flex' : 'none' }}
+              style={{ display: song?.style || song?.tempo || song?.transpose ? 'flex' : 'none' }}
             >
               <Text className='text-white text-lg font-semibold'>
-                {song?.style}
+                {song?.style ?? ''}
               </Text>
 
-              <View className='flex-row items-center'
-                style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
-              >
-                <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
-                <Text className='text-white text-lg font-semibold'>
-                  = {song?.tempo} {typeof song?.tempo}
-                </Text>
+              <View className='flex-row items-center gap-1'>
+                <View className='flex-row items-center'
+                  style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
+                >
+                  <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
+                  <Text className='text-white text-lg font-semibold'>
+                    = {song?.tempo}
+                  </Text>
+                </View>
+                <View className='flex-row items-center'
+                  style={{ display: song?.transpose ? 'flex' : 'none' }}
+                >
+                  <Entypo name="select-arrows" size={22} color="white" />
+                  <Text className='text-white text-lg font-semibold'>
+                    {song?.transpose}
+                  </Text>
+                </View>
               </View>
             </View>
 
@@ -132,16 +142,16 @@ export default function Song() {
             </Text>
           </View>
 
-            <BottomSheetScrollView>
-              <View className='p-6 mt-4'>
-                <Text className='text-white text-lg font-semibold'>
-                  Lyrics
-                </Text>
-                <Text className='text-white text-sm font-semibold'>
-                  {song?.lyrics}
-                </Text>
-              </View>
-            </BottomSheetScrollView>
+          <BottomSheetScrollView>
+            <View className='p-6 mt-4'>
+              <Text className='text-white text-lg font-semibold'>
+                Lyrics
+              </Text>
+              <Text className='text-white text-sm font-semibold'>
+                {song?.lyrics}
+              </Text>
+            </View>
+          </BottomSheetScrollView>
 
         </BottomSheet>
       </View>
