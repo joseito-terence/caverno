@@ -3,7 +3,7 @@ import { Text, Dimensions } from 'react-native'
 import { LinearGradient } from "expo-linear-gradient";
 import { MotiView } from 'moti';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, SharedValue, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { runOnJS, SharedValue, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const SCREEN = Dimensions.get('screen')
@@ -24,6 +24,13 @@ export default function SlideToUnlock({
   translateX: translateXProp,
 }: SlideToUnlockProps) {
   const translateX = useSharedValue(0)
+  const adjustTranslateX = useDerivedValue(() => {
+    return Math.min(
+      Math.max(translateX.value, 0),
+      H_SWIPE_RANGE
+    )
+  })
+
   const gesture = Gesture.Pan()
     .onChange(e => {
       if (translateXProp) {
@@ -44,7 +51,7 @@ export default function SlideToUnlock({
 
   const rSwipableStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.value }],
+      transform: [{ translateX: adjustTranslateX.value }],
     }
   }, [])
 
