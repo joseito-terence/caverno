@@ -2,6 +2,9 @@ import { Stack } from "expo-router";
 import { ThemeProvider, DarkTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as SystemUI from "expo-system-ui";
+
+SystemUI.setBackgroundColorAsync("transparent");
 
 const queryClient = new QueryClient()
 
