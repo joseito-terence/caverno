@@ -31,7 +31,7 @@ export default function InputController({
           <TextInput
             onBlur={onBlur}
             onChangeText={onChange}
-            value={value.toString()}
+            value={(value === 0) ? value : value.toString()}
             className='text-white text-2xl'
             placeholderTextColor={errors[name] ? 'red' : '#fffefe4d'}
             {...props}
