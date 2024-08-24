@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, Dimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -7,11 +7,15 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withSpring
+  withDelay,
+  withSequence,
+  withSpring,
+  withTiming
 } from 'react-native-reanimated';
 
 interface AlphabetListProps {
   letters: string[];
+  onChange?: (index: number) => void;
 }
 
 const screen = Dimensions.get('window')
@@ -20,12 +24,12 @@ const INDICATOR_SIZE = 25
 
 export default function AlphabetList({
   letters,
+  onChange = () => { }
 }: AlphabetListProps) {
   const translateY = useSharedValue(0)
-  const previousTranslateY = useSharedValue(0)
   const translateX = useSharedValue(0)
   const scale = useSharedValue(0)
-  const [currentLetter, setCurrentLetter] = useState(letters[0])
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const adjustTranslateY = useDerivedValue(() => {
     return Math.min(
@@ -36,12 +40,11 @@ export default function AlphabetList({
 
   const panGesture = Gesture.Pan()
     .onStart(() => {
-      previousTranslateY.value = adjustTranslateY.value
       translateX.value = withSpring(-INDICATOR_SIZE - 10)
       scale.value = withSpring(1.8)
     })
     .onChange((event) => {
-      translateY.value = event.translationY
+      translateY.value = event.y
     })
     .onEnd(() => {
       translateX.value = withSpring(0)
@@ -59,16 +62,36 @@ export default function AlphabetList({
   })
 
   useAnimatedReaction(
-    () => translateY.value,
+    () => adjustTranslateY.value,
     () => {
       const index = Math.ceil(translateY.value / (HEIGHT / letters.length));
       const currentIndex = Math.max(0, Math.min(index, letters.length - 1));
-      runOnJS(setCurrentLetter)(letters[currentIndex]);
+      runOnJS(setCurrentIndex)(currentIndex);
     }
   )
 
+  useEffect(() => {
+    onChange(currentIndex)
+  }, [currentIndex])
+
+  const tapGesture = Gesture.Tap()
+    .onStart((e) => {
+      translateX.value = withSpring(-INDICATOR_SIZE - 10)
+      scale.value = withSpring(1.2)
+      translateY.value = withTiming(e.y - INDICATOR_SIZE)
+    })
+    .onEnd(() => {
+      translateX.value = withSpring(0)
+      scale.value = withSequence(
+        withSpring(1.2),
+        withDelay(100, withSpring(0))
+      )
+    })
+
+  const composedGesture = Gesture.Exclusive(tapGesture, panGesture)
+
   return (
-    <GestureDetector gesture={panGesture}>
+    <GestureDetector gesture={composedGesture}>
       <View
         style={{
           height: HEIGHT,
@@ -96,7 +119,7 @@ export default function AlphabetList({
           }, rIndicatorStyle]}
         >
           <Animated.Text className='text-black font-semibold text-[12px]'>
-            {currentLetter}
+            {letters[currentIndex]}
           </Animated.Text>
         </Animated.View>
       </View>

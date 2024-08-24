@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { View, Text, SectionList, TouchableOpacity, TextInput } from 'react-native'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -7,9 +7,11 @@ import { Button } from '@/components/Button'
 import { supabase } from '@/utils/supabase'
 import { useQuery } from '@tanstack/react-query'
 import AlphabetList from '@/components/AlphabetList'
+import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 
 export default function Search() {
   const router = useRouter()
+  const sectionRef = useRef<SectionList>(null)
   const [searchKeyword, setSearchKeyword] = useState('')
 
   const { data } = useQuery({
@@ -54,6 +56,8 @@ export default function Search() {
     }
   }, [data, searchKeyword])
 
+
+
   return (
     <SafeAreaView className='flex-1'>
       <View className='flex-row justify-between items-center px-8 py-4'>
@@ -87,6 +91,7 @@ export default function Search() {
 
       <View className='flex-1'>
         <SectionList
+          ref={sectionRef}
           sections={sections.data}
           keyExtractor={(item) => item.id}
           stickySectionHeadersEnabled
@@ -102,12 +107,36 @@ export default function Search() {
               <Text className='text-white text-lg font-semibold'>{section.title}</Text>
             </View>
           )}
+          // @ts-ignore
+          getItemLayout={getItemLayout}
         />
       <View className='absolute right-0 z-50'>
-        <AlphabetList letters={sections.letters}  />
+        <AlphabetList
+          letters={sections.letters}
+          onChange={(index) => {
+            if (!sectionRef.current || !sections.letters.length) return
+            // console.log('index', index)
+            sectionRef.current.scrollToLocation({
+              animated: true,
+              sectionIndex: index,
+              itemIndex: 0,
+            })
+          }}
+        />
       </View>
       </View>
       
     </SafeAreaView>
   )
 }
+
+const getItemLayout = sectionListGetItemLayout({
+  // The height of the row with rowData at the given sectionIndex and rowIndex
+  getItemHeight: (rowData, sectionIndex, rowIndex) =>
+    sectionIndex === 0 ? 60 : 60,
+
+  // These three properties are optional
+  getSeparatorHeight: () => 0, // The height of your separators
+  getSectionHeaderHeight: () => 60, // The height of your section headers
+  getSectionFooterHeight: () => 0, // The height of your section footers
+});
