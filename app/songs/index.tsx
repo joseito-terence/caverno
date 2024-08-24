@@ -6,6 +6,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { Button } from '@/components/Button'
 import { supabase } from '@/utils/supabase'
 import { useQuery } from '@tanstack/react-query'
+import AlphabetList from '@/components/AlphabetList'
 
 export default function Search() {
   const router = useRouter()
@@ -23,7 +24,7 @@ export default function Search() {
   })
 
   const sections = useMemo(() => {
-    if (!data) return [];
+    if (!data) return { letters: [], data: [] };
 
     let songs = data
     // Filter by search keyword
@@ -42,12 +43,15 @@ export default function Search() {
     }, {} as Record<string, typeof songs>);
 
     // Format array for SectionList
-    return Object.keys(result)
-      .sort()
-      .map(key => ({
-        title: key,
-        data: result[key],
-      })) ?? [];
+    const letters = Object.keys(result).sort();
+
+    return {
+      letters,
+      data: letters.map(letter => ({
+        title: letter,
+        data: result[letter],
+      })) ?? [],
+    }
   }, [data, searchKeyword])
 
   return (
@@ -83,7 +87,7 @@ export default function Search() {
 
       <View className='flex-1'>
         <SectionList
-          sections={sections}
+          sections={sections.data}
           keyExtractor={(item) => item.id}
           stickySectionHeadersEnabled
           renderItem={({ item }) => (
@@ -99,8 +103,11 @@ export default function Search() {
             </View>
           )}
         />
+      <View className='absolute right-0 z-50'>
+        <AlphabetList letters={sections.letters}  />
       </View>
-
+      </View>
+      
     </SafeAreaView>
   )
 }
