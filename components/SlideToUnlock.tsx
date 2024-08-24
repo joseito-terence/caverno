@@ -64,6 +64,7 @@ export default function SlideToUnlock({
         <MotiView className='flex-row items-center p-4 absolute right-0'>
           {Array.from({ length: 3 }).map((_, i) => (
             <MotiView
+              key={i}
               from={{ opacity: 0.5 }}
               animate={{ opacity: 1 }}
               transition={{
