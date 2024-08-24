@@ -16,7 +16,7 @@ export default function RootLayout() {
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
             <Stack.Screen name="home" options={{ animation: 'ios' }} />
-            <Stack.Screen name="songs/[id]" options={{ animation: 'none' }} />
+            <Stack.Screen name="songs/[id]/index" options={{ animation: 'none' }} />
           </Stack>
         </ThemeProvider>
       </QueryClientProvider>
