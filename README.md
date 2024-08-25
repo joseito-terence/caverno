@@ -1,6 +1,17 @@
-# Welcome to your Expo app 👋
+# Caverno
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Songs archive app with some cool animations and interactions built with Moti, Reanimated and Gesture Handler.
+
+![App Screens](./assets/caverno.gif)
+
+## Technologies
+- [React Native](https://reactnative.dev/)
+- [Moti](https://moti.fyi/)
+- [Reanimated](https://docs.swmansion.com/react-native-reanimated/)
+- [Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/)
+- [Supabase](https://supabase.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Nativewind](https://www.nativewind.dev/)
 
 ## Get started
 
