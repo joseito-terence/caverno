@@ -139,7 +139,7 @@ export default function Index() {
         </View>
       </MotiView>
 
-      <View className="z-[1000] px-10 flex-1 justify-center items-center">
+      <View className="z-[1000] px-10 flex-1 justify-center items-center absolute bottom-10">
         <SlideToUnlock
           translateX={translateX}
           onUnlock={() => router.replace('/home')}
