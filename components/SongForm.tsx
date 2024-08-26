@@ -43,6 +43,10 @@ export default function SongForm(props: SongFormProps) {
   })
 
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (data) => {
+    if (process.env.EXPO_PUBLIC_READ_ONLY === 'true') {
+      return console.warn('Read-only mode')
+    }
+
     if (!isDirty) return;
     if (isEdit) {
       console.warn('edit')
