@@ -35,7 +35,7 @@ const SongsCarousel = ({
         snapEnabled
         mode='horizontal-stack'
         loop={false}
-        data={songs}
+        data={songs ?? []}
         modeConfig={{
           snapDirection: 'left',
           stackInterval: 18,
