@@ -11,6 +11,12 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://affzddbshtjgpejgeszd.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmZnpkZGJzaHRqZ3Blamdlc3pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1Njk2MjMsImV4cCI6MjAzOTE0NTYyM30.Fm9XEIwCLQiMYaBN-xd28ckZ8TKiOTwb1rh9lk4PpZc",
+        "EXPO_PUBLIC_UNSPLASH_ACCESS_KEY": "YoL0qWSNUxQsuwmQsBZmOyZjipWbohU8mCt6yZVYSrk",
+        "EXPO_PUBLIC_READ_ONLY": "true"
       }
     },
     "production": {}

@@ -15,7 +15,7 @@ export default function RootLayout() {
         <ThemeProvider value={DarkTheme}>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
-            <Stack.Screen name="home" options={{ animation: 'ios' }} />
+            <Stack.Screen name="home" options={{ animation: 'ios_from_left' }} />
             <Stack.Screen name="songs/[id]/index" options={{ animation: 'none' }} />
           </Stack>
         </ThemeProvider>
