@@ -4,10 +4,10 @@ import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons'
 import { Button } from '@/components/Button'
-import { supabase } from '@/utils/supabase'
 import { useQuery } from '@tanstack/react-query'
 import AlphabetList from '@/components/AlphabetList'
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
+import { firebase } from '@react-native-firebase/firestore'
 
 export default function Search() {
   const router = useRouter()
@@ -17,11 +17,11 @@ export default function Search() {
   const { data } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => {
-      const { data } = await supabase
-        .from('songs')
-        .select('*')
-        .order('title', { ascending: true })
-      return data
+      const songs = await firebase
+        .firestore()
+        .collection('songs')
+        .get()
+      return songs.docs.map(doc => doc.data())
     },
   })
 
@@ -110,22 +110,22 @@ export default function Search() {
           // @ts-ignore
           getItemLayout={getItemLayout}
         />
-      <View className='absolute right-0 z-50'>
-        <AlphabetList
-          letters={sections.letters}
-          onChange={(index) => {
-            if (!sectionRef.current || !sections.letters.length) return
-            // console.log('index', index)
-            sectionRef.current.scrollToLocation({
-              animated: true,
-              sectionIndex: index,
-              itemIndex: 0,
-            })
-          }}
-        />
+        <View className='absolute right-0 z-50'>
+          <AlphabetList
+            letters={sections.letters}
+            onChange={(index) => {
+              if (!sectionRef.current || !sections.letters.length) return
+              // console.log('index', index)
+              sectionRef.current.scrollToLocation({
+                animated: true,
+                sectionIndex: index,
+                itemIndex: 0,
+              })
+            }}
+          />
+        </View>
       </View>
-      </View>
-      
+
     </SafeAreaView>
   )
 }

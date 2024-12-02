@@ -8,9 +8,9 @@ import SongsCarousel from '@/components/SongsCarousel'
 import { MotiView } from 'moti'
 import { useRouter } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
-import { supabase } from '@/utils/supabase'
 import { CategoryPicker } from '@/components/SongForm'
 import { useCategories } from '@/hooks/useCategories'
+import { firebase } from '@react-native-firebase/firestore'
 
 const SCREEN = Dimensions.get('screen')
 
@@ -24,12 +24,12 @@ export default function Home() {
   const { data } = useQuery({
     queryKey: ['songs', category],
     queryFn: async () => {
-      const { data = [] } = await supabase
-        .from('songs')
-        .select('*')
-        .eq('category', category!)
-        .order('title', { ascending: true })
-      return data
+        const songs = await firebase
+          .firestore()
+          .collection('songs')
+          .where('category', '==', category!)
+          .get()
+        return songs.docs.map(doc => doc.data())
     },
   })
 
@@ -110,6 +110,7 @@ export default function Home() {
               duration: 1000,
             }}
           >
+            {/* @ts-ignore */}
             <SongsCarousel songs={data!} />
           </MotiView>
         </View>

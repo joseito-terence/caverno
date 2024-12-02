@@ -1,14 +1,15 @@
-import { supabase } from "@/utils/supabase"
+import { firebase } from "@react-native-firebase/firestore"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 const queryKey = ['categories']
 
 const queryFn = async () => {
-  const { data = [] } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name', { ascending: true })
-  return data
+  const categories = await firebase
+    .firestore()
+    .collection('categories')
+    .orderBy('name')
+    .get()
+  return categories.docs.map(doc => doc.data())
 }
 
 export const useCategories = () => {

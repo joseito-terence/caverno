@@ -6,11 +6,11 @@ import { router } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
-import { supabase } from '@/utils/supabase'
 import { unsplash } from '@/utils/unsplash'
 import { useQueryClient } from '@tanstack/react-query'
 import SelectDropdown from 'react-native-select-dropdown'
 import { useCategories } from '@/hooks/useCategories'
+import { firebase } from '@react-native-firebase/firestore'
 
 const DEFAULT_VALUES = {
   title: '',
@@ -50,11 +50,14 @@ export default function SongForm(props: SongFormProps) {
     if (!isDirty) return;
     if (isEdit) {
       console.warn('edit')
-      return supabase.from('songs').update({
-        ...data,
-        title: data.title!,
-      })
-        .eq('id', props.song.id)
+      return firebase
+        .firestore()
+        .collection('songs')
+        .doc(props.song.id)
+        .update({
+          ...data,
+          title: data.title!,
+        })
         .then(() => {
           queryClient.refetchQueries({ queryKey: ['songs'] })
           router.back()
@@ -65,12 +68,15 @@ export default function SongForm(props: SongFormProps) {
 
     if (result.type === 'error') return;
 
-    return supabase.from('songs').insert({
-      ...data,
-      title: data.title!,
-      // @ts-ignore
-      cover_image: result.response.urls.regular!,
-    })
+    return firebase
+      .firestore()
+      .collection('songs')
+      .add({
+        ...data,
+        title: data.title!,
+        // @ts-ignore
+        cover_image: result.response.urls.regular!,
+      })
       .then(() => {
         queryClient.refetchQueries({ queryKey: ['songs'] })
         router.back()
@@ -88,7 +94,7 @@ export default function SongForm(props: SongFormProps) {
           {isEdit ? 'Edit' : 'Add'}
         </Text>
 
-        <Button onPress={handleSubmit(onSubmit)}>
+        <Button onPress={() => console.log('ehllo')}>
           {isSubmitting
             ? <ActivityIndicator color='white' />
             : <AntDesign name="check" size={22} color="white" />

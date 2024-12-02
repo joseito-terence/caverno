@@ -1,16 +1,17 @@
-import { supabase } from "@/utils/supabase"
+import { firebase } from "@react-native-firebase/firestore"
 import { useQuery } from "@tanstack/react-query"
 
 export const useSong = (id: string) => {
   return useQuery({
     queryKey: ['songs', id],
     queryFn: async () => {
-      const { data } = await supabase
-        .from('songs')
-        .select('*')
-        .eq('id', id)
-        .single()
-      return data
+      const song = await firebase
+        .firestore()
+        .collection('songs')
+        .doc(id)
+        .get()
+
+      return song.data()
     },
   })
 }
