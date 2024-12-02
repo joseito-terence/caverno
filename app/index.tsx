@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { Dimensions, View } from "react-native";
 import { BlurView } from 'expo-blur';
@@ -34,6 +34,12 @@ export default function Index() {
         [1, 0]
       )
     }
+  }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      router.replace('/home')
+    }, 5500)
   }, [])
 
   return (
@@ -139,12 +145,12 @@ export default function Index() {
         </View>
       </MotiView>
 
-      <View className="z-[1000] px-10 flex-1 justify-center items-center absolute bottom-10">
+      {/* <View className="z-[1000] px-10 flex-1 justify-center items-center absolute bottom-10">
         <SlideToUnlock
           translateX={translateX}
           onUnlock={() => router.replace('/home')}
         />
-      </View>
+      </View> */}
     </View>
   );
 }
