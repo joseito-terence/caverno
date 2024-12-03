@@ -1,10 +1,10 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { View, Text, SectionList, TouchableOpacity, TextInput } from 'react-native'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons'
 import { Button } from '@/components/Button'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import AlphabetList from '@/components/AlphabetList'
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 import { firebase } from '@react-native-firebase/firestore'
@@ -95,13 +95,7 @@ export default function Search() {
           sections={sections.data}
           keyExtractor={(item) => item.id}
           stickySectionHeadersEnabled
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => router.push(`/songs/${item.id}`)}>
-              <View className='px-9 py-4'>
-                <Text numberOfLines={1} className='text-white text-lg font-medium capitalize'>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
+          renderItem={RenderItem}
           renderSectionHeader={({ section }) => (
             <View className='px-9 py-2 bg-[#121821]'>
               <Text className='text-white text-lg font-semibold'>{section.title}</Text>
@@ -127,6 +121,23 @@ export default function Search() {
       </View>
 
     </SafeAreaView>
+  )
+}
+
+const RenderItem = ({ item }: any) => {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    queryClient.setQueryData(['songs', item.id], item)
+  }, [])
+
+  return (
+    <TouchableOpacity onPress={() => router.push(`/songs/${item.id}`)}>
+      <View className='px-9 py-4'>
+        <Text numberOfLines={1} className='text-white text-lg font-medium capitalize'>{item.title}</Text>
+      </View>
+    </TouchableOpacity>
   )
 }
 
