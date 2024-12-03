@@ -4,7 +4,8 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { Database } from '@/utils/database.types';
 import { router } from 'expo-router';
 import { useQueryClient } from '@tanstack/react-query';
-import Carousel from "react-native-reanimated-carousel";
+// import Carousel from "react-native-reanimated-carousel";
+import { FlatList } from 'react-native-gesture-handler';
 
 const SCREEN = Dimensions.get('screen')
 const SONG_CARD_WIDTH = SCREEN.width * 0.8
@@ -21,7 +22,7 @@ const SongsCarousel = ({
 }: Props) => {
   return (
     <View className='w-full flex-1 justify-center items-center'>
-      <Carousel
+      {/* <Carousel
         style={{
           width: SCREEN.width,
           height: SONG_CARD_HEIGHT,
@@ -42,6 +43,24 @@ const SongsCarousel = ({
         }}
         customConfig={() => ({ type: "positive", viewCount: 5 })}
         renderItem={renderItem}
+      /> */}
+
+      <FlatList
+        data={songs}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View
+            className='w-full flex-1 justify-center items-center'
+            style={{
+              width: SCREEN.width,
+            }}
+          >
+            <SongCard song={item} />
+          </View>
+        )}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   )
