@@ -10,11 +10,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "caverno",
   userInterfaceStyle: "dark",
   newArchEnabled: true,
-  splash: {
-    image: "./assets/images/splash.png",
-    resizeMode: "contain",
-    backgroundColor: "#000000"
-  },
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.jtf.caverno"
@@ -35,7 +30,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-font",
-    "@react-native-firebase/app"
+    "@react-native-firebase/app",
+    [
+      "expo-splash-screen",
+      {
+        "image": "./assets/images/adaptive-icon.png",
+        "imageWidth": 200,
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      }
+    ]
   ],
   experiments: {
     typedRoutes: true
