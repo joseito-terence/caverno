@@ -63,7 +63,7 @@ export default function Home() {
           className='absolute top-0 left-0 bottom-0 right-0'
         />
         <LinearGradient
-          colors={['#303030', 'transparent', '#303030']}
+          colors={['#1a0f3d', 'transparent', '#000000']}
           className='absolute top-0 left-0 bottom-0 right-0'
           style={{
             width: SCREEN.width,
