@@ -100,7 +100,7 @@ export default function Index() {
             end={[0.5, 1]}
             style={{ height: 100, width: '100%', position: 'absolute', bottom: 0 }}
           />
-          <View className="absolute left-0 right-0 -bottom-16">
+          <View className="absolute left-0 right-0 -bottom-24">
             <ZStack className="absolute bottom-[50%] w-full items-center">
               <AnimatedMusicSymbol position={[-120, -100]}>
                 <SemiQuavers size={30} color='rgba(255, 255, 255, 0.5)' />
@@ -125,7 +125,7 @@ export default function Index() {
             />
           </View>
         </View>
-        <View className="px-10">
+        <View className="px-10 mt-20">
           <MotiText
             from={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
