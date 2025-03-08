@@ -18,6 +18,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
     adaptiveIcon: {
       foregroundImage: "./assets/images/adaptive-icon.png",
+      monochromeImage: "./assets/images/adaptive-monochrome-icon.png",
       backgroundColor: "#000000"
     },
     package: "com.jtf.caverno"
