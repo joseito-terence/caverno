@@ -39,7 +39,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "resizeMode": "contain",
         "backgroundColor": "#000000"
       }
-    ]
+    ],
+    "react-native-edge-to-edge",
   ],
   experiments: {
     typedRoutes: true

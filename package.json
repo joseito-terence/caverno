@@ -39,6 +39,7 @@
     "react-dom": "18.3.1",
     "react-hook-form": "^7.52.2",
     "react-native": "0.76.3",
+    "react-native-edge-to-edge": "^1.4.3",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-reanimated": "~3.16.1",
     "react-native-reanimated-carousel": "4.0.0-canary.22",

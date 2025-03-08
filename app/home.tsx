@@ -67,7 +67,7 @@ export default function Home() {
           className='absolute top-0 left-0 bottom-0 right-0'
           style={{
             width: SCREEN.width,
-            height: SCREEN.height - 150,
+            height: SCREEN.height,
           }}
         />
         <View
