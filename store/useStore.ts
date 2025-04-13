@@ -75,7 +75,7 @@ export const useStore = create<Store>((set) => ({
         categories: categories.docs.map(doc => ({ 
           id: doc.id, 
           name: doc.data().name 
-        })),
+        })).sort((a, b) => a.name.localeCompare(b.name)),
         isLoading: false 
       })
     } catch (error) {

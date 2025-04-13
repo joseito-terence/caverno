@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
 import { Dimensions, View, Image, Text, TouchableOpacity } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import { Database } from '@/utils/database.types';
 import { router } from 'expo-router';
-import { useQueryClient } from '@tanstack/react-query';
-// import Carousel from "react-native-reanimated-carousel";
 import { FlatList } from 'react-native-gesture-handler';
 
 const SCREEN = Dimensions.get('screen')
@@ -75,12 +72,6 @@ const SongCard = ({
 }: {
   song: TSong
 }) => {
-  const queryClient = useQueryClient()
-
-  useEffect(() => {
-    queryClient.setQueryData(['songs', song.id], song)
-  }, [])
-
   return (
     <TouchableOpacity
       activeOpacity={1}

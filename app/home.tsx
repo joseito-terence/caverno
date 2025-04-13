@@ -17,10 +17,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const { categories, songs, fetchCategories, fetchSongs, isLoading } = useStore()
 
-  useEffect(() => {
-    fetchCategories()
-    fetchSongs()
-  }, [])
+
 
   const defaultCategory = categories?.[0]?.id
   const category = selectedCategory || defaultCategory

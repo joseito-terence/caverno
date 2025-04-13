@@ -1,42 +1,24 @@
 import React, { useEffect } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import { Dimensions, View } from "react-native";
+import { View } from "react-native";
 import { BlurView } from 'expo-blur';
 import { MotiView, MotiImage, MotiText } from "moti";
 import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
-import SlideToUnlock, { SLIDER_WIDTH } from "@/components/SlideToUnlock";
-import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import { useRouter } from "expo-router";
-import { usePrefetchCategories } from "@/hooks/useCategories";
-
-const SCREEN = Dimensions.get('screen')
+import { useStore } from "@/store/useStore";
 
 export default function Index() {
-  usePrefetchCategories()
   const router = useRouter()
-  const translateX = useSharedValue(0)
-
-  const rStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{
-        translateX: interpolate(
-          translateX.value,
-          [0, SLIDER_WIDTH],
-          [0, -SCREEN.width]
-        )
-      }],
-      opacity: interpolate(
-        translateX.value,
-        [0, SLIDER_WIDTH],
-        [1, 0]
-      )
-    }
-  }, [])
-
+  const { fetchCategories, fetchSongs } = useStore()
+  
   useEffect(() => {
+    fetchCategories()
+    fetchSongs()
+
     setTimeout(() => {
       router.replace('/home')
     }, 2800)
@@ -44,7 +26,7 @@ export default function Index() {
 
   return (
     <View className="flex-1">
-      <Animated.View style={rStyle} className="
+      <Animated.View className="
         absolute top-0 left-0 right-0 bottom-0 z-50
         w-full flex-1 justify-center items-center
       ">
@@ -56,7 +38,6 @@ export default function Index() {
         animate={{ opacity: 1 }}
         transition={{ type: 'timing', duration: 800, delay: 1100 }}
         className="w-full"
-        style={rStyle}
       >
         <View className="items-center flex-row py-20 overflow-hidden">
           <MotiView
@@ -143,13 +124,6 @@ export default function Index() {
           </MotiText>
         </View>
       </MotiView>
-
-      {/* <View className="z-[1000] px-10 flex-1 justify-center items-center absolute bottom-10">
-        <SlideToUnlock
-          translateX={translateX}
-          onUnlock={() => router.replace('/home')}
-        />
-      </View> */}
     </View>
   );
 }

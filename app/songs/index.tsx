@@ -1,13 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { View, Text, SectionList, TouchableOpacity, TextInput } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons'
 import { Button } from '@/components/Button'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import AlphabetList from '@/components/AlphabetList'
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
-import { getFirestore, collection, getDocs } from '@react-native-firebase/firestore'
+import { useStore } from '@/store/useStore'
 
 export default function Search() {
   const router = useRouter()
@@ -15,14 +14,7 @@ export default function Search() {
   const [searchKeyword, setSearchKeyword] = useState('')
   const insets = useSafeAreaInsets()
 
-  const { data } = useQuery({
-    queryKey: ['songs'],
-    queryFn: async () => {
-      const firestore = getFirestore()
-      const songs = await getDocs(collection(firestore, 'songs'))
-      return songs.docs.map(doc => doc.data())
-    },
-  })
+  const data = useStore(store => store.songs)
 
   const sections = useMemo(() => {
     if (!data) return { letters: [], data: [] };
@@ -125,11 +117,6 @@ export default function Search() {
 
 const RenderItem = ({ item }: any) => {
   const router = useRouter()
-  const queryClient = useQueryClient()
-
-  useEffect(() => {
-    queryClient.setQueryData(['songs', item.id], item)
-  }, [])
 
   return (
     <TouchableOpacity onPress={() => router.push(`/songs/${item.id}`)}>

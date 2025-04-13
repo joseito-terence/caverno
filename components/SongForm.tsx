@@ -7,7 +7,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
 import { unsplash } from '@/utils/unsplash'
-import { useQueryClient } from '@tanstack/react-query'
 import SelectDropdown from 'react-native-select-dropdown'
 import { useCategories } from '@/hooks/useCategories'
 import { getFirestore, collection, doc, updateDoc, addDoc } from '@react-native-firebase/firestore'
@@ -32,7 +31,6 @@ type SongFormProps = {
 
 export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true
-  const queryClient = useQueryClient()
   const insets = useSafeAreaInsets()
   const {
     control,
@@ -57,7 +55,6 @@ export default function SongForm(props: SongFormProps) {
         title: data.title!,
       })
         .then(() => {
-          queryClient.refetchQueries({ queryKey: ['songs'] })
           router.back()
         })
     }
@@ -74,7 +71,6 @@ export default function SongForm(props: SongFormProps) {
       cover_image: result.response.urls.regular!,
     })
       .then(() => {
-        queryClient.refetchQueries({ queryKey: ['songs'] })
         router.back()
       })
   }
@@ -178,7 +174,7 @@ export const CategoryPicker = ({
 }) => {
   const categories = useCategories()
 
-  const data = categories.data?.map((category: any) => ({
+  const data = categories.map((category: any) => ({
     label: category.name,
     value: category.id,
   }))
