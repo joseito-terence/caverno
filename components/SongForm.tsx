@@ -10,7 +10,7 @@ import { unsplash } from '@/utils/unsplash'
 import { useQueryClient } from '@tanstack/react-query'
 import SelectDropdown from 'react-native-select-dropdown'
 import { useCategories } from '@/hooks/useCategories'
-import { firebase } from '@react-native-firebase/firestore'
+import { getFirestore, collection, doc, updateDoc, addDoc } from '@react-native-firebase/firestore'
 
 const DEFAULT_VALUES = {
   title: '',
@@ -51,14 +51,11 @@ export default function SongForm(props: SongFormProps) {
     if (!isDirty) return;
     if (isEdit) {
       console.warn('edit')
-      return firebase
-        .firestore()
-        .collection('songs')
-        .doc(props.song.id)
-        .update({
-          ...data,
-          title: data.title!,
-        })
+      const firestore = getFirestore()
+      return updateDoc(doc(firestore, 'songs', props.song.id), {
+        ...data,
+        title: data.title!,
+      })
         .then(() => {
           queryClient.refetchQueries({ queryKey: ['songs'] })
           router.back()
@@ -69,15 +66,13 @@ export default function SongForm(props: SongFormProps) {
 
     if (result.type === 'error') return;
 
-    return firebase
-      .firestore()
-      .collection('songs')
-      .add({
-        ...data,
-        title: data.title!,
-        // @ts-ignore
-        cover_image: result.response.urls.regular!,
-      })
+    const firestore = getFirestore()
+    return addDoc(collection(firestore, 'songs'), {
+      ...data,
+      title: data.title!,
+      // @ts-ignore
+      cover_image: result.response.urls.regular!,
+    })
       .then(() => {
         queryClient.refetchQueries({ queryKey: ['songs'] })
         router.back()

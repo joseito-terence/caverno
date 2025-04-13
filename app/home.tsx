@@ -9,7 +9,7 @@ import { useRouter } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { CategoryPicker } from '@/components/SongForm'
 import { useCategories } from '@/hooks/useCategories'
-import { firebase } from '@react-native-firebase/firestore'
+import { getFirestore, collection, query, where, getDocs } from '@react-native-firebase/firestore'
 
 const SCREEN = Dimensions.get('screen')
 
@@ -23,12 +23,14 @@ export default function Home() {
   const { data } = useQuery({
     queryKey: ['songs', category],
     queryFn: async () => {
-        const songs = await firebase
-          .firestore()
-          .collection('songs')
-          .where('category', '==', category!)
-          .get()
-        return songs.docs.map(doc => doc.data())
+      const firestore = getFirestore()
+      const songs = await getDocs(
+        query(
+          collection(firestore, 'songs'),
+          where('category', '==', category!)
+        )
+      )
+      return songs.docs.map(doc => doc.data())
     },
   })
 

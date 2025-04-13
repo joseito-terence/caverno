@@ -7,7 +7,7 @@ import { Button } from '@/components/Button'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import AlphabetList from '@/components/AlphabetList'
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
-import { firebase } from '@react-native-firebase/firestore'
+import { getFirestore, collection, getDocs } from '@react-native-firebase/firestore'
 
 export default function Search() {
   const router = useRouter()
@@ -18,10 +18,8 @@ export default function Search() {
   const { data } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => {
-      const songs = await firebase
-        .firestore()
-        .collection('songs')
-        .get()
+      const firestore = getFirestore()
+      const songs = await getDocs(collection(firestore, 'songs'))
       return songs.docs.map(doc => doc.data())
     },
   })

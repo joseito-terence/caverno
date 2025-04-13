@@ -1,14 +1,16 @@
-import { firebase } from "@react-native-firebase/firestore"
+import { getFirestore, collection, query, orderBy, getDocs } from "@react-native-firebase/firestore"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 const queryKey = ['categories']
 
 const queryFn = async () => {
-  const categories = await firebase
-    .firestore()
-    .collection('categories')
-    .orderBy('name')
-    .get()
+  const firestore = getFirestore()
+  const categories = await getDocs(
+    query(
+      collection(firestore, 'categories'),
+      orderBy('name')
+    )
+  )
   return categories.docs.map(doc => doc.data())
 }
 
