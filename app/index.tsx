@@ -39,7 +39,7 @@ export default function Index() {
   useEffect(() => {
     setTimeout(() => {
       router.replace('/home')
-    }, 5500)
+    }, 2800)
   }, [])
 
   return (
@@ -54,22 +54,21 @@ export default function Index() {
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ type: 'timing', duration: 1000, delay: 2000 }}
+        transition={{ type: 'timing', duration: 800, delay: 1100 }}
         className="w-full"
         style={rStyle}
-
       >
         <View className="items-center flex-row py-20 overflow-hidden">
           <MotiView
             from={{ translateY: -20, translateX: 10, scale: 0.9 }}
             animate={{ translateY: 0, translateX: 0, scale: 1 }}
-            transition={{ type: 'timing', duration: 3000, loop: true }}
+            transition={{ type: 'timing', duration: 2000, loop: true }}
             className="-ml-[200px] -mt-[100px]"
           >
             <MotiView
               from={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'timing', duration: 1000, delay: 1800 }}
+              transition={{ type: 'timing', duration: 800, delay: 800 }}
             >
               <Circle size={500} colors={['#1dc9de 0%', '#0a3b41 100%']} />
             </MotiView>
@@ -77,13 +76,13 @@ export default function Index() {
           <MotiView
             from={{ translateY: -20, translateX: -20, scale: 0.8 }}
             animate={{ translateY: 20, translateX: 0, scale: 1 }}
-            transition={{ type: 'timing', delay: 2000, duration: 3000, loop: true }}
+            transition={{ type: 'timing', delay: 1400, duration: 2000, loop: true }}
             className="-ml-[100px] -mt-[80px]"
           >
             <MotiView
               from={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'timing', duration: 1000, delay: 1600 }}
+              transition={{ type: 'timing', duration: 800, delay: 600 }}
             >
               <Circle size={450} colors={['#41a9e3 10%', '#183f54 100%']} />
             </MotiView>
@@ -121,7 +120,7 @@ export default function Index() {
               resizeMode="contain"
               from={{ translateY: 0, opacity: 0, scale: 0.5 }}
               animate={{ translateY: 50, opacity: 1, scale: 1 }}
-              transition={{ type: 'timing', duration: 1000, delay: 2000 }}
+              transition={{ type: 'timing', duration: 800, delay: 1300 }}
             />
           </View>
         </View>
@@ -129,7 +128,7 @@ export default function Index() {
           <MotiText
             from={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: 'timing', duration: 1000, delay: 3500 }}
+            transition={{ type: 'timing', duration: 800, delay: 1500 }}
             className="text-white/70 text-xl font-bold tracking-wider mb-4"
           >
             Perform Your
@@ -137,7 +136,7 @@ export default function Index() {
           <MotiText
             from={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: 'timing', duration: 1000, delay: 3800 }}
+            transition={{ type: 'timing', duration: 800, delay: 1800 }}
             className="text-white text-6xl font-bold tracking-wider"
           >
             Favourite Music
@@ -165,12 +164,12 @@ const AnimatedMusicSymbol = ({
   <MotiView
     from={{ translateX: 0, translateY: 0, opacity: 0 }}
     animate={{ translateX: position[0], translateY: position[1], opacity: 1 }}
-    transition={{ type: 'timing', duration: 1000, delay: 3000 }}
+    transition={{ type: 'timing', duration: 800, delay: 1300 }}
   >
     <MotiView
       from={{ rotate: '-10deg' }}
       animate={{ rotate: '10deg' }}
-      transition={{ type: 'timing', duration: 1000, loop: true, delay: parseInt(Math.random() * 1000 + '') }}
+      transition={{ type: 'timing', duration: 800, loop: true, delay: parseInt(Math.random() * 800 + '') }}
     >
       {children}
     </MotiView>

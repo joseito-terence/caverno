@@ -6,13 +6,13 @@ import AppNameTextSVG from "@/components/AppNameSVG";
 
 const SCREEN = Dimensions.get('screen');
 
+const TEXT_DURATION = 600;
+
 const AnimatedLogo = () => {
   const [showText, setShowText] = useState(false)
 
   useEffect(() => {
-    setTimeout(() => {
-      setShowText(true)
-    }, 1000)
+    setShowText(true)
   }, [])
 
   return (
@@ -31,8 +31,8 @@ const AnimatedLogo = () => {
       }}
       transition={{
         type: 'timing',
-        duration: 1000,
-        delay: 2000,
+        duration: 600,
+        delay: TEXT_DURATION,
       }}
     >
       <Image 
@@ -52,7 +52,7 @@ const AnimatedLogo = () => {
             }}
             transition={{
               type: 'timing',
-              duration: 1000,
+              duration: TEXT_DURATION,
             }}
             className="z-[-1]"
           >
