@@ -21,7 +21,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       monochromeImage: "./assets/images/adaptive-monochrome-icon.png",
       backgroundColor: "#000000"
     },
-    package: "com.jtf.caverno"
+    package: "com.jtf.caverno",
+    edgeToEdgeEnabled: true,
   },
   web: {
     bundler: "metro",
@@ -41,6 +42,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "backgroundColor": "#000000"
       }
     ],
+    "expo-web-browser"
   ],
   experiments: {
     typedRoutes: true

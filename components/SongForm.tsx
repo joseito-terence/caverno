@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, ActivityIndicator, TextProps } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
 import { router } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -33,6 +33,7 @@ type SongFormProps = {
 export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true
   const queryClient = useQueryClient()
+  const insets = useSafeAreaInsets()
   const {
     control,
     setValue,
@@ -84,7 +85,7 @@ export default function SongForm(props: SongFormProps) {
   }
 
   return (
-    <SafeAreaView className='flex-1'>
+    <View className='flex-1' style={{ paddingTop: insets.top }}>
       <View className='flex-row justify-between items-center px-8 py-4'>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
@@ -161,7 +162,7 @@ export default function SongForm(props: SongFormProps) {
         </ScrollView>
       </View>
 
-    </SafeAreaView>
+    </View>
   )
 }
 
