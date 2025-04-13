@@ -42,7 +42,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "backgroundColor": "#000000"
       }
     ],
-    "expo-web-browser"
   ],
   experiments: {
     typedRoutes: true
