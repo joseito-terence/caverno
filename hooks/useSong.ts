@@ -1,13 +1,6 @@
-import { getFirestore, doc, getDoc } from "@react-native-firebase/firestore"
-import { useQuery } from "@tanstack/react-query"
+import { useStore } from '@/store/useStore'
 
 export const useSong = (id: string) => {
-  return useQuery({
-    queryKey: ['songs', id],
-    queryFn: async () => {
-      const firestore = getFirestore()
-      const song = await getDoc(doc(firestore, 'songs', id))
-      return song.data()
-    },
-  })
+  const { songs } = useStore()
+  return songs.find(song => song.id === id)
 }

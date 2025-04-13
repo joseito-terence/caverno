@@ -24,10 +24,10 @@ const CARD_SIZE = 300
 const SNAP_POINTS = [150, 300, '100%']
 
 export default function Song() {
-  const { id } = useLocalSearchParams()
+  const { id } = useLocalSearchParams<{ id: string }>()
   const insets = useSafeAreaInsets()
 
-  const { data: song } = useSong(id as string)
+  const song = useSong(id)
 
 
   const bottomsheetAnimatedIndex = useSharedValue(0)

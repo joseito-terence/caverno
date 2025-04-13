@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
 import { Button } from '@/components/Button'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -6,10 +6,8 @@ import Entypo from '@expo/vector-icons/Entypo'
 import { LinearGradient } from 'expo-linear-gradient'
 import SongsCarousel from '@/components/SongsCarousel'
 import { useRouter } from 'expo-router'
-import { useQuery } from '@tanstack/react-query'
 import { CategoryPicker } from '@/components/SongForm'
-import { useCategories } from '@/hooks/useCategories'
-import { getFirestore, collection, query, where, getDocs } from '@react-native-firebase/firestore'
+import { useStore } from '@/store/useStore'
 
 const SCREEN = Dimensions.get('screen')
 
@@ -17,22 +15,18 @@ export default function Home() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState('')
-  const { data: categories } = useCategories()
-  const defaultCategory = categories?.[0].id
+  const { categories, songs, fetchCategories, fetchSongs, isLoading } = useStore()
+
+  useEffect(() => {
+    fetchCategories()
+    fetchSongs()
+  }, [])
+
+  const defaultCategory = categories?.[0]?.id
   const category = selectedCategory || defaultCategory
-  const { data } = useQuery({
-    queryKey: ['songs', category],
-    queryFn: async () => {
-      const firestore = getFirestore()
-      const songs = await getDocs(
-        query(
-          collection(firestore, 'songs'),
-          where('category', '==', category!)
-        )
-      )
-      return songs.docs.map(doc => doc.data())
-    },
-  })
+  const filteredSongs = category 
+    ? songs.filter(song => song.category === category)
+    : songs
 
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
@@ -51,7 +45,6 @@ export default function Home() {
       </View>
 
       <View className='flex-1 bg-gray-500 rounded-t-[55px] mt-8 overflow-hidden'>
-
         <Image
           source={{ uri: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }}
           width={SCREEN.width}
@@ -89,8 +82,11 @@ export default function Home() {
             </TouchableOpacity>
           </View>
           <View className='flex-1 items-center justify-center'>
-            {/* @ts-ignore */}
-            <SongsCarousel songs={data!} />
+            {isLoading ? (
+              <Text className='text-white'>Loading...</Text>
+            ) : (
+              <SongsCarousel songs={filteredSongs} />
+            )}
           </View>
         </View>
       </View>
