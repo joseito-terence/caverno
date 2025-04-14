@@ -4,6 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
 import { AntDesign } from '@expo/vector-icons'
+import { BlurView } from 'expo-blur'
 import BottomSheet, {
   BottomSheetScrollView,
   BottomSheetBackgroundProps,
@@ -13,7 +14,6 @@ import Animated, {
   withTiming,
   useSharedValue,
   interpolate,
-  interpolateColor,
   Extrapolation,
 } from 'react-native-reanimated'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
@@ -26,9 +26,7 @@ const SNAP_POINTS = [150, 300, '100%']
 export default function Song() {
   const { id } = useLocalSearchParams<{ id: string }>()
   const insets = useSafeAreaInsets()
-
   const song = useSong(id)
-
 
   const bottomsheetAnimatedIndex = useSharedValue(0)
   const blurIntensity = useSharedValue(0)
@@ -59,23 +57,43 @@ export default function Song() {
     }
   })
 
-  const rHeaderStyles = useAnimatedStyle(() => {
+  const rBlurStyles = useAnimatedStyle(() => {
     return {
-      backgroundColor: interpolateColor(
+      opacity: interpolate(
         bottomsheetAnimatedIndex.value,
         [0, 1, 2],
-        ['transparent', 'transparent', '#000000af']
-      ),
-    };
+        [0, 0.5, 1],
+        Extrapolation.CLAMP
+      )
+    }
+  })
+
+  const rBlurIntensity = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        bottomsheetAnimatedIndex.value,
+        [0, 1, 2],
+        [0, 0.5, 1],
+        Extrapolation.CLAMP
+      )
+    }
   })
 
   return (
     <View className='flex-1'>
 
       <Animated.View
-        style={[{ paddingTop: insets.top + 16 }, rHeaderStyles]}
+        style={[{ paddingTop: insets.top + 16 }]}
         className='flex-row justify-between items-center px-8 py-4 z-[4]'
       >
+        <Animated.View style={rBlurIntensity} className='absolute inset-0'>
+          <BlurView 
+            intensity={30}
+            tint="dark" 
+            experimentalBlurMethod="dimezisBlurView"
+            className='flex-1' 
+          />
+        </Animated.View>
         <Button onPress={router.back}>
           <AntDesign name="arrowleft" size={22} color="white" />
         </Button>
