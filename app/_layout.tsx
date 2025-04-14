@@ -1,4 +1,5 @@
-import { Slot, Stack } from "expo-router";
+import "../global.css";
+import { Stack } from "expo-router";
 import { ThemeProvider, DarkTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SystemUI from "expo-system-ui";
