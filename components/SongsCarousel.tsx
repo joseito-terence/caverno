@@ -3,6 +3,8 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { Database } from '@/utils/database.types';
 import { router } from 'expo-router';
 import { FlatList } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
 const SCREEN = Dimensions.get('screen')
 const SONG_CARD_WIDTH = SCREEN.width * 0.8
@@ -53,7 +55,7 @@ const SongCard = ({
 }) => {
   return (
     <TouchableOpacity
-      activeOpacity={1}
+      activeOpacity={0.9}
       onPress={() => router.push(`/songs/${song.id}`)}
       style={{
         width: SONG_CARD_WIDTH,
@@ -68,22 +70,36 @@ const SongCard = ({
         resizeMode='cover'
       />
 
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.8)']}
+        style={{
+          position: 'absolute',
+          width: SONG_CARD_WIDTH,
+          height: SONG_CARD_HEIGHT,
+          borderRadius: 20,
+        }}
+      />
+
       <View
         className='
-        absolute bottom-0 rounded-[20px] bg-black h-20 px-8
+        absolute bottom-0 rounded-[20px] h-24 px-6
         flex-row justify-between items-center
       '
         style={{
           width: SONG_CARD_WIDTH,
         }}
       >
-        <Text numberOfLines={2} className='text-white text-lg font-semibold flex-1'>
-          {song.title}
-        </Text>
-
-        <View className='w-12 h-12 rounded-full bg-gray-800/95 justify-center items-center'>
-          <Entypo name="controller-play" size={24} color="white" />
+        <View className='flex-1'>
+          <Text numberOfLines={1} className='text-white text-xl font-bold'>
+            {song.title}
+          </Text>
         </View>
+
+        <BlurView intensity={20} className='w-12 h-12 rounded-full overflow-hidden justify-center items-center'>
+          <View className='w-12 h-12 rounded-full bg-white/10 justify-center items-center'>
+            <Entypo name="controller-play" size={24} color="white" />
+          </View>
+        </BlurView>
       </View>
     </TouchableOpacity>
   )
