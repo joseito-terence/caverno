@@ -57,17 +57,6 @@ export default function Song() {
     }
   })
 
-  const rBlurStyles = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(
-        bottomsheetAnimatedIndex.value,
-        [0, 1, 2],
-        [0, 0.5, 1],
-        Extrapolation.CLAMP
-      )
-    }
-  })
-
   const rBlurIntensity = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -81,7 +70,6 @@ export default function Song() {
 
   return (
     <View className='flex-1'>
-
       <Animated.View
         style={[{ paddingTop: insets.top + 16 }]}
         className='flex-row justify-between items-center px-8 py-4 z-[4]'
@@ -128,49 +116,57 @@ export default function Song() {
           animatedIndex={bottomsheetAnimatedIndex}
         >
           <View className='p-6'>
-            <View className='flex-row items-center justify-between'
+            <View className='flex-row items-center justify-between mb-4'
               style={{ display: song?.style || song?.tempo || song?.transpose ? 'flex' : 'none' }}
             >
-              <Text className='text-white text-lg font-semibold'>
-                {song?.style ?? ''}
-              </Text>
-
-              <View className='flex-row items-center gap-1'>
-                <View className='flex-row items-center'
-                  style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
-                >
-                  <MaterialCommunityIcons name="music-note-quarter" size={22} color="white" />
-                  <Text className='text-white text-lg font-semibold'>
-                    = {song?.tempo}
+              <View className='flex-row items-center gap-2'>
+                <View className='bg-gray-700/95 px-3 py-1 rounded-full'>
+                  <Text className='text-white text-sm font-medium'>
+                    {song?.style ?? ''}
                   </Text>
                 </View>
-                <View className='flex-row items-center'
+              </View>
+
+              <View className='flex-row items-center gap-3'>
+                <View className='flex-row items-center bg-gray-700/95 px-3 py-1 rounded-full'
+                  style={{ display: song?.tempo && song?.tempo > 0 ? 'flex' : 'none' }}
+                >
+                  <MaterialCommunityIcons name="music-note-quarter" size={18} color="white" />
+                  <Text className='text-white text-sm font-medium ml-1'>
+                    {song?.tempo}
+                  </Text>
+                </View>
+                <View className='flex-row items-center bg-gray-700/95 px-3 py-1 rounded-full'
                   style={{ display: song?.transpose ? 'flex' : 'none' }}
                 >
-                  <Entypo name="select-arrows" size={22} color="white" />
-                  <Text className='text-white text-lg font-semibold'>
+                  <Entypo name="select-arrows" size={18} color="white" />
+                  <Text className='text-white text-sm font-medium ml-1'>
                     {song?.transpose}
                   </Text>
                 </View>
               </View>
             </View>
 
-            <Text className='text-white text-3xl font-bold capitalize mt-1'>
+            <Text className='text-white text-3xl font-bold capitalize mb-6'>
               {song?.title}
             </Text>
           </View>
 
           <BottomSheetScrollView>
-            <View className='p-6 mt-4'>
-              <Text className='text-white text-lg font-semibold'>
-                Lyrics
-              </Text>
-              <Text className='text-white text-sm font-semibold'>
-                {song?.lyrics}
-              </Text>
+            <View className='p-6'>
+              <View className='flex-row items-center gap-2 mb-4'>
+                <MaterialCommunityIcons name="music" size={24} color="white" />
+                <Text className='text-white text-xl font-bold'>
+                  Lyrics
+                </Text>
+              </View>
+              <View className='bg-gray-700/95 rounded-xl p-4'>
+                <Text className='text-white text-base leading-relaxed'>
+                  {song?.lyrics}
+                </Text>
+              </View>
             </View>
           </BottomSheetScrollView>
-
         </BottomSheet>
       </View>
     </View>
@@ -187,5 +183,5 @@ const CustomBackground = ({ animatedIndex, style }: BottomSheetBackgroundProps) 
     }, []
   );
 
-  return <Animated.View style={[style, { backgroundColor: '#303030' }, rStyles]} />;
+  return <Animated.View style={[style, { backgroundColor: '#1f2937' }, rStyles]} />;
 };
