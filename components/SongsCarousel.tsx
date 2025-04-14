@@ -19,37 +19,15 @@ const SongsCarousel = ({
 }: Props) => {
   return (
     <View className='w-full flex-1 justify-center items-center'>
-      {/* <Carousel
-        style={{
-          width: SCREEN.width,
-          height: SONG_CARD_HEIGHT,
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-        }}
-        width={SONG_CARD_WIDTH}
-        height={SONG_CARD_HEIGHT}
-        pagingEnabled
-        snapEnabled
-        mode='horizontal-stack'
-        loop={false}
-        data={songs ?? []}
-        modeConfig={{
-          snapDirection: 'left',
-          stackInterval: 18,
-        }}
-        customConfig={() => ({ type: "positive", viewCount: 5 })}
-        renderItem={renderItem}
-      /> */}
-
       <FlatList
         data={songs}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View
-            className='w-full flex-1 justify-center items-center'
+            className='justify-center items-center'
             style={{
               width: SCREEN.width,
+              paddingHorizontal: (SCREEN.width - SONG_CARD_WIDTH) / 2,
             }}
           >
             <SongCard song={item} />
@@ -58,12 +36,13 @@ const SongsCarousel = ({
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        snapToInterval={SCREEN.width}
+        decelerationRate="fast"
+        snapToAlignment="center"
       />
     </View>
   )
 }
-
-const renderItem = ({ item }: any) => <SongCard song={item} />
 
 export default SongsCarousel;
 
