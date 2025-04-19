@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
 import { Button } from '@/components/Button'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,7 +15,7 @@ export default function Home() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState('')
-  const { categories, songs, fetchCategories, fetchSongs, isLoading } = useStore()
+  const { categories, songs, isLoading } = useStore()
 
 
 
