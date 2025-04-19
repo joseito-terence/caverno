@@ -1,4 +1,4 @@
-import { Dimensions, View, Image, Text, TouchableOpacity } from 'react-native'
+import { Dimensions, View, Image, Text, TouchableOpacity, Pressable } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import { Database } from '@/utils/database.types';
 import { router } from 'expo-router';
@@ -41,6 +41,9 @@ const SongsCarousel = ({
         snapToInterval={SCREEN.width}
         decelerationRate="fast"
         snapToAlignment="center"
+        disableIntervalMomentum={true}
+        disableScrollViewPanResponder={false}
+        scrollEventThrottle={16}
       />
     </View>
   )
@@ -54,9 +57,12 @@ const SongCard = ({
   song: TSong
 }) => {
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => router.push(`/songs/${song.id}`)}
+    <Pressable
+      onPress={() => {
+        setTimeout(() => {
+          router.push(`/songs/${song.id}`)
+        }, 50)
+      }}
       style={{
         width: SONG_CARD_WIDTH,
         height: SONG_CARD_HEIGHT,
@@ -101,6 +107,6 @@ const SongCard = ({
           </View>
         </BlurView>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
