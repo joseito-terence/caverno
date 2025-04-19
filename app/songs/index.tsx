@@ -62,7 +62,7 @@ export default function Search() {
       </View>
 
       <View className='px-8 pb-8 pt-2'>
-        <View className='bg-gray-800 rounded-full px-4 py-3 flex-row items-center'>
+        <View className='bg-gray-800 rounded-full px-4 py-1 flex-row items-center'>
           <AntDesign name="search1" size={22} color="white" />
           <TextInput
             placeholder='Search songs...'
