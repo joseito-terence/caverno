@@ -115,16 +115,18 @@ export default function Song() {
           backgroundComponent={CustomBackground}
           animatedIndex={bottomsheetAnimatedIndex}
         >
-          <View className='p-6'>
+          <View className='p-6 pb-0'>
             <View className='flex-row items-center justify-between mb-4'
               style={{ display: song?.style || song?.tempo || song?.transpose ? 'flex' : 'none' }}
             >
               <View className='flex-row items-center gap-2'>
-                <View className='bg-gray-700/95 px-3 py-1 rounded-full'>
-                  <Text className='text-white text-sm font-medium'>
-                    {song?.style ?? ''}
-                  </Text>
-                </View>
+                {song?.style &&
+                  <View className='bg-gray-700/95 px-3 py-1 rounded-full'>
+                    <Text className='text-white text-sm font-medium'>
+                      {song.style}
+                    </Text>
+                  </View>
+                }
               </View>
 
               <View className='flex-row items-center gap-3'>
