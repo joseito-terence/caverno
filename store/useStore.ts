@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { getFirestore, collection, query, getDocs } from '@react-native-firebase/firestore'
+import { getFirestore, collection, query, getDocs, doc, updateDoc, addDoc } from '@react-native-firebase/firestore'
 
 export interface Song {
   id: string
@@ -25,6 +25,8 @@ interface Store {
   error: string | null
   fetchSongs: () => Promise<void>
   fetchCategories: () => Promise<void>
+  addSong: (data: Omit<Song, 'id' | 'created_at'>) => Promise<void>
+  updateSong: (id: string, data: Partial<Song>) => Promise<void>
 }
 
 export const useStore = create<Store>((set) => ({
@@ -81,6 +83,35 @@ export const useStore = create<Store>((set) => ({
     } catch (error) {
       set({ 
         error: error instanceof Error ? error.message : 'Failed to fetch categories',
+        isLoading: false 
+      })
+    }
+  },
+  addSong: async (data) => {
+    set({ isLoading: true, error: null })
+    try {
+      const firestore = getFirestore()
+      await addDoc(collection(firestore, 'songs'), {
+        ...data,
+        created_at: new Date().toISOString(),
+      })
+      set({ isLoading: false })
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Failed to add song',
+        isLoading: false 
+      })
+    }
+  },
+  updateSong: async (id, data) => {
+    set({ isLoading: true, error: null })
+    try {
+      const firestore = getFirestore()
+      await updateDoc(doc(firestore, 'songs', id), data)
+      set({ isLoading: false })
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Failed to update song',
         isLoading: false 
       })
     }

@@ -4,8 +4,8 @@ import { useRouter } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons'
 import { Button } from '@/components/Button'
-import AlphabetList from '@/components/AlphabetList'
-import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
+// import AlphabetList from '@/components/AlphabetList'
+// import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 import { useStore } from '@/store/useStore'
 
 export default function Search() {
@@ -93,9 +93,9 @@ export default function Search() {
             </View>
           )}
           // @ts-ignore
-          getItemLayout={getItemLayout}
+          // getItemLayout={getItemLayout}
         />
-        <View className='absolute right-0 z-50'>
+        {/* <View className='absolute right-0 z-50'>
           <AlphabetList
             letters={sections.letters}
             onChange={(index) => {
@@ -108,7 +108,7 @@ export default function Search() {
               })
             }}
           />
-        </View>
+        </View> */}
       </View>
 
     </View>
@@ -120,20 +120,20 @@ const RenderItem = ({ item }: any) => {
 
   return (
     <TouchableOpacity onPress={() => router.push(`/songs/${item.id}`)}>
-      <View className='px-9 py-4'>
+      <View className='px-9 py-4 w-full'>
         <Text numberOfLines={1} className='text-white text-lg font-medium capitalize'>{item.title}</Text>
       </View>
     </TouchableOpacity>
   )
 }
 
-const getItemLayout = sectionListGetItemLayout({
-  // The height of the row with rowData at the given sectionIndex and rowIndex
-  getItemHeight: (rowData, sectionIndex, rowIndex) =>
-    sectionIndex === 0 ? 60 : 60,
+// const getItemLayout = sectionListGetItemLayout({
+//   // The height of the row with rowData at the given sectionIndex and rowIndex
+//   getItemHeight: (rowData, sectionIndex, rowIndex) =>
+//     sectionIndex === 0 ? 60 : 60,
 
-  // These three properties are optional
-  getSeparatorHeight: () => 0, // The height of your separators
-  getSectionHeaderHeight: () => 60, // The height of your section headers
-  getSectionFooterHeight: () => 0, // The height of your section footers
-});
+//   // These three properties are optional
+//   getSeparatorHeight: () => 0, // The height of your separators
+//   getSectionHeaderHeight: () => 60, // The height of your section headers
+//   getSectionFooterHeight: () => 0, // The height of your section footers
+// });

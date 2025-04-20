@@ -58,11 +58,7 @@ const SongCard = ({
 }) => {
   return (
     <Pressable
-      onPress={() => {
-        setTimeout(() => {
-          router.push(`/songs/${song.id}`)
-        }, 50)
-      }}
+      onPress={() => router.push(`/songs/${song.id}`)}
       style={{
         width: SONG_CARD_WIDTH,
         height: SONG_CARD_HEIGHT,

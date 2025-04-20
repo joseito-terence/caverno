@@ -9,7 +9,7 @@ import InputController from '@/components/InputController'
 import { unsplash } from '@/utils/unsplash'
 import SelectDropdown from 'react-native-select-dropdown'
 import { useCategories } from '@/hooks/useCategories'
-import { getFirestore, collection, doc, updateDoc, addDoc } from '@react-native-firebase/firestore'
+import { useStore } from '@/store/useStore'
 
 const DEFAULT_VALUES = {
   title: '',
@@ -32,6 +32,7 @@ type SongFormProps = {
 export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true
   const insets = useSafeAreaInsets()
+  const { addSong, updateSong } = useStore()
   const {
     control,
     setValue,
@@ -49,30 +50,30 @@ export default function SongForm(props: SongFormProps) {
     if (!isDirty) return;
     if (isEdit) {
       console.warn('edit')
-      const firestore = getFirestore()
-      return updateDoc(doc(firestore, 'songs', props.song.id), {
+      return updateSong(props.song.id, {
         ...data,
         title: data.title!,
+      }).then(() => {
+        router.back()
       })
-        .then(() => {
-          router.back()
-        })
     }
 
     const result = await unsplash.photos.getRandom({ query: 'music' })
 
     if (result.type === 'error') return;
 
-    const firestore = getFirestore()
-    return addDoc(collection(firestore, 'songs'), {
-      ...data,
+    return addSong({
       title: data.title!,
+      style: data.style || null,
+      tempo: data.tempo || null,
+      transpose: data.transpose || null,
+      category: data.category || null,
+      lyrics: data.lyrics || null,
       // @ts-ignore
       cover_image: result.response.urls.regular!,
+    }).then(() => {
+      router.back()
     })
-      .then(() => {
-        router.back()
-      })
   }
 
   return (
@@ -86,7 +87,7 @@ export default function SongForm(props: SongFormProps) {
           {isEdit ? 'Edit' : 'Add'}
         </Text>
 
-        <Button onPress={() => console.log('ehllo')}>
+        <Button onPress={handleSubmit(onSubmit)}>
           {isSubmitting
             ? <ActivityIndicator color='white' />
             : <AntDesign name="check" size={22} color="white" />
