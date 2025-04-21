@@ -1,3 +1,3 @@
 import { useStore } from "@/store/useStore"
 
-export const useCategories = () => useStore(store => store.categories)
+export const useCategories = () => useStore().categories

@@ -3,13 +3,16 @@ import { Stack } from "expo-router";
 import { ThemeProvider, DarkTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SystemUI from "expo-system-ui";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 SystemUI.setBackgroundColorAsync("transparent");
 
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <ThemeProvider value={DarkTheme}>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
@@ -17,6 +20,7 @@ export default function RootLayout() {
             <Stack.Screen name="songs/[id]/index" options={{ animation: 'none' }} />
           </Stack>
         </ThemeProvider>
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }

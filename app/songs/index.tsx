@@ -14,7 +14,7 @@ export default function Search() {
   const [searchKeyword, setSearchKeyword] = useState('')
   const insets = useSafeAreaInsets()
 
-  const data = useStore(store => store.songs)
+  const { songs: data} = useStore()
 
   const sections = useMemo(() => {
     if (!data) return { letters: [], data: [] };
