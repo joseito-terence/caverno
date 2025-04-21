@@ -32,7 +32,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-font",
-    "@react-native-firebase/app",
     [
       "expo-splash-screen",
       {

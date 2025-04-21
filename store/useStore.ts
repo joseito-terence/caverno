@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getFirestore, collection, query, getDocs, doc, updateDoc, addDoc } from '@react-native-firebase/firestore'
+import { collection, query, getDocs, doc, updateDoc, addDoc } from 'firebase/firestore'
+import { db } from '../lib/firebase'
 
 export interface Song {
   id: string
@@ -30,9 +31,8 @@ interface Store {
 }
 
 const fetchSongsFromFirestore = async () => {
-  const firestore = getFirestore()
-  const songs = await getDocs(query(collection(firestore, 'songs')))
-  return songs.docs.map(doc => ({
+  const songsSnapshot = await getDocs(query(collection(db, 'songs')))
+  return songsSnapshot.docs.map(doc => ({
     id: doc.id,
     category: doc.data().category ?? null,
     cover_image: doc.data().cover_image ?? null,
@@ -46,25 +46,22 @@ const fetchSongsFromFirestore = async () => {
 }
 
 const fetchCategoriesFromFirestore = async () => {
-  const firestore = getFirestore()
-  const categories = await getDocs(query(collection(firestore, 'categories')))
-  return categories.docs.map(doc => ({
+  const categoriesSnapshot = await getDocs(query(collection(db, 'categories')))
+  return categoriesSnapshot.docs.map(doc => ({
     id: doc.id,
     name: doc.data().name
   })).sort((a, b) => a.name.localeCompare(b.name))
 }
 
 const addSongToFirestore = async (data: Omit<Song, 'id' | 'created_at'>) => {
-  const firestore = getFirestore()
-  await addDoc(collection(firestore, 'songs'), {
+  await addDoc(collection(db, 'songs'), {
     ...data,
     created_at: new Date().toISOString(),
   })
 }
 
 const updateSongInFirestore = async (id: string, data: Partial<Song>) => {
-  const firestore = getFirestore()
-  await updateDoc(doc(firestore, 'songs', id), data)
+  await updateDoc(doc(db, 'songs', id), data)
 }
 
 export const useStore = (): Store => {
