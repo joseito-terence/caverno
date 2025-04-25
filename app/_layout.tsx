@@ -4,10 +4,29 @@ import { ThemeProvider, DarkTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SystemUI from "expo-system-ui";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MMKV } from 'react-native-mmkv';
+import { persistQueryClient } from '@tanstack/react-query-persist-client';  
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 
 SystemUI.setBackgroundColorAsync("transparent");
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: Infinity } },
+});
+
+const storage = new MMKV();
+
+persistQueryClient({
+  queryClient,
+  persister: createSyncStoragePersister({
+    storage: {
+      getItem: (key: string) => storage.getString(key) ?? null,
+      setItem: (key: string, value: string) => storage.set(key, value),
+      removeItem: (key: string) => storage.delete(key),
+    },
+  }),
+  maxAge: Infinity,
+})
 
 export default function RootLayout() {
   return (
