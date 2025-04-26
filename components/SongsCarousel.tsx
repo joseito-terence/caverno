@@ -1,6 +1,6 @@
 import { Dimensions, View, Image, Text, TouchableOpacity, Pressable } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
-import { Database } from '@/utils/database.types';
+import { Song } from '@/store/useStore'
 import { router } from 'expo-router';
 import { FlatList } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,10 +10,8 @@ const SCREEN = Dimensions.get('screen')
 const SONG_CARD_WIDTH = SCREEN.width * 0.8
 const SONG_CARD_HEIGHT = SONG_CARD_WIDTH * 1.3
 
-type TSong = Database['public']['Tables']['songs']['Row']
-
 interface Props {
-  songs: TSong[];
+  songs: Song[];
 }
 
 const SongsCarousel = ({
@@ -54,7 +52,7 @@ export default SongsCarousel;
 const SongCard = ({
   song
 }: {
-  song: TSong
+  song: Song
 }) => {
   return (
     <Pressable
