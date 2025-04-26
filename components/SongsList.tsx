@@ -1,5 +1,5 @@
-import React, { useMemo, useRef, useState } from 'react'
-import { View, Text, SectionList, TouchableOpacity } from 'react-native'
+import React, { useMemo, useState } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons'
 import { useStore } from '@/store/useStore'
@@ -7,7 +7,6 @@ import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-she
 import { Pressable } from 'react-native-gesture-handler'
 
 export default function SongsList() {
-  const sectionRef = useRef<SectionList>(null)
   const [searchKeyword, setSearchKeyword] = useState('')
 
   const { songs: data } = useStore()
@@ -68,10 +67,9 @@ export default function SongsList() {
 
       <View className='flex-1'>
         <BottomSheetSectionList
-          ref={sectionRef}
           sections={sections.data}
           keyExtractor={(item) => item.id}
-          stickySectionHeadersEnabled
+          // stickySectionHeadersEnabled
           renderItem={RenderItem}
           renderSectionHeader={RenderSectionHeader}
         />
