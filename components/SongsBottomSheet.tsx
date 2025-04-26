@@ -9,7 +9,8 @@ export default function SongsBottomSheet() {
     <BottomSheet
       snapPoints={SNAP_POINTS}
       backgroundStyle={{ backgroundColor: 'black' }}
-      containerStyle={{zIndex: 100}}
+      containerStyle={{ zIndex: 100 }}
+      enableDynamicSizing={false}
     >
       <BottomSheetView className="flex-1">
         <SongsList />
