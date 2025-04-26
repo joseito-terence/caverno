@@ -72,14 +72,18 @@ export default function SongsList() {
           keyExtractor={(item) => item.id}
           stickySectionHeadersEnabled
           renderItem={RenderItem}
-          renderSectionHeader={({ section }) => (
-            <View className='px-9 py-2 bg-[#121821]'>
-              <Text className='text-white text-lg font-semibold'>{section.title}</Text>
-            </View>
-          )}
+          renderSectionHeader={RenderSectionHeader}
         />
       </View>
 
+    </View>
+  )
+}
+
+const RenderSectionHeader = ({ section }: any) => {
+  return (
+    <View className='px-9 py-2 bg-[#121821]'>
+      <Text className='text-white text-lg font-semibold'>{section.title}</Text>
     </View>
   )
 }
