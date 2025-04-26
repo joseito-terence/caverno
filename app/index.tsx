@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { View } from "react-native";
 import { BlurView } from 'expo-blur';
@@ -13,17 +13,21 @@ import SongsBottomSheet from "@/components/SongsBottomSheet";
 
 export default function Index() {
   const { fetchCategories, fetchSongs } = useStore()
+  const [renderBottomSheet, setRenderBottomSheet] = useState(false)
   
   useEffect(() => {
     fetchCategories()
     fetchSongs()
+
+    setTimeout(() => {
+      setRenderBottomSheet(true)
+    }, 1500)
   }, [])
       
-  return <SongsBottomSheet />
   return (
     <View className="flex-1">
       <Animated.View className="
-        absolute top-0 left-0 right-0 bottom-0 z-50
+        absolute top-0 left-0 right-0 bottom-0 z-10
         w-full flex-1 justify-center items-center
       ">
         <AnimatedLogo />
@@ -120,7 +124,9 @@ export default function Index() {
           </MotiText>
         </View>
       </MotiView>
-      <SongsBottomSheet />
+      {renderBottomSheet &&
+        <SongsBottomSheet />
+      }
     </View>
   );
 }

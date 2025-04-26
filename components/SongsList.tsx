@@ -3,6 +3,7 @@ import { View, Text, SectionList, TouchableOpacity, TextInput } from 'react-nati
 import { useRouter } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons'
 import { useStore } from '@/store/useStore'
+import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet'
 
 export default function SongsList() {
   const sectionRef = useRef<SectionList>(null)
@@ -48,7 +49,7 @@ export default function SongsList() {
       <View className='px-8 pb-8 pt-2'>
         <View className='bg-gray-800 rounded-full px-4 py-1 flex-row items-center'>
           <AntDesign name="search1" size={22} color="white" />
-          <TextInput
+          <BottomSheetTextInput
             placeholder='Search songs...'
             value={searchKeyword}
             onChangeText={setSearchKeyword}
@@ -65,7 +66,7 @@ export default function SongsList() {
       </View>
 
       <View className='flex-1'>
-        <SectionList
+        <BottomSheetSectionList
           ref={sectionRef}
           sections={sections.data}
           keyExtractor={(item) => item.id}

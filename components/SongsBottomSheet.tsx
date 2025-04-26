@@ -1,18 +1,15 @@
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import SongsList from "./SongsList";
-import { View, Text } from "moti";
+
+const SNAP_POINTS = [200, 600, '100%']
 
 export default function SongsBottomSheet() {
+
   return (
-    <BottomSheet 
-      snapPoints={['100%']}
-    >
-      {/* <SongsList /> */}
-      <View className='p-6'>
-        <Text className='text-white text-3xl font-bold capitalize mb-6'>
-          Songs
-        </Text>
-      </View>
+    <BottomSheet snapPoints={SNAP_POINTS} backgroundStyle={{ backgroundColor: 'black' }}>
+      <BottomSheetView className="flex-1">
+        <SongsList />
+      </BottomSheetView>
     </BottomSheet>
   )
 }
