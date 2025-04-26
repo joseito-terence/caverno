@@ -7,7 +7,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
 import { unsplash } from '@/utils/unsplash'
-import SelectDropdown from 'react-native-select-dropdown'
 import { useCategories } from '@/hooks/useCategories'
 import { useStore } from '@/store/useStore'
 
@@ -133,13 +132,6 @@ export default function SongForm(props: SongFormProps) {
               disabled={isSubmitting}
             />
 
-            <View className='mt-8'>
-              <CategoryPicker
-                defaultValue={isEdit ? props.song.category : undefined}
-                setSelected={(val) => setValue('category', val)}
-              />
-            </View>
-
             <InputController
               name='lyrics'
               placeholder={`Lyrics
@@ -155,65 +147,5 @@ export default function SongForm(props: SongFormProps) {
       </View>
 
     </View>
-  )
-}
-
-export const CategoryPicker = ({
-  setSelected,
-  defaultValueByIndex,
-  defaultValue,
-  titleProps,
-  optionTextProps,
-  showIndicator = false,
-}: {
-  setSelected: (val: string) => void;
-  defaultValueByIndex?: number;
-  defaultValue?: string;
-  titleProps?: TextProps;
-  optionTextProps?: TextProps;
-  showIndicator?: boolean;
-}) => {
-  const categories = useCategories()
-
-  const data = categories.map((category: any) => ({
-    label: category.name,
-    value: category.id,
-  }))
-
-  return (
-    <SelectDropdown
-      data={data ?? []}
-      defaultValue={defaultValue}
-      defaultValueByIndex={defaultValueByIndex}
-      onSelect={(selectedItem) => setSelected(selectedItem.value)}
-      renderButton={(selectedItem) => {
-        return (
-          <View className=''>
-            {selectedItem ? (
-              <Text className='text-white text-2xl' {...titleProps}>
-                {selectedItem.label} {showIndicator && <AntDesign name="caretdown" size={24} color="white" />}
-              </Text>
-            ) : (
-              <Text className='text-white/30 text-2xl'>
-                Select Category
-              </Text>
-            )}
-            
-          </View>
-        );
-      }}
-      renderItem={(item, _, isSelected) => {
-        return (
-          <View style={{ ...(isSelected && { backgroundColor: '#141e22' }) }}>
-            <Text className='p-2 text-white' {...optionTextProps}>{item.label}</Text>
-          </View>
-        );
-      }}
-      showsVerticalScrollIndicator={false}
-      dropdownStyle={{
-        backgroundColor: '#303030',
-        borderRadius: 8,
-      }}
-    />
   )
 }

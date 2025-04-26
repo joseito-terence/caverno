@@ -6,7 +6,6 @@ import Entypo from '@expo/vector-icons/Entypo'
 import { LinearGradient } from 'expo-linear-gradient'
 import SongsCarousel from '@/components/SongsCarousel'
 import { useRouter } from 'expo-router'
-import { CategoryPicker } from '@/components/SongForm'
 import { useStore } from '@/store/useStore'
 import { Image } from 'expo-image'
 
@@ -65,23 +64,6 @@ export default function Home() {
             zIndex: 1000000000,
           }}
         >
-          <View className='flex-row items-center p-8 pt-6 mt-4'>
-            <View className='flex-1'>
-              <CategoryPicker
-                defaultValueByIndex={0}
-                setSelected={setSelectedCategory}
-                titleProps={{ className: 'text-white text-3xl font-semibold' }}
-                optionTextProps={{ className: 'p-4 text-white text-xl' }}
-                showIndicator
-              />
-            </View>
-
-            <TouchableOpacity>
-              <Text className='text-white/60 text-lg font-semibold pl-8'>
-                See all
-              </Text>
-            </TouchableOpacity>
-          </View>
           <View className='flex-1 items-center justify-center'>
             {isLoading ? (
               <Text className='text-white'>Loading...</Text>
