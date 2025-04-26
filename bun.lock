@@ -6,10 +6,9 @@
       "dependencies": {
         "@expo/vector-icons": "^14.0.3",
         "@gorhom/bottom-sheet": "^5.0.0-alpha.11",
+        "@react-native-firebase/app": "^22.0.0",
+        "@react-native-firebase/firestore": "^22.0.0",
         "@react-navigation/native": "^7.0.14",
-        "@tanstack/query-sync-storage-persister": "^5.74.6",
-        "@tanstack/react-query": "^5.74.4",
-        "@tanstack/react-query-persist-client": "^5.74.6",
         "expo": "~53.0.0-preview.12",
         "expo-blur": "~14.1.3",
         "expo-constants": "~17.1.3",
@@ -29,7 +28,6 @@
         "react-hook-form": "^7.52.2",
         "react-native": "0.79.1",
         "react-native-gesture-handler": "~2.24.0",
-        "react-native-mmkv": "^3.2.0",
         "react-native-reanimated": "~3.17.4",
         "react-native-reanimated-carousel": "4.0.0-canary.22",
         "react-native-safe-area-context": "5.3.0",
@@ -40,6 +38,7 @@
         "react-native-web": "^0.20.0",
         "unsplash-js": "^7.0.19",
         "zod": "^3.23.8",
+        "zustand": "^5.0.3",
       },
       "devDependencies": {
         "@babel/core": "^7.20.0",
@@ -386,6 +385,8 @@
 
     "@firebase/util": ["@firebase/util@1.10.0", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-xKtx4A668icQqoANRxyDLBLz51TAbDP9KRfpbKGxiCAW346d0BeJe5vN6/hKxxmWwnZ0mautyv39JxviwwQMOQ=="],
 
+    "@firebase/vertexai": ["@firebase/vertexai@1.0.4", "", { "dependencies": { "@firebase/app-check-interop-types": "0.3.3", "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x", "@firebase/app-types": "0.x" } }, "sha512-Nkf/r4u166b4Id6zrrW0Qtg1KyZpQvvYchtkebamnHtIfY+Qnt51I/sx4Saos/WrmO8SnrSU850LfmJ7pehYXg=="],
+
     "@firebase/vertexai-preview": ["@firebase/vertexai-preview@0.0.4", "", { "dependencies": { "@firebase/app-check-interop-types": "0.3.2", "@firebase/component": "0.6.9", "@firebase/logger": "0.4.2", "@firebase/util": "1.10.0", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x", "@firebase/app-types": "0.x" } }, "sha512-EBSqyu9eg8frQlVU9/HjKtHN7odqbh9MtAcVz3WwHj4gLCLOoN9F/o+oxlq3CxvFrd3CNTZwu6d2mZtVlEInng=="],
 
     "@firebase/webchannel-wrapper": ["@firebase/webchannel-wrapper@1.0.1", "", {}, "sha512-jmEnr/pk0yVkA7mIlHNnxCi+wWzOFUg0WyIotgkKAb2u1J7fAeDBcVNSTjTihbAYNusCLQdW5s9IJ5qwnEufcQ=="],
@@ -494,6 +495,10 @@
 
     "@radix-ui/react-slot": ["@radix-ui/react-slot@1.2.0", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-ujc+V6r0HNDviYqIK3rW4ffgYiZ8g5DEHrGJVk4x7kTlLXRDILnKX9vAUYeIsLOoDpDJ0ujpqMkjH4w2ofuo6w=="],
 
+    "@react-native-firebase/app": ["@react-native-firebase/app@22.0.0", "", { "dependencies": { "firebase": "11.3.1" }, "peerDependencies": { "expo": ">=47.0.0", "react": "*", "react-native": "*" }, "optionalPeers": ["expo"] }, "sha512-fbagoIrTJy8edCTiEI7OeAUqO5XoifMirEKoXJDHlsFrPJBfxqMGDhSJutUoWLNHt8KxDtLG9JWnKuW23ISq2Q=="],
+
+    "@react-native-firebase/firestore": ["@react-native-firebase/firestore@22.0.0", "", { "peerDependencies": { "@react-native-firebase/app": "22.0.0" } }, "sha512-oyNfbTdvPtGHnOjGopq9/WIVUY4iW3GO4vBeXsrmD46cZo01O5tsyKCjivYGf/wYbBG1WZe/bPoWdnXEbhlRMA=="],
+
     "@react-native/assets-registry": ["@react-native/assets-registry@0.79.1", "", {}, "sha512-q5BwZtL0YbaJRgofl8qrD9BNdGJkecTJNYG8VFOVQYXPTBa3ZSooip1aj0wrjoa0HloKx/Hmx5UMvuhfEsjn8A=="],
 
     "@react-native/babel-plugin-codegen": ["@react-native/babel-plugin-codegen@0.79.1", "", { "dependencies": { "@babel/traverse": "^7.25.3", "@react-native/codegen": "0.79.1" } }, "sha512-y3VyrPO/ej8Uhjk2IM+vBZok8cEyMl3DwJ3o/tsgiIVROITL+MWdk6M6iQOHRvwRWAgLe5jLSR3Zv5IIdDVY4A=="],
@@ -533,16 +538,6 @@
     "@sinonjs/commons": ["@sinonjs/commons@3.0.1", "", { "dependencies": { "type-detect": "4.0.8" } }, "sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ=="],
 
     "@sinonjs/fake-timers": ["@sinonjs/fake-timers@10.3.0", "", { "dependencies": { "@sinonjs/commons": "^3.0.0" } }, "sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA=="],
-
-    "@tanstack/query-core": ["@tanstack/query-core@5.74.4", "", {}, "sha512-YuG0A0+3i9b2Gfo9fkmNnkUWh5+5cFhWBN0pJAHkHilTx6A0nv8kepkk4T4GRt4e5ahbtFj2eTtkiPcVU1xO4A=="],
-
-    "@tanstack/query-persist-client-core": ["@tanstack/query-persist-client-core@5.74.6", "", { "dependencies": { "@tanstack/query-core": "5.74.4" } }, "sha512-9OJ4tz4evC53tS4NfxaohctFjE9/sqvK4U5HlUBsBcQRI/fn+75lIpD9RcLIbUPcx78hPC35NSUKD7OX6YNw4Q=="],
-
-    "@tanstack/query-sync-storage-persister": ["@tanstack/query-sync-storage-persister@5.74.6", "", { "dependencies": { "@tanstack/query-core": "5.74.4", "@tanstack/query-persist-client-core": "5.74.6" } }, "sha512-zMB14UUlEeACKu9GTSYLr2tgFIXZj+x0JbMlVHmmw8OnalrRTWc3TKSgHcPW3f6kPbilI0hU0fo8AnFdvAJUFw=="],
-
-    "@tanstack/react-query": ["@tanstack/react-query@5.74.4", "", { "dependencies": { "@tanstack/query-core": "5.74.4" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-mAbxw60d4ffQ4qmRYfkO1xzRBPUEf/72Dgo3qqea0J66nIKuDTLEqQt0ku++SDFlMGMnB6uKDnEG1xD/TDse4Q=="],
-
-    "@tanstack/react-query-persist-client": ["@tanstack/react-query-persist-client@5.74.6", "", { "dependencies": { "@tanstack/query-persist-client-core": "5.74.6" }, "peerDependencies": { "@tanstack/react-query": "^5.74.4", "react": "^18 || ^19" } }, "sha512-gGJ+4IKIRWC9JeChBOvGgZj1lQcP3bAT8Kofv1Csx4CbqkyhbALlUkpiUXYyVpeS60acXS6NRAajlfzRtfsE+Q=="],
 
     "@tootallnate/once": ["@tootallnate/once@2.0.0", "", {}, "sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A=="],
 
@@ -1528,8 +1523,6 @@
 
     "react-native-is-edge-to-edge": ["react-native-is-edge-to-edge@1.1.7", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-EH6i7E8epJGIcu7KpfXYXiV2JFIYITtq+rVS8uEb+92naMRBdxhTuS8Wn2Q7j9sqyO0B+Xbaaf9VdipIAmGW4w=="],
 
-    "react-native-mmkv": ["react-native-mmkv@3.2.0", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-9y7K//1MaU46TFrXkyU0wT5VGk9Y2FDLFV6NPl+z3jTbm2G7SC1UIxneF6CfhSmBX5CfKze9SO7kwDuRx7flpQ=="],
-
     "react-native-reanimated": ["react-native-reanimated@3.17.4", "", { "dependencies": { "@babel/plugin-transform-arrow-functions": "^7.0.0-0", "@babel/plugin-transform-class-properties": "^7.0.0-0", "@babel/plugin-transform-classes": "^7.0.0-0", "@babel/plugin-transform-nullish-coalescing-operator": "^7.0.0-0", "@babel/plugin-transform-optional-chaining": "^7.0.0-0", "@babel/plugin-transform-shorthand-properties": "^7.0.0-0", "@babel/plugin-transform-template-literals": "^7.0.0-0", "@babel/plugin-transform-unicode-regex": "^7.0.0-0", "@babel/preset-typescript": "^7.16.7", "convert-source-map": "^2.0.0", "invariant": "^2.2.4", "react-native-is-edge-to-edge": "1.1.7" }, "peerDependencies": { "@babel/core": "^7.0.0-0", "react": "*", "react-native": "*" } }, "sha512-vmkG/N5KZrexHr4v0rZB7ohPVseGVNaCXjGxoRo+NYKgC9+mIZAkg/QIfy9xxfJ73FfTrryO9iYUrxks3ZfKbA=="],
 
     "react-native-reanimated-carousel": ["react-native-reanimated-carousel@4.0.0-canary.22", "", { "peerDependencies": { "react": ">=18.0.0", "react-native": ">=0.70.3", "react-native-gesture-handler": ">=2.9.0", "react-native-reanimated": ">=3.0.0" } }, "sha512-GOTSXVuoV08ZUxGPuzQ1Kl1YOOOrKWb18uRlPsa759bFyiqFWpjjLrCUdfgBgF9ZqUHUbb1jj+UffFf2eGDz+A=="],
@@ -1806,6 +1799,8 @@
 
     "web-streams-polyfill": ["web-streams-polyfill@3.3.3", "", {}, "sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw=="],
 
+    "web-vitals": ["web-vitals@4.2.4", "", {}, "sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw=="],
+
     "webidl-conversions": ["webidl-conversions@5.0.0", "", {}, "sha512-VlZwKPCkYKxQgeSbH5EyngOmRp7Ww7I9rQLERETtf5ofd9pGeswWiOtogpEO850jziPRarreGxn5QIiTqpb2wA=="],
 
     "webpack": ["webpack@5.99.5", "", { "dependencies": { "@types/eslint-scope": "^3.7.7", "@types/estree": "^1.0.6", "@webassemblyjs/ast": "^1.14.1", "@webassemblyjs/wasm-edit": "^1.14.1", "@webassemblyjs/wasm-parser": "^1.14.1", "acorn": "^8.14.0", "browserslist": "^4.24.0", "chrome-trace-event": "^1.0.2", "enhanced-resolve": "^5.17.1", "es-module-lexer": "^1.2.1", "eslint-scope": "5.1.1", "events": "^3.2.0", "glob-to-regexp": "^0.4.1", "graceful-fs": "^4.2.11", "json-parse-even-better-errors": "^2.3.1", "loader-runner": "^4.2.0", "mime-types": "^2.1.27", "neo-async": "^2.6.2", "schema-utils": "^4.3.0", "tapable": "^2.1.1", "terser-webpack-plugin": "^5.3.11", "watchpack": "^2.4.1", "webpack-sources": "^3.2.3" }, "bin": { "webpack": "bin/webpack.js" } }, "sha512-q+vHBa6H9qwBLUlHL4Y7L0L1/LlyBKZtS9FHNCQmtayxjI5RKC9yD8gpvLeqGv5lCQp1Re04yi0MF40pf30Pvg=="],
@@ -1864,6 +1859,8 @@
 
     "zod": ["zod@3.24.2", "", {}, "sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ=="],
 
+    "zustand": ["zustand@5.0.3", "", { "peerDependencies": { "@types/react": ">=18.0.0", "immer": ">=9.0.6", "react": ">=18.0.0", "use-sync-external-store": ">=1.2.0" }, "optionalPeers": ["@types/react", "immer", "react", "use-sync-external-store"] }, "sha512-14fwWQtU3pH4dE0dOpdMiWjddcH+QzKIgk1cl8epwSE7yag43k/AD/m4L6+K7DytAOr9gGBe3/EXj9g7cdostg=="],
+
     "@babel/highlight/chalk": ["chalk@2.4.2", "", { "dependencies": { "ansi-styles": "^3.2.1", "escape-string-regexp": "^1.0.5", "supports-color": "^5.3.0" } }, "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="],
 
     "@babel/runtime/regenerator-runtime": ["regenerator-runtime@0.14.1", "", {}, "sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw=="],
@@ -1912,6 +1909,14 @@
 
     "@firebase/storage/undici": ["undici@6.19.7", "", {}, "sha512-HR3W/bMGPSr90i8AAp2C4DM3wChFdJPLrWYpIS++LxS8K+W535qftjt+4MyjNYHeWabMj1nvtmLIi7l++iq91A=="],
 
+    "@firebase/vertexai/@firebase/app-check-interop-types": ["@firebase/app-check-interop-types@0.3.3", "", {}, "sha512-gAlxfPLT2j8bTI/qfe3ahl2I2YcBQ8cFIBdhAQA4I2f3TndcO+22YizyGYuttLHPQEpWkhmpFW60VCFEPg4g5A=="],
+
+    "@firebase/vertexai/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@firebase/vertexai/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@firebase/vertexai/@firebase/util": ["@firebase/util@1.10.3", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-wfoF5LTy0m2ufUapV0ZnpcGQvuavTbJ5Qr1Ze9OJGL70cSMvhDyjS4w2121XdA3lGZSTOsDOyGhpoDtYwck85A=="],
+
     "@isaacs/cliui/string-width": ["string-width@5.1.2", "", { "dependencies": { "eastasianwidth": "^0.2.0", "emoji-regex": "^9.2.2", "strip-ansi": "^7.0.1" } }, "sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA=="],
 
     "@isaacs/cliui/strip-ansi": ["strip-ansi@7.1.0", "", { "dependencies": { "ansi-regex": "^6.0.1" } }, "sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ=="],
@@ -1925,6 +1930,8 @@
     "@istanbuljs/load-nyc-config/js-yaml": ["js-yaml@3.14.1", "", { "dependencies": { "argparse": "^1.0.7", "esprima": "^4.0.0" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g=="],
 
     "@jest/reporters/string-length": ["string-length@4.0.2", "", { "dependencies": { "char-regex": "^1.0.2", "strip-ansi": "^6.0.0" } }, "sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ=="],
+
+    "@react-native-firebase/app/firebase": ["firebase@11.3.1", "", { "dependencies": { "@firebase/analytics": "0.10.11", "@firebase/analytics-compat": "0.2.17", "@firebase/app": "0.11.1", "@firebase/app-check": "0.8.11", "@firebase/app-check-compat": "0.3.18", "@firebase/app-compat": "0.2.50", "@firebase/app-types": "0.9.3", "@firebase/auth": "1.9.0", "@firebase/auth-compat": "0.5.18", "@firebase/data-connect": "0.3.0", "@firebase/database": "1.0.12", "@firebase/database-compat": "2.0.3", "@firebase/firestore": "4.7.8", "@firebase/firestore-compat": "0.3.43", "@firebase/functions": "0.12.2", "@firebase/functions-compat": "0.3.19", "@firebase/installations": "0.6.12", "@firebase/installations-compat": "0.2.12", "@firebase/messaging": "0.12.16", "@firebase/messaging-compat": "0.2.16", "@firebase/performance": "0.7.0", "@firebase/performance-compat": "0.2.13", "@firebase/remote-config": "0.5.0", "@firebase/remote-config-compat": "0.2.12", "@firebase/storage": "0.13.6", "@firebase/storage-compat": "0.3.16", "@firebase/util": "1.10.3", "@firebase/vertexai": "1.0.4" } }, "sha512-P4YVFM0Bm2d8aO61SCEMF8E1pYgieGLrmr/LFw7vs6sAMebwuwHt+Wug+1qL2fhAHWPwpWbCLsdJH8NQ+4Sw8Q=="],
 
     "@react-native/community-cli-plugin/debug": ["debug@2.6.9", "", { "dependencies": { "ms": "2.0.0" } }, "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="],
 
@@ -2118,6 +2125,60 @@
 
     "@jest/reporters/string-length/char-regex": ["char-regex@1.0.2", "", {}, "sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw=="],
 
+    "@react-native-firebase/app/firebase/@firebase/analytics": ["@firebase/analytics@0.10.11", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/installations": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-zwuPiRE0+hgcS95JZbJ6DFQN4xYFO8IyGxpeePTV51YJMwCf3lkBa6FnZ/iXIqDKcBPMgMuuEZozI0BJWaLEYg=="],
+
+    "@react-native-firebase/app/firebase/@firebase/analytics-compat": ["@firebase/analytics-compat@0.2.17", "", { "dependencies": { "@firebase/analytics": "0.10.11", "@firebase/analytics-types": "0.8.3", "@firebase/component": "0.6.12", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-SJNVOeTvzdqZQvXFzj7yAirXnYcLDxh57wBFROfeowq/kRN1AqOw1tG6U4OiFOEhqi7s3xLze/LMkZatk2IEww=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app": ["@firebase/app@0.11.1", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "idb": "7.1.1", "tslib": "^2.1.0" } }, "sha512-Vz4DrNLPfDx3RwQf+4klXtu7OUYDO6xz2hlRyFawWskS7YqdtNzkDDxrqH20KDfjCF1lib46/NgchIj1+8h4wQ=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-check": ["@firebase/app-check@0.8.11", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-42zIfRI08/7bQqczAy7sY2JqZYEv3a1eNa4fLFdtJ54vNevbBIRSEA3fZgRqWFNHalh5ohsBXdrYgFqaRIuCcQ=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-check-compat": ["@firebase/app-check-compat@0.3.18", "", { "dependencies": { "@firebase/app-check": "0.8.11", "@firebase/app-check-types": "0.5.3", "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-qjozwnwYmAIdrsVGrJk+hnF1WBois54IhZR6gO0wtZQoTvWL/GtiA2F31TIgAhF0ayUiZhztOv1RfC7YyrZGDQ=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-compat": ["@firebase/app-compat@0.2.50", "", { "dependencies": { "@firebase/app": "0.11.1", "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-7yD362icKgjoNvFxwth420TNZgqCfuTJ28yQCdpyjC2fXyaZHhAbxVKnHEXGTAaUKSHWxsIy46lBKGi/x/Mflw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-types": ["@firebase/app-types@0.9.3", "", {}, "sha512-kRVpIl4vVGJ4baogMDINbyrIOtOxqhkZQg4jTq3l8Lw6WSk0xfpEYzezFu+Kl4ve4fbPl79dvwRtaFqAC/ucCw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/auth": ["@firebase/auth@1.9.0", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x", "@react-native-async-storage/async-storage": "^1.18.1" }, "optionalPeers": ["@react-native-async-storage/async-storage"] }, "sha512-Xz2mbEYauF689qXG/4HppS2+/yGo9R7B6eNUBh3H2+XpAZTGdx8d8TFsW/BMTAK9Q95NB0pb1Bbvfx0lwofq8Q=="],
+
+    "@react-native-firebase/app/firebase/@firebase/auth-compat": ["@firebase/auth-compat@0.5.18", "", { "dependencies": { "@firebase/auth": "1.9.0", "@firebase/auth-types": "0.13.0", "@firebase/component": "0.6.12", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-dFBev8AMNb2AgIt9afwf/Ku4/0Wq9R9OFSeBB/xjyJt+RfQ9PnNWqU2oFphews23byLg6jle8twRA7iOYfRGRw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/data-connect": ["@firebase/data-connect@0.3.0", "", { "dependencies": { "@firebase/auth-interop-types": "0.2.4", "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-inbLq0JyQD/d02Al3Lso0Hc8z1BVpB3dYSMFcQkeKhYyjn5bspLczLdasPbCOEUp8MOkLblLZhJuRs7Q/spFnw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database": ["@firebase/database@1.0.12", "", { "dependencies": { "@firebase/app-check-interop-types": "0.3.3", "@firebase/auth-interop-types": "0.2.4", "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "faye-websocket": "0.11.4", "tslib": "^2.1.0" } }, "sha512-psFl5t6rSFHq3i3fnU1QQlc4BB9Hnhh8TgEqvQlPPm8kDLw8gYxvjqYw3c5CZW0+zKR837nwT6im/wtJUivMKw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database-compat": ["@firebase/database-compat@2.0.3", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/database": "1.0.12", "@firebase/database-types": "1.0.8", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-uHGQrSUeJvsDfA+IyHW5O4vdRPsCksEzv4T4Jins+bmQgYy20ZESU4x01xrQCn/nzqKHuQMEW99CoCO7D+5NiQ=="],
+
+    "@react-native-firebase/app/firebase/@firebase/firestore": ["@firebase/firestore@4.7.8", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "@firebase/webchannel-wrapper": "1.0.3", "@grpc/grpc-js": "~1.9.0", "@grpc/proto-loader": "^0.7.8", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-eDvVJ/I5vSmIdGmLHJAK1OcviigIxjjia6i5/AkMFq6vZMt7CBXA0B5Xz9pGRCZ7WewFcsCbK1ZUQoYJ91+Cew=="],
+
+    "@react-native-firebase/app/firebase/@firebase/firestore-compat": ["@firebase/firestore-compat@0.3.43", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/firestore": "4.7.8", "@firebase/firestore-types": "3.0.3", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-zxg7YS07XQnTetGs3GADM/eA6HB4vWUp+Av4iugmTbft0fQxuTSnGm7ifctaYuR7VMTPckU9CW+oFC9QUNSYvg=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions": ["@firebase/functions@0.12.2", "", { "dependencies": { "@firebase/app-check-interop-types": "0.3.3", "@firebase/auth-interop-types": "0.2.4", "@firebase/component": "0.6.12", "@firebase/messaging-interop-types": "0.2.3", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-iKpFDoCYk/Qm+Qwv5ynRb9/yq64QOt0A0+t9NuekyAZnSoV56kSNq/PmsVmBauar5SlmEjhHk6QKdMBP9S0gXA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions-compat": ["@firebase/functions-compat@0.3.19", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/functions": "0.12.2", "@firebase/functions-types": "0.6.3", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-uw4tR8NcJCDu86UD63Za8A8SgFgmAVFb1XsGlkuBY7gpLyZWEFavWnwRkZ/8cUwpqUhp/SptXFZ1WFJSnOokLw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/installations": ["@firebase/installations@0.6.12", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/util": "1.10.3", "idb": "7.1.1", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-ES/WpuAV2k2YtBTvdaknEo7IY8vaGjIjS3zhnHSAIvY9KwTR8XZFXOJoZ3nSkjN1A5R4MtEh+07drnzPDg9vaw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/installations-compat": ["@firebase/installations-compat@0.2.12", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/installations": "0.6.12", "@firebase/installations-types": "0.5.3", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-RhcGknkxmFu92F6Jb3rXxv6a4sytPjJGifRZj8MSURPuv2Xu+/AispCXEfY1ZraobhEHTG5HLGsP6R4l9qB5aA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/messaging": ["@firebase/messaging@0.12.16", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/installations": "0.6.12", "@firebase/messaging-interop-types": "0.2.3", "@firebase/util": "1.10.3", "idb": "7.1.1", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-VJ8sCEIeP3+XkfbJA7410WhYGHdloYFZXoHe/vt+vNVDGw8JQPTQSVTRvjrUprEf5I4Tbcnpr2H34lS6zhCHSA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/messaging-compat": ["@firebase/messaging-compat@0.2.16", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/messaging": "0.12.16", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-9HZZ88Ig3zQ0ok/Pwt4gQcNsOhoEy8hDHoGsV1am6ulgMuGuDVD2gl11Lere2ksL+msM12Lddi2x/7TCqmODZw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/performance": ["@firebase/performance@0.7.0", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/installations": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0", "web-vitals": "^4.2.4" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-L91PwYuiJdKXKSRqsWNicvTppAJVzKjye03UlegeD6TkpKjb93T8AmJ9B0Mt0bcWHCNtnnRBCdSCvD2U9GZDjw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/performance-compat": ["@firebase/performance-compat@0.2.13", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/performance": "0.7.0", "@firebase/performance-types": "0.2.3", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-pB0SMQj2TLQ6roDcX0YQDWvUnVgsVOl0VnUvyT/VBdCUuQYDHobZsPEuQsoEqmPA44KS/Gl0oyKqf+I8UPtRgw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/remote-config": ["@firebase/remote-config@0.5.0", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/installations": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-weiEbpBp5PBJTHUWR4GwI7ZacaAg68BKha5QnZ8Go65W4oQjEWqCW/rfskABI/OkrGijlL3CUmCB/SA6mVo0qA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/remote-config-compat": ["@firebase/remote-config-compat@0.2.12", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/logger": "0.4.4", "@firebase/remote-config": "0.5.0", "@firebase/remote-config-types": "0.4.0", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-91jLWPtubIuPBngg9SzwvNCWzhMLcyBccmt7TNZP+y1cuYFNOWWHKUXQ3IrxCLB7WwLqQaEu7fTDAjHsTyBsSw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/storage": ["@firebase/storage@0.13.6", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app": "0.x" } }, "sha512-BEJLYQzVgAoglRl5VRIRZ91RRBZgS/O37/PSGQJBYNuoLmFZUrtwrlLTOAwG776NlO9VQR+K2j15/36Lr2EqHA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/storage-compat": ["@firebase/storage-compat@0.3.16", "", { "dependencies": { "@firebase/component": "0.6.12", "@firebase/storage": "0.13.6", "@firebase/storage-types": "0.8.3", "@firebase/util": "1.10.3", "tslib": "^2.1.0" }, "peerDependencies": { "@firebase/app-compat": "0.x" } }, "sha512-EeMuok/s0r938lEomia8XILEqSYULm7HcYZ/GTZLDWur0kMf2ktuPVZiTdRiwEV3Iki7FtQO5txrQ/0pLRVLAw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/util": ["@firebase/util@1.10.3", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-wfoF5LTy0m2ufUapV0ZnpcGQvuavTbJ5Qr1Ze9OJGL70cSMvhDyjS4w2121XdA3lGZSTOsDOyGhpoDtYwck85A=="],
+
     "@react-native/community-cli-plugin/debug/ms": ["ms@2.0.0", "", {}, "sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A=="],
 
     "@react-native/dev-middleware/debug/ms": ["ms@2.0.0", "", {}, "sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A=="],
@@ -2185,6 +2246,120 @@
     "@babel/highlight/chalk/supports-color/has-flag": ["has-flag@3.0.0", "", {}, "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw=="],
 
     "@istanbuljs/load-nyc-config/find-up/locate-path/p-locate": ["p-locate@4.1.0", "", { "dependencies": { "p-limit": "^2.2.0" } }, "sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A=="],
+
+    "@react-native-firebase/app/firebase/@firebase/analytics/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/analytics/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/analytics-compat/@firebase/analytics-types": ["@firebase/analytics-types@0.8.3", "", {}, "sha512-VrIp/d8iq2g501qO46uGz3hjbDb8xzYMrbu8Tp0ovzIzrvJZ2fvmj649gTjge/b7cCCcjT0H37g1gVtlNhnkbg=="],
+
+    "@react-native-firebase/app/firebase/@firebase/analytics-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-check/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-check/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-check-compat/@firebase/app-check-types": ["@firebase/app-check-types@0.5.3", "", {}, "sha512-hyl5rKSj0QmwPdsAxrI5x1otDlByQ7bvNvVt8G/XPO2CSwE++rmSVf3VEhaeOR4J8ZFaF0Z0NDSmLejPweZ3ng=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-check-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-check-compat/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/app-compat/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/auth/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/auth/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/auth-compat/@firebase/auth-types": ["@firebase/auth-types@0.13.0", "", { "peerDependencies": { "@firebase/app-types": "0.x", "@firebase/util": "1.x" } }, "sha512-S/PuIjni0AQRLF+l9ck0YpsMOdE8GO2KU6ubmBB7P+7TJUCQDa3R1dlgYm9UzGbbePMZsp0xzB93f2b/CgxMOg=="],
+
+    "@react-native-firebase/app/firebase/@firebase/auth-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/data-connect/@firebase/auth-interop-types": ["@firebase/auth-interop-types@0.2.4", "", {}, "sha512-JPgcXKCuO+CWqGDnigBtvo09HeBs5u/Ktc2GaFj2m01hLarbxthLNm7Fk8iOP1aqAtXV+fnnGj7U28xmk7IwVA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/data-connect/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/data-connect/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database/@firebase/app-check-interop-types": ["@firebase/app-check-interop-types@0.3.3", "", {}, "sha512-gAlxfPLT2j8bTI/qfe3ahl2I2YcBQ8cFIBdhAQA4I2f3TndcO+22YizyGYuttLHPQEpWkhmpFW60VCFEPg4g5A=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database/@firebase/auth-interop-types": ["@firebase/auth-interop-types@0.2.4", "", {}, "sha512-JPgcXKCuO+CWqGDnigBtvo09HeBs5u/Ktc2GaFj2m01hLarbxthLNm7Fk8iOP1aqAtXV+fnnGj7U28xmk7IwVA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database-compat/@firebase/database-types": ["@firebase/database-types@1.0.8", "", { "dependencies": { "@firebase/app-types": "0.9.3", "@firebase/util": "1.10.3" } }, "sha512-6lPWIGeufhUq1heofZULyVvWFhD01TUrkkB9vyhmksjZ4XF7NaivQp9rICMk7QNhqwa+uDCaj4j+Q8qqcSVZ9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/database-compat/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/firestore/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/firestore/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/firestore/@firebase/webchannel-wrapper": ["@firebase/webchannel-wrapper@1.0.3", "", {}, "sha512-2xCRM9q9FlzGZCdgDMJwc0gyUkWFtkosy7Xxr6sFgQwn+wMNIWd7xIvYNauU1r64B5L5rsGKy/n9TKJ0aAFeqQ=="],
+
+    "@react-native-firebase/app/firebase/@firebase/firestore-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/firestore-compat/@firebase/firestore-types": ["@firebase/firestore-types@3.0.3", "", { "peerDependencies": { "@firebase/app-types": "0.x", "@firebase/util": "1.x" } }, "sha512-hD2jGdiWRxB/eZWF89xcK9gF8wvENDJkzpVFb4aGkzfEaKxVRD1kjz1t1Wj8VZEp2LCB53Yx1zD8mrhQu87R6Q=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions/@firebase/app-check-interop-types": ["@firebase/app-check-interop-types@0.3.3", "", {}, "sha512-gAlxfPLT2j8bTI/qfe3ahl2I2YcBQ8cFIBdhAQA4I2f3TndcO+22YizyGYuttLHPQEpWkhmpFW60VCFEPg4g5A=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions/@firebase/auth-interop-types": ["@firebase/auth-interop-types@0.2.4", "", {}, "sha512-JPgcXKCuO+CWqGDnigBtvo09HeBs5u/Ktc2GaFj2m01hLarbxthLNm7Fk8iOP1aqAtXV+fnnGj7U28xmk7IwVA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions/@firebase/messaging-interop-types": ["@firebase/messaging-interop-types@0.2.3", "", {}, "sha512-xfzFaJpzcmtDjycpDeCUj0Ge10ATFi/VHVIvEEjDNc3hodVBQADZ7BWQU7CuFpjSHE+eLuBI13z5F/9xOoGX8Q=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/functions-compat/@firebase/functions-types": ["@firebase/functions-types@0.6.3", "", {}, "sha512-EZoDKQLUHFKNx6VLipQwrSMh01A1SaL3Wg6Hpi//x6/fJ6Ee4hrAeswK99I5Ht8roiniKHw4iO0B1Oxj5I4plg=="],
+
+    "@react-native-firebase/app/firebase/@firebase/installations/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/installations-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/installations-compat/@firebase/installations-types": ["@firebase/installations-types@0.5.3", "", { "peerDependencies": { "@firebase/app-types": "0.x" } }, "sha512-2FJI7gkLqIE0iYsNQ1P751lO3hER+Umykel+TkLwHj6plzWVxqvfclPUZhcKFVQObqloEBTmpi2Ozn7EkCABAA=="],
+
+    "@react-native-firebase/app/firebase/@firebase/messaging/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/messaging/@firebase/messaging-interop-types": ["@firebase/messaging-interop-types@0.2.3", "", {}, "sha512-xfzFaJpzcmtDjycpDeCUj0Ge10ATFi/VHVIvEEjDNc3hodVBQADZ7BWQU7CuFpjSHE+eLuBI13z5F/9xOoGX8Q=="],
+
+    "@react-native-firebase/app/firebase/@firebase/messaging-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/performance/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/performance/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/performance-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/performance-compat/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/performance-compat/@firebase/performance-types": ["@firebase/performance-types@0.2.3", "", {}, "sha512-IgkyTz6QZVPAq8GSkLYJvwSLr3LS9+V6vNPQr0x4YozZJiLF5jYixj0amDtATf1X0EtYHqoPO48a9ija8GocxQ=="],
+
+    "@react-native-firebase/app/firebase/@firebase/remote-config/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/remote-config/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/remote-config-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/remote-config-compat/@firebase/logger": ["@firebase/logger@0.4.4", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-mH0PEh1zoXGnaR8gD1DeGeNZtWFKbnz9hDO91dIml3iou1gpOnLqXQ2dJfB71dj6dpmUjcQ6phY3ZZJbjErr9g=="],
+
+    "@react-native-firebase/app/firebase/@firebase/remote-config-compat/@firebase/remote-config-types": ["@firebase/remote-config-types@0.4.0", "", {}, "sha512-7p3mRE/ldCNYt8fmWMQ/MSGRmXYlJ15Rvs9Rk17t8p0WwZDbeK7eRmoI1tvCPaDzn9Oqh+yD6Lw+sGLsLg4kKg=="],
+
+    "@react-native-firebase/app/firebase/@firebase/storage/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/storage-compat/@firebase/component": ["@firebase/component@0.6.12", "", { "dependencies": { "@firebase/util": "1.10.3", "tslib": "^2.1.0" } }, "sha512-YnxqjtohLbnb7raXt2YuA44cC1wA9GiehM/cmxrsoxKlFxBLy2V0OkRSj9gpngAE0UoJ421Wlav9ycO7lTPAUw=="],
+
+    "@react-native-firebase/app/firebase/@firebase/storage-compat/@firebase/storage-types": ["@firebase/storage-types@0.8.3", "", { "peerDependencies": { "@firebase/app-types": "0.x", "@firebase/util": "1.x" } }, "sha512-+Muk7g9uwngTpd8xn9OdF/D48uiQ7I1Fae7ULsWPuKoCH3HU7bfFPhxtJYzyhjdniowhuDpQcfPmuNRAqZEfvg=="],
 
     "log-symbols/chalk/ansi-styles/color-convert": ["color-convert@1.9.3", "", { "dependencies": { "color-name": "1.1.3" } }, "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg=="],
 

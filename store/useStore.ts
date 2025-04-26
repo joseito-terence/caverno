@@ -1,6 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { collection, query, getDocs, doc, updateDoc, addDoc } from 'firebase/firestore'
-import { db } from '../lib/firebase'
+import { create } from 'zustand'
+import { getFirestore, collection, query, getDocs, doc, updateDoc, addDoc } from '@react-native-firebase/firestore'
 
 export interface Song {
   id: string
@@ -30,89 +29,91 @@ interface Store {
   updateSong: (id: string, data: Partial<Song>) => Promise<void>
 }
 
-const fetchSongsFromFirestore = async () => {
-  const songsSnapshot = await getDocs(query(collection(db, 'songs')))
-  return songsSnapshot.docs.map(doc => ({
-    id: doc.id,
-    category: doc.data().category ?? null,
-    cover_image: doc.data().cover_image ?? null,
-    created_at: doc.data().created_at ?? '',
-    lyrics: doc.data().lyrics ?? null,
-    style: doc.data().style ?? null,
-    tempo: doc.data().tempo ?? null,
-    title: doc.data().title ?? '',
-    transpose: doc.data().transpose ?? null,
-  }))
-}
-
-const fetchCategoriesFromFirestore = async () => {
-  const categoriesSnapshot = await getDocs(query(collection(db, 'categories')))
-  return categoriesSnapshot.docs.map(doc => ({
-    id: doc.id,
-    name: doc.data().name
-  })).sort((a, b) => a.name.localeCompare(b.name))
-}
-
-const addSongToFirestore = async (data: Omit<Song, 'id' | 'created_at'>) => {
-  await addDoc(collection(db, 'songs'), {
-    ...data,
-    created_at: new Date().toISOString(),
-  })
-}
-
-const updateSongInFirestore = async (id: string, data: Partial<Song>) => {
-  await updateDoc(doc(db, 'songs', id), data)
-}
-
-export const useStore = (): Store => {
-  const queryClient = useQueryClient()
-
-  const { data: songs = [], isLoading: isLoadingSongs, error: songsError } = useQuery({
-    queryKey: ['songs'],
-    queryFn: fetchSongsFromFirestore,
-  })
-
-  const { data: categories = [], isLoading: isLoadingCategories, error: categoriesError } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchCategoriesFromFirestore,
-  })
-
-  const addSongMutation = useMutation({
-    mutationFn: addSongToFirestore,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['songs'] })
-    },
-  })
-
-  const updateSongMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string, data: Partial<Song> }) => updateSongInFirestore(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['songs'] })
-    },
-  })
-
-  return {
-    songs,
-    categories,
-    isLoading: isLoadingSongs || isLoadingCategories || addSongMutation.isPending || updateSongMutation.isPending,
-    error: songsError?.message || categoriesError?.message || addSongMutation.error?.message || updateSongMutation.error?.message || null,
-    fetchSongs: async () => {
-      await queryClient.prefetchQuery({
-        queryKey: ['songs'],
-        queryFn: fetchSongsFromFirestore,
+export const useStore = create<Store>((set) => ({
+  songs: [],
+  categories: [],
+  isLoading: false,
+  error: null,
+  fetchSongs: async () => {
+    set({ isLoading: true, error: null })
+    try {
+      const firestore = getFirestore()
+      const songs = await getDocs(
+        query(
+          collection(firestore, 'songs')
+        )
+      )
+      set({ 
+        songs: songs.docs.map(doc => ({ 
+          id: doc.id, 
+          category: doc.data().category ?? null,
+          cover_image: doc.data().cover_image ?? null,
+          created_at: doc.data().created_at ?? '',
+          lyrics: doc.data().lyrics ?? null,
+          style: doc.data().style ?? null,
+          tempo: doc.data().tempo ?? null,
+          title: doc.data().title ?? '',
+          transpose: doc.data().transpose ?? null,
+        })),
+        isLoading: false 
       })
-    },
-    fetchCategories: async () => {
-      await queryClient.prefetchQuery({
-        queryKey: ['categories'],
-        queryFn: fetchCategoriesFromFirestore,
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Failed to fetch songs',
+        isLoading: false 
       })
-    },
-    addSong: async (data) => {
-      await addSongMutation.mutateAsync(data)
-    },
-    updateSong: async (id, data) => {
-      await updateSongMutation.mutateAsync({ id, data })
-    },
+    }
+  },
+  fetchCategories: async () => {
+    set({ isLoading: true, error: null })
+    try {
+      const firestore = getFirestore()
+      const categories = await getDocs(
+        query(
+          collection(firestore, 'categories')
+        )
+      )
+      set({ 
+        categories: categories.docs.map(doc => ({ 
+          id: doc.id, 
+          name: doc.data().name 
+        })).sort((a, b) => a.name.localeCompare(b.name)),
+        isLoading: false 
+      })
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Failed to fetch categories',
+        isLoading: false 
+      })
+    }
+  },
+  addSong: async (data) => {
+    set({ isLoading: true, error: null })
+    try {
+      const firestore = getFirestore()
+      await addDoc(collection(firestore, 'songs'), {
+        ...data,
+        created_at: new Date().toISOString(),
+      })
+      set({ isLoading: false })
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Failed to add song',
+        isLoading: false 
+      })
+    }
+  },
+  updateSong: async (id, data) => {
+    set({ isLoading: true, error: null })
+    try {
+      const firestore = getFirestore()
+      await updateDoc(doc(firestore, 'songs', id), data)
+      set({ isLoading: false })
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Failed to update song',
+        isLoading: false 
+      })
+    }
   }
-} 
+})) 
