@@ -1,20 +1,14 @@
 import React, { useMemo, useRef, useState } from 'react'
 import { View, Text, SectionList, TouchableOpacity, TextInput } from 'react-native'
 import { useRouter } from 'expo-router'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons'
-import { Button } from '@/components/Button'
-// import AlphabetList from '@/components/AlphabetList'
-// import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 import { useStore } from '@/store/useStore'
 
-export default function Search() {
-  const router = useRouter()
+export default function SongsList() {
   const sectionRef = useRef<SectionList>(null)
   const [searchKeyword, setSearchKeyword] = useState('')
-  const insets = useSafeAreaInsets()
 
-  const { songs: data} = useStore()
+  const { songs: data } = useStore()
 
   const sections = useMemo(() => {
     if (!data) return { letters: [], data: [] };
@@ -50,17 +44,7 @@ export default function Search() {
 
 
   return (
-    <View className='flex-1' style={{ paddingTop: insets.top }}>
-      <View className='flex-row justify-between items-center px-8 py-4'>
-        <Button onPress={router.back}>
-          <AntDesign name="arrowleft" size={22} color="white" />
-        </Button>
-        <Text className='text-white text-lg font-semibold'>
-          Search
-        </Text>
-        <View className='w-8' />
-      </View>
-
+    <View className='flex-1'>
       <View className='px-8 pb-8 pt-2'>
         <View className='bg-gray-800 rounded-full px-4 py-1 flex-row items-center'>
           <AntDesign name="search1" size={22} color="white" />
@@ -92,23 +76,7 @@ export default function Search() {
               <Text className='text-white text-lg font-semibold'>{section.title}</Text>
             </View>
           )}
-          // @ts-ignore
-          // getItemLayout={getItemLayout}
         />
-        {/* <View className='absolute right-0 z-50'>
-          <AlphabetList
-            letters={sections.letters}
-            onChange={(index) => {
-              if (!sectionRef.current || !sections.letters.length) return
-              // console.log('index', index)
-              sectionRef.current.scrollToLocation({
-                animated: true,
-                sectionIndex: index,
-                itemIndex: 0,
-              })
-            }}
-          />
-        </View> */}
       </View>
 
     </View>
@@ -126,14 +94,3 @@ const RenderItem = ({ item }: any) => {
     </TouchableOpacity>
   )
 }
-
-// const getItemLayout = sectionListGetItemLayout({
-//   // The height of the row with rowData at the given sectionIndex and rowIndex
-//   getItemHeight: (rowData, sectionIndex, rowIndex) =>
-//     sectionIndex === 0 ? 60 : 60,
-
-//   // These three properties are optional
-//   getSeparatorHeight: () => 0, // The height of your separators
-//   getSectionHeaderHeight: () => 60, // The height of your section headers
-//   getSectionFooterHeight: () => 0, // The height of your section footers
-// });

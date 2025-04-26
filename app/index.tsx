@@ -8,18 +8,18 @@ import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
 import Animated from "react-native-reanimated";
-import { useRouter } from "expo-router";
 import { useStore } from "@/store/useStore";
+import SongsBottomSheet from "@/components/SongsBottomSheet";
 
 export default function Index() {
-  const router = useRouter()
   const { fetchCategories, fetchSongs } = useStore()
   
   useEffect(() => {
     fetchCategories()
     fetchSongs()
   }, [])
-
+      
+  return <SongsBottomSheet />
   return (
     <View className="flex-1">
       <Animated.View className="
@@ -120,6 +120,7 @@ export default function Index() {
           </MotiText>
         </View>
       </MotiView>
+      <SongsBottomSheet />
     </View>
   );
 }
