@@ -5,9 +5,11 @@ import { AntDesign } from '@expo/vector-icons'
 import { useStore } from '@/store/useStore'
 import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import { Pressable } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function SongsList() {
   const [searchKeyword, setSearchKeyword] = useState('')
+  const insets = useSafeAreaInsets()
 
   const { songs: data } = useStore()
 
@@ -45,7 +47,7 @@ export default function SongsList() {
 
 
   return (
-    <View className='flex-1'>
+    <View className='flex-1' style={{ paddingTop: insets.top }}>
       <View className='px-8 pb-8 pt-2'>
         <View className='bg-gray-800 rounded-full px-4 py-1 flex-row items-center'>
           <AntDesign name="search1" size={22} color="white" />
