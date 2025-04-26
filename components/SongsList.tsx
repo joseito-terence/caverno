@@ -1,9 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react'
-import { View, Text, SectionList, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, SectionList, TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons'
 import { useStore } from '@/store/useStore'
 import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet'
+import { Pressable } from 'react-native-gesture-handler'
 
 export default function SongsList() {
   const sectionRef = useRef<SectionList>(null)
@@ -92,10 +93,10 @@ const RenderItem = ({ item }: any) => {
   const router = useRouter()
 
   return (
-    <TouchableOpacity onPress={() => router.push(`/songs/${item.id}`)}>
+    <Pressable onPress={() => router.push(`/songs/${item.id}`)}>
       <View className='px-9 py-4 w-full'>
         <Text numberOfLines={1} className='text-white text-lg font-medium capitalize'>{item.title}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
