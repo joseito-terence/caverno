@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, Dimensions } from 'react-native'
 import { Button } from '@/components/Button'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Entypo from '@expo/vector-icons/Entypo'
@@ -14,7 +14,7 @@ const SCREEN = Dimensions.get('screen')
 export default function Home() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategory] = useState('')
   const { categories, songs, isLoading } = useStore()
 
 

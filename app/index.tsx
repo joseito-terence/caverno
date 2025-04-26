@@ -22,7 +22,7 @@ export default function Index() {
     setTimeout(() => {
       setRenderBottomSheet(true)
     }, 1500)
-  }, [])
+  }, [fetchCategories, fetchSongs])
       
   return (
     <View className="flex-1">

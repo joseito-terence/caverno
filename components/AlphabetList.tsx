@@ -72,7 +72,7 @@ export default function AlphabetList({
 
   useEffect(() => {
     onChange(currentIndex)
-  }, [currentIndex])
+  }, [currentIndex, onChange])
 
   const tapGesture = Gesture.Tap()
     .onStart((e) => {

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, ActivityIndicator, TextProps } from 'react-native'
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button } from '@/components/Button'
@@ -7,7 +7,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useForm, SubmitHandler } from "react-hook-form"
 import InputController from '@/components/InputController'
 import { unsplash } from '@/utils/unsplash'
-import { useCategories } from '@/hooks/useCategories'
 import { useStore } from '@/store/useStore'
 
 const DEFAULT_VALUES = {
@@ -34,7 +33,6 @@ export default function SongForm(props: SongFormProps) {
   const { addSong, updateSong } = useStore()
   const {
     control,
-    setValue,
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({

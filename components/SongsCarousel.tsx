@@ -1,4 +1,4 @@
-import { Dimensions, View, Image, Text, TouchableOpacity, Pressable } from 'react-native'
+import { Dimensions, View, Image, Text, Pressable } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import { Song } from '@/store/useStore'
 import { router } from 'expo-router';
