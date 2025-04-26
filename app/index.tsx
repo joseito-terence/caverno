@@ -18,10 +18,6 @@ export default function Index() {
   useEffect(() => {
     fetchCategories()
     fetchSongs()
-
-    setTimeout(() => {
-      router.replace('/home')
-    }, 2800)
   }, [])
 
   return (

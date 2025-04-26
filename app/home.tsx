@@ -37,7 +37,7 @@ export default function Home() {
           Home
         </Text>
 
-        <Button onPress={() => router.push('/songs')}>
+        <Button>
           <Entypo name="magnifying-glass" size={22} color="white" />
         </Button>
       </View>
@@ -76,7 +76,7 @@ export default function Home() {
               />
             </View>
 
-            <TouchableOpacity onPress={() => router.push('/songs')}>
+            <TouchableOpacity>
               <Text className='text-white/60 text-lg font-semibold pl-8'>
                 See all
               </Text>
