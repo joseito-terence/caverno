@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons'
@@ -11,7 +11,7 @@ export default function SongsList() {
 
   const { songs: data } = useStore()
 
-  const sections = (() => {
+  const sections = useMemo(() => {
     if (!data) return { letters: [], data: [] };
 
     let songs = data
@@ -40,7 +40,7 @@ export default function SongsList() {
         data: result[letter],
       })) ?? [],
     }
-  })()
+  }, [data, searchKeyword])
 
 
 
