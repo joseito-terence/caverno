@@ -9,14 +9,8 @@ const SCREEN = Dimensions.get('screen');
 const TEXT_DURATION = 600;
 
 const AnimatedLogo = () => {
-  const [showText, setShowText] = useState(false)
-
-  useEffect(() => {
-    setShowText(true)
-  }, [])
-
   return (
-    <MotiView 
+    <MotiView
       className="flex-row"
       layout={LinearTransition.easing(Easing.ease).duration(500)}
       from={{
@@ -35,33 +29,44 @@ const AnimatedLogo = () => {
         delay: TEXT_DURATION,
       }}
     >
-      <Image 
+      <Image
         source={require('../assets/images/adaptive-icon.png')}
         className="w-[195px] h-[195px]"
       />
-      <View className="overflow-hidden translate-x-[-40px]">
-        {showText && 
-          <MotiView
-            from={{
-              opacity: 0,
-              translateX: -SCREEN.width,
-            }}
-            animate={{
-              opacity: 1,
-              translateX: 0,
-            }}
-            transition={{
-              type: 'timing',
-              duration: TEXT_DURATION,
-            }}
-            className="z-[-1]"
-          >
-            <AppNameTextSVG />
-          </MotiView>
-        }
-      </View>
+      <AnimatedTextLogo />
     </MotiView>
   )
 }
 
 export default AnimatedLogo;
+
+const AnimatedTextLogo = () => {
+  const [showText, setShowText] = useState(false)
+
+  useEffect(() => {
+    setShowText(true)
+  }, [])
+
+  return showText && (
+    <View className="overflow-hidden translate-x-[-40px]">
+      <MotiView
+        from={{
+          opacity: 0,
+          translateX: -SCREEN.width,
+        }}
+        animate={{
+          opacity: 1,
+          translateX: 0,
+        }}
+        transition={{
+          type: 'timing',
+          duration: TEXT_DURATION,
+        }}
+        className="z-[-1]"
+      >
+        <AppNameTextSVG />
+      </MotiView>
+    </View>
+  )
+
+}
