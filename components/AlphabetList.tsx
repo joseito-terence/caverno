@@ -76,16 +76,16 @@ export default function AlphabetList({
 
   const tapGesture = Gesture.Tap()
     .onStart((e) => {
-      translateX.value = withSpring(-INDICATOR_SIZE - 10)
-      scale.value = withSpring(1.2)
-      translateY.value = withTiming(e.y - INDICATOR_SIZE)
+      translateX.set(withSpring(-INDICATOR_SIZE - 10))
+      scale.set(withSpring(1.2))
+      translateY.set(withTiming(e.y - INDICATOR_SIZE))
     })
     .onEnd(() => {
-      translateX.value = withSpring(0)
-      scale.value = withSequence(
+      translateX.set(withSpring(0))
+      scale.set(withSequence(
         withSpring(1.2),
         withDelay(100, withSpring(0))
-      )
+      ))
     })
 
   const composedGesture = Gesture.Exclusive(tapGesture, panGesture)

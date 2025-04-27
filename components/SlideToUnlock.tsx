@@ -34,16 +34,16 @@ export default function SlideToUnlock({
   const gesture = Gesture.Pan()
     .onChange(e => {
       if (translateXProp) {
-        translateXProp.value = e.translationX
+        translateXProp.set(e.translationX)
       }
       translateX.value = e.translationX
     })
     .onEnd(() => {
       if (translateX.value < SLIDER_WIDTH / 2 - SWIPABLE_DIMENSIONS / 2) {
         translateX.value = withSpring(0, { damping: 14 })
-        translateXProp && (translateXProp.value = withSpring(0, { damping: 14 }))
+        translateXProp && (translateXProp.set(withSpring(0, { damping: 14 })))
       } else {
-        translateXProp && (translateXProp.value = withSpring(H_SWIPE_RANGE, { damping: 14 }))
+        translateXProp && (translateXProp.set(withSpring(H_SWIPE_RANGE, { damping: 14 })))
         translateX.value = withSpring(H_SWIPE_RANGE, { damping: 14 })
         runOnJS(onUnlock)()
       }
