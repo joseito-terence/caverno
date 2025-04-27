@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons'
@@ -11,7 +11,7 @@ export default function SongsList() {
 
   const { songs: data } = useStore()
 
-  const sections = useMemo(() => {
+  const sections = (() => {
     if (!data) return { letters: [], data: [] };
 
     let songs = data
@@ -40,7 +40,7 @@ export default function SongsList() {
         data: result[letter],
       })) ?? [],
     }
-  }, [data, searchKeyword])
+  })()
 
 
 
@@ -70,14 +70,14 @@ export default function SongsList() {
         sections={sections.data}
         keyExtractor={(item) => item.id}
         stickySectionHeadersEnabled
-        renderItem={RenderItem}
-        renderSectionHeader={RenderSectionHeader}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
       />
     </>
   )
 }
 
-const RenderSectionHeader = ({ section }: any) => {
+const renderSectionHeader = ({ section }: any) => {
   return (
     <View className='px-9 py-2 bg-[#121821]'>
       <Text className='text-white text-lg font-semibold'>{section.title}</Text>
@@ -85,7 +85,7 @@ const RenderSectionHeader = ({ section }: any) => {
   )
 }
 
-const RenderItem = ({ item }: any) => {
+const renderItem = ({ item }: any) => {
   const router = useRouter()
 
   return (
