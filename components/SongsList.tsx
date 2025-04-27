@@ -45,7 +45,7 @@ export default function SongsList() {
 
 
   return (
-    <View className='flex-1'>
+    <>
       <View className='px-8 pb-8 pt-2'>
         <View className='bg-gray-800 rounded-full px-4 py-1 flex-row items-center'>
           <AntDesign name="search1" size={22} color="white" />
@@ -65,17 +65,15 @@ export default function SongsList() {
         </View>
       </View>
 
-      <View className='flex-1'>
-        <BottomSheetSectionList
-          sections={sections.data}
-          keyExtractor={(item) => item.id}
-          stickySectionHeadersEnabled
-          renderItem={RenderItem}
-          renderSectionHeader={RenderSectionHeader}
-        />
-      </View>
 
-    </View>
+      <BottomSheetSectionList
+        sections={sections.data}
+        keyExtractor={(item) => item.id}
+        stickySectionHeadersEnabled
+        renderItem={RenderItem}
+        renderSectionHeader={RenderSectionHeader}
+      />
+    </>
   )
 }
 

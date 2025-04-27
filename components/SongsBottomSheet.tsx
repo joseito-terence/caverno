@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { BackHandler } from 'react-native';
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import SongsList from "./SongsList";
 
@@ -38,9 +38,7 @@ export default function SongsBottomSheet() {
       topInset={insets.top}
       onChange={setCurrentIndex}
     >
-      <BottomSheetView className="flex-1">
-        <SongsList />
-      </BottomSheetView>
+      <SongsList />
     </BottomSheet>
   )
 }
