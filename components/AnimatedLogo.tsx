@@ -6,7 +6,7 @@ import AppNameTextSVG from "@/components/AppNameSVG";
 
 const SCREEN = Dimensions.get('screen');
 
-const TEXT_DURATION = 600;
+const TEXT_DURATION = 450;
 
 const AnimatedLogo = () => {
   return (

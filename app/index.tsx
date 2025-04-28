@@ -36,7 +36,7 @@ export default function Index() {
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ type: 'timing', duration: 800, delay: 1100 }}
+        transition={{ type: 'timing', duration: 400, delay: 400 }}
         className="w-full"
       >
         <View className="items-center flex-row py-20 overflow-hidden">
@@ -101,7 +101,7 @@ export default function Index() {
               resizeMode="contain"
               from={{ translateY: 0, opacity: 0, scale: 0.5 }}
               animate={{ translateY: 50, opacity: 1, scale: 1 }}
-              transition={{ type: 'timing', duration: 800, delay: 1300 }}
+              transition={{ type: 'timing', duration: 800, delay: 800 }}
             />
           </View>
         </View>
@@ -109,7 +109,7 @@ export default function Index() {
           <MotiText
             from={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: 'timing', duration: 800, delay: 1500 }}
+            transition={{ type: 'timing', duration: 500, delay: 1000 }}
             className="text-white/70 text-xl font-bold tracking-wider mb-4"
           >
             Perform Your
@@ -117,7 +117,7 @@ export default function Index() {
           <MotiText
             from={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: 'timing', duration: 800, delay: 1800 }}
+            transition={{ type: 'timing', duration: 500, delay: 1200 }}
             className="text-white text-6xl font-bold tracking-wider"
           >
             Favourite Music
@@ -141,7 +141,7 @@ const AnimatedMusicSymbol = ({
   <MotiView
     from={{ translateX: 0, translateY: 0, opacity: 0 }}
     animate={{ translateX: position[0], translateY: position[1], opacity: 1 }}
-    transition={{ type: 'timing', duration: 800, delay: 1300 }}
+    transition={{ type: 'timing', duration: 800, delay: 800 }}
   >
     <MotiView
       from={{ rotate: '-10deg' }}
