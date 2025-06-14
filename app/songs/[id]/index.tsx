@@ -19,11 +19,13 @@ import Animated, {
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import Entypo from '@expo/vector-icons/Entypo'
 import { useSong } from '@/hooks/useSong'
+import { useKeepAwake } from 'expo-keep-awake'
 
 const CARD_SIZE = 300
 const SNAP_POINTS = [150, 300, '100%']
 
 export default function Song() {
+  useKeepAwake()
   const { id } = useLocalSearchParams<{ id: string }>()
   const insets = useSafeAreaInsets()
   const song = useSong(id)
