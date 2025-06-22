@@ -1,4 +1,4 @@
-import { ExpoConfig, ConfigContext } from 'expo/config';
+import { ExpoConfig, ConfigContext } from "expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -12,14 +12,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.jtf.caverno"
+    bundleIdentifier: "com.jtf.caverno",
   },
   android: {
-    googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
+    googleServicesFile:
+      process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
     adaptiveIcon: {
       foregroundImage: "./assets/images/adaptive-icon.png",
       monochromeImage: "./assets/images/adaptive-monochrome-icon.png",
-      backgroundColor: "#000000"
+      backgroundColor: "#000000",
     },
     package: "com.jtf.caverno",
     edgeToEdgeEnabled: true,
@@ -27,7 +28,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   web: {
     bundler: "metro",
     output: "static",
-    favicon: "./assets/images/favicon.png"
+    favicon: "./assets/images/favicon.png",
   },
   plugins: [
     "expo-router",
@@ -36,24 +37,24 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-splash-screen",
       {
-        "image": "./assets/images/adaptive-icon.png",
-        "imageWidth": 200,
-        "resizeMode": "contain",
-        "backgroundColor": "#000000"
-      }
+        image: "./assets/images/adaptive-icon.png",
+        imageWidth: 200,
+        resizeMode: "contain",
+        backgroundColor: "#000000",
+      },
     ],
   ],
   experiments: {
     typedRoutes: true,
-    reactCompiler: true
+    reactCompiler: true,
   },
   extra: {
     router: {
-      origin: false
+      origin: false,
     },
     eas: {
-      projectId: "379b7914-541a-4c26-b413-8e6803f2a29f"
-    }
+      projectId: "379b7914-541a-4c26-b413-8e6803f2a29f",
+    },
   },
-  owner: "joseito.terence"
-})
+  owner: "joseito.terence",
+});

@@ -1,0 +1,17 @@
+appId: com.jtf.caverno
+---
+- launchApp
+- assertVisible: "Perform Your"
+- assertVisible: "Favourite Music"
+- assertVisible: "Search songs..."
+- tapOn:
+    id: "search-input"
+- inputText: "Blessings"
+- assertVisible: "Blessings"
+- tapOn:
+    text: "Blessings"
+    index: 1
+# - swipe:
+#     id: "bottom-sheet-handle"
+#     direction: UP
+# - assertVisible: "Lyrics"

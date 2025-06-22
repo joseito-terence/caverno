@@ -18,7 +18,13 @@
         "EXPO_PUBLIC_READ_ONLY": "true"
       }
     },
-    "production": {}
+    "production": {},
+    "e2e-test": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": { "buildType": "apk" },
+      "ios": { "simulator": true }
+    }
   },
   "submit": {
     "production": {}
