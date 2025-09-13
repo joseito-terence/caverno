@@ -1,63 +1,68 @@
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
-import React from 'react'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Button } from '@/components/Button'
-import { router } from 'expo-router'
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useForm, SubmitHandler } from "react-hook-form"
-import InputController from '@/components/InputController'
-import { unsplash } from '@/utils/unsplash'
-import { useStore } from '@/store/useStore'
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Button } from "@/components/Button";
+import { router } from "expo-router";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
+import { useForm, SubmitHandler } from "react-hook-form";
+import InputController from "@/components/InputController";
+import { unsplash } from "@/utils/unsplash";
+import { useStore } from "@/store/useStore";
 
 const DEFAULT_VALUES = {
-  title: '',
-  style: '',
+  title: "",
+  style: "",
   tempo: 0,
   transpose: 0,
-  category: '',
-  lyrics: '',
-}
+  category: "",
+  lyrics: "",
+};
 
 export type TSong = typeof DEFAULT_VALUES;
 
-type SongFormProps = {
-  edit: true;
-  song: TSong & { id: string };
-} | {
-  edit?: false;
-}
+type SongFormProps =
+  | {
+      edit: true;
+      song: TSong & { id: string };
+    }
+  | {
+      edit?: false;
+    };
 
 export default function SongForm(props: SongFormProps) {
-  const isEdit = props.edit === true
-  const insets = useSafeAreaInsets()
-  const { addSong, updateSong } = useStore()
+  const isEdit = props.edit === true;
+  const insets = useSafeAreaInsets();
+  const { addSong, updateSong } = useStore();
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
-  })
+  });
 
-  const onSubmit: SubmitHandler<typeof control._defaultValues> = async (data) => {
-    if (process.env.EXPO_PUBLIC_READ_ONLY === 'true') {
-      return console.warn('Read-only mode')
+  const onSubmit: SubmitHandler<typeof control._defaultValues> = async (
+    data
+  ) => {
+    if (process.env.EXPO_PUBLIC_READ_ONLY === "true") {
+      return console.warn("Read-only mode");
     }
 
     if (!isDirty) return;
     if (isEdit) {
-      console.warn('edit')
+      console.warn("edit");
       return updateSong(props.song.id, {
         ...data,
         title: data.title!,
       }).then(() => {
-        router.back()
-      })
+        router.back();
+      });
     }
 
-    const result = await unsplash.photos.getRandom({ query: 'music' })
+    const result = await unsplash.photos.getRandom({ query: "music" });
 
-    if (result.type === 'error') return;
+    if (result.type === "error") return;
 
     return addSong({
       title: data.title!,
@@ -69,36 +74,37 @@ export default function SongForm(props: SongFormProps) {
       // @ts-ignore
       cover_image: result.response.urls.regular!,
     }).then(() => {
-      router.back()
-    })
-  }
+      router.back();
+    });
+  };
 
   return (
-    <View className='flex-1' style={{ paddingTop: insets.top }}>
-      <View className='flex-row justify-between items-center px-8 py-4'>
+    <View className="flex-1" style={{ paddingTop: insets.top }}>
+      <View className="flex-row justify-between items-center px-8 py-4">
         <Button onPress={router.back}>
-          <AntDesign name="arrowleft" size={22} color="white" />
+          <Feather name="arrow-left" size={22} color="white" />
         </Button>
 
-        <Text className='text-white text-lg font-semibold'>
-          {isEdit ? 'Edit' : 'Add'}
+        <Text className="text-white text-lg font-semibold">
+          {isEdit ? "Edit" : "Add"}
         </Text>
 
         <Button onPress={handleSubmit(onSubmit)}>
-          {isSubmitting
-            ? <ActivityIndicator color='white' />
-            : <AntDesign name="check" size={22} color="white" />
-          }
+          {isSubmitting ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <AntDesign name="check" size={22} color="white" />
+          )}
         </Button>
       </View>
 
-      <View className='flex-1'>
-        <ScrollView keyboardDismissMode='on-drag'>
-          <View className='px-8 pt-4 gap-8'>
+      <View className="flex-1">
+        <ScrollView keyboardDismissMode="on-drag">
+          <View className="px-8 pt-4 gap-8">
             <InputController
-              name='title'
-              placeholder='Title of the Song*'
-              className='text-white text-3xl'
+              name="title"
+              placeholder="Title of the Song*"
+              className="text-white text-3xl"
               control={control}
               errors={errors}
               multiline
@@ -107,43 +113,42 @@ export default function SongForm(props: SongFormProps) {
             />
 
             <InputController
-              name='style'
-              placeholder='Style* (e.g. Rock, Pop, Hip-Hop)'
+              name="style"
+              placeholder="Style* (e.g. Rock, Pop, Hip-Hop)"
               control={control}
               errors={errors}
               disabled={isSubmitting}
             />
 
             <InputController
-              name='tempo'
-              placeholder='Tempo* (e.g. 120 BPM)'
+              name="tempo"
+              placeholder="Tempo* (e.g. 120 BPM)"
               control={control}
               errors={errors}
               disabled={isSubmitting}
             />
 
             <InputController
-              name='transpose'
-              placeholder='Transpose* (e.g. -4)'
+              name="transpose"
+              placeholder="Transpose* (e.g. -4)"
               control={control}
               errors={errors}
               disabled={isSubmitting}
             />
 
             <InputController
-              name='lyrics'
+              name="lyrics"
               placeholder={`Lyrics
 (e.g. Verse 1: ...)`}
               control={control}
               errors={errors}
               multiline
               disabled={isSubmitting}
-              className='text-white text-sm'
+              className="text-white text-sm"
             />
           </View>
         </ScrollView>
       </View>
-
     </View>
-  )
+  );
 }

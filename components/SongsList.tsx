@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, SectionList } from "react-native";
 import { router } from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
-import { useStore } from "@/store/useStore";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { Song, useStore } from "@/store/useStore";
 import {
   BottomSheetSectionList,
   BottomSheetTextInput,
@@ -52,7 +52,7 @@ export default function SongsList() {
     <>
       <View className="px-8 pb-8 pt-2">
         <View className="bg-gray-800 rounded-full px-4 py-1 flex-row items-center">
-          <AntDesign name="search1" size={22} color="white" />
+          <EvilIcons name="search" size={24} color="white" />
           <BottomSheetTextInput
             testID="search-input"
             placeholder="Search songs..."
@@ -64,15 +64,15 @@ export default function SongsList() {
 
           {searchKeyword.length > 0 && (
             <TouchableOpacity onPress={() => setSearchKeyword("")}>
-              <AntDesign name="close" size={22} color="white" />
+              <EvilIcons name="close" size={24} color="white" />
             </TouchableOpacity>
           )}
         </View>
       </View>
 
-      <BottomSheetSectionList
+      <SectionList
         sections={sections.data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: Song) => item.id}
         stickySectionHeadersEnabled
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}

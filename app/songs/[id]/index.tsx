@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/Button";
-import { AntDesign } from "@expo/vector-icons";
+import Feather from "@expo/vector-icons/Feather";
 import { BlurView } from "expo-blur";
 import BottomSheet, {
   BottomSheetScrollView,
@@ -88,7 +88,7 @@ export default function Song() {
           />
         </Animated.View>
         <Button onPress={router.back}>
-          <AntDesign name="arrowleft" size={22} color="white" />
+          <Feather name="arrow-left" size={22} color="white" />
         </Button>
 
         <View className="w-8" />
