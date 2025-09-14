@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, SectionList } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { Song, useStore } from "@/store/useStore";
 import {
-  BottomSheetSectionList,
+  // BottomSheetSectionList,
+  BottomSheetFlatList,
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
 import { Pressable } from "react-native-gesture-handler";
@@ -14,39 +15,39 @@ export default function SongsList() {
 
   const { songs: data } = useStore();
 
-  const sections = (() => {
-    if (!data) return { letters: [], data: [] };
+  // const sections = (() => {
+  //   if (!data) return { letters: [], data: [] };
 
-    let songs = data;
-    // Filter by search keyword
-    if (searchKeyword) {
-      songs = data.filter((song) =>
-        song.title.toLowerCase().includes(searchKeyword.toLowerCase())
-      );
-    }
+  //   let songs = data;
+  //   // Filter by search keyword
+  //   if (searchKeyword) {
+  //     songs = data.filter((song) =>
+  //       song.title.toLowerCase().includes(searchKeyword.toLowerCase())
+  //     );
+  //   }
 
-    // Group by first letter
-    const result = songs.reduce((acc, curr) => {
-      const key = curr.title[0].toUpperCase();
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(curr);
-      return acc;
-    }, {} as Record<string, typeof songs>);
+  //   // Group by first letter
+  //   const result = songs.reduce((acc, curr) => {
+  //     const key = curr.title[0].toUpperCase();
+  //     if (!acc[key]) {
+  //       acc[key] = [];
+  //     }
+  //     acc[key].push(curr);
+  //     return acc;
+  //   }, {} as Record<string, typeof songs>);
 
-    // Format array for SectionList
-    const letters = Object.keys(result).sort();
+  //   // Format array for SectionList
+  //   const letters = Object.keys(result).sort();
 
-    return {
-      letters,
-      data:
-        letters.map((letter) => ({
-          title: letter,
-          data: result[letter],
-        })) ?? [],
-    };
-  })();
+  //   return {
+  //     letters,
+  //     data:
+  //       letters.map((letter) => ({
+  //         title: letter,
+  //         data: result[letter],
+  //       })) ?? [],
+  //   };
+  // })();
 
   return (
     <>
@@ -70,10 +71,11 @@ export default function SongsList() {
         </View>
       </View>
 
-      <SectionList
-        sections={sections.data}
+      <BottomSheetFlatList
+        // sections={sections.data}
+        data={data}
         keyExtractor={(item: Song) => item.id}
-        stickySectionHeadersEnabled
+        // stickySectionHeadersEnabled
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
       />
