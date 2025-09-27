@@ -1,7 +1,6 @@
-import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native";
 import { useStore } from "@/store/useStore";
-import { Pressable } from "react-native-gesture-handler";
+import { Pressable, FlatList } from "react-native-gesture-handler";
 
 export default function CategoryFilters({
   selectedCategory,
@@ -17,15 +16,15 @@ export default function CategoryFilters({
   };
 
   return (
-    <BottomSheetFlatList
+    <FlatList
       data={categories}
       keyExtractor={(item: any) => item.id}
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
         paddingHorizontal: 16,
+        paddingVertical: 16,
         marginLeft: 12,
-        height: 60,
         gap: 8,
       }}
       renderItem={({ item }: { item: any }) => (

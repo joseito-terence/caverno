@@ -57,30 +57,31 @@ export default function SongsList() {
 
   return (
     <>
-      <View className="px-8 pb-8 pt-2">
-        <View className="bg-gray-800 rounded-full px-4 py-1 flex-row items-center">
-          <EvilIcons name="search" size={24} color="white" />
-          <BottomSheetTextInput
-            testID="search-input"
-            placeholder="Search songs..."
-            value={searchKeyword}
-            onChangeText={setSearchKeyword}
-            className="text-white text-lg font-medium bg-transparent flex-1 ml-2"
-            placeholderTextColor="gray"
-          />
+      <View>
+        <View className="px-8 py-2">
+          <View className="bg-gray-800 rounded-full px-4 py-1 flex-row items-center">
+            <EvilIcons name="search" size={24} color="white" />
+            <BottomSheetTextInput
+              testID="search-input"
+              placeholder="Search songs..."
+              value={searchKeyword}
+              onChangeText={setSearchKeyword}
+              className="text-white text-lg font-medium bg-transparent flex-1 ml-2"
+              placeholderTextColor="gray"
+            />
 
-          {searchKeyword.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchKeyword("")}>
-              <EvilIcons name="close" size={24} color="white" />
-            </TouchableOpacity>
-          )}
+            {searchKeyword.length > 0 && (
+              <TouchableOpacity onPress={() => setSearchKeyword("")}>
+                <EvilIcons name="close" size={24} color="white" />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
+        <CategoryFilters
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
       </View>
-
-      <CategoryFilters
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
 
       <BottomSheetFlatList
         // sections={sections.data}
