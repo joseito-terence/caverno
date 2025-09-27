@@ -9,9 +9,11 @@ import {
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
 import { Pressable } from "react-native-gesture-handler";
+import CategoryFilters from "./CategoryFilters";
 
 export default function SongsList() {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const { songs: data } = useStore();
 
@@ -49,6 +51,10 @@ export default function SongsList() {
   //   };
   // })();
 
+  const songs = selectedCategory
+    ? data.filter((song) => song.category === selectedCategory)
+    : data;
+
   return (
     <>
       <View className="px-8 pb-8 pt-2">
@@ -71,9 +77,14 @@ export default function SongsList() {
         </View>
       </View>
 
+      <CategoryFilters
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+
       <BottomSheetFlatList
         // sections={sections.data}
-        data={data}
+        data={songs}
         keyExtractor={(item: Song) => item.id}
         // stickySectionHeadersEnabled
         renderItem={renderItem}
