@@ -51,9 +51,25 @@ export default function SongsList() {
   //   };
   // })();
 
-  const songs = selectedCategory
-    ? data.filter((song) => song.category === selectedCategory)
-    : data;
+  const songs = (() => {
+    let filteredSongs = data;
+
+    // Filter by search keyword
+    if (searchKeyword) {
+      filteredSongs = filteredSongs.filter((song) =>
+        song.title.toLowerCase().includes(searchKeyword.toLowerCase())
+      );
+    }
+
+    // Filter by category
+    if (selectedCategory) {
+      filteredSongs = filteredSongs.filter(
+        (song) => song.category === selectedCategory
+      );
+    }
+
+    return filteredSongs;
+  })();
 
   return (
     <>
