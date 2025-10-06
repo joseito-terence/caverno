@@ -1,75 +1,63 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, SectionList } from "react-native";
 import { router } from "expo-router";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { Song, useStore } from "@/store/useStore";
 import {
-  // BottomSheetSectionList,
-  BottomSheetFlatList,
   BottomSheetTextInput,
+  useBottomSheetScrollableCreator,
 } from "@gorhom/bottom-sheet";
 import { Pressable } from "react-native-gesture-handler";
 import CategoryFilters from "./CategoryFilters";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SongsList() {
+  const insets = useSafeAreaInsets();
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const { songs: data } = useStore();
 
-  // const sections = (() => {
-  //   if (!data) return { letters: [], data: [] };
+  const sections = (() => {
+    if (!data) return { letters: [], data: [] };
 
-  //   let songs = data;
-  //   // Filter by search keyword
-  //   if (searchKeyword) {
-  //     songs = data.filter((song) =>
-  //       song.title.toLowerCase().includes(searchKeyword.toLowerCase())
-  //     );
-  //   }
-
-  //   // Group by first letter
-  //   const result = songs.reduce((acc, curr) => {
-  //     const key = curr.title[0].toUpperCase();
-  //     if (!acc[key]) {
-  //       acc[key] = [];
-  //     }
-  //     acc[key].push(curr);
-  //     return acc;
-  //   }, {} as Record<string, typeof songs>);
-
-  //   // Format array for SectionList
-  //   const letters = Object.keys(result).sort();
-
-  //   return {
-  //     letters,
-  //     data:
-  //       letters.map((letter) => ({
-  //         title: letter,
-  //         data: result[letter],
-  //       })) ?? [],
-  //   };
-  // })();
-
-  const songs = (() => {
-    let filteredSongs = data;
-
+    let songs = data;
     // Filter by search keyword
     if (searchKeyword) {
-      filteredSongs = filteredSongs.filter((song) =>
+      songs = data.filter((song) =>
         song.title.toLowerCase().includes(searchKeyword.toLowerCase())
       );
     }
 
     // Filter by category
     if (selectedCategory) {
-      filteredSongs = filteredSongs.filter(
-        (song) => song.category === selectedCategory
-      );
+      songs = songs.filter((song) => song.category === selectedCategory);
     }
 
-    return filteredSongs;
+    // Group by first letter
+    const result = songs.reduce((acc, curr) => {
+      const key = curr.title[0].toUpperCase();
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(curr);
+      return acc;
+    }, {} as Record<string, typeof songs>);
+
+    // Format array for SectionList
+    const letters = Object.keys(result).sort();
+
+    return {
+      letters,
+      data:
+        letters.map((letter) => ({
+          title: letter,
+          data: result[letter],
+        })) ?? [],
+    };
   })();
+
+  const BottomSheetSectionList = useBottomSheetScrollableCreator();
 
   return (
     <>
@@ -99,13 +87,16 @@ export default function SongsList() {
         />
       </View>
 
-      <BottomSheetFlatList
-        // sections={sections.data}
-        data={songs}
+      <SectionList
+        sections={sections.data}
         keyExtractor={(item: Song) => item.id}
-        // stickySectionHeadersEnabled
+        stickySectionHeadersEnabled
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
+        renderScrollComponent={BottomSheetSectionList}
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + 16,
+        }}
       />
     </>
   );
