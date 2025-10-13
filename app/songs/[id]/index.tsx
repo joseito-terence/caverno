@@ -74,7 +74,7 @@ export default function Song() {
   });
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-black">
       <Animated.View
         style={[{ paddingTop: insets.top + 16 }]}
         className="flex-row justify-between items-center px-8 py-4 z-[4]"

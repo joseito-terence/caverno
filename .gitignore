@@ -24,3 +24,7 @@ google-services.json
 
 android/
 ios/
+
+.cursor
+openspec
+AGENTS.md
