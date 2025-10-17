@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/Button";
 import { router } from "expo-router";
@@ -7,8 +7,12 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import { useForm, SubmitHandler } from "react-hook-form";
 import InputController from "@/components/InputController";
+import FormCard from "@/components/FormCard";
+import CategorySelector from "@/components/CategorySelector";
 import { unsplash } from "@/utils/unsplash";
 import { useStore } from "@/store/useStore";
+import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
 
 const DEFAULT_VALUES = {
   title: "",
@@ -30,17 +34,44 @@ type SongFormProps =
       edit?: false;
     };
 
+// Screen dimensions available for future use
+// const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
 export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true;
   const insets = useSafeAreaInsets();
   const { addSong, updateSong } = useStore();
+  const [progress, setProgress] = useState(0);
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   });
+
+  // Watch form values to calculate progress
+  const watchedValues = watch();
+  const calculateProgress = React.useCallback(() => {
+    const fields = [
+      "title",
+      "style",
+      "tempo",
+      "transpose",
+      "category",
+      "lyrics",
+    ];
+    const filledFields = fields.filter((field) => {
+      const value = watchedValues[field as keyof typeof watchedValues];
+      return value && value.toString().trim() !== "";
+    });
+    return (filledFields.length / fields.length) * 100;
+  }, [watchedValues]);
+
+  React.useEffect(() => {
+    setProgress(calculateProgress());
+  }, [calculateProgress]);
 
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (
     data
@@ -80,31 +111,60 @@ export default function SongForm(props: SongFormProps) {
 
   return (
     <View className="flex-1" style={{ paddingTop: insets.top }}>
-      <View className="flex-row justify-between items-center px-8 py-4">
-        <Button onPress={router.back}>
-          <Feather name="arrow-left" size={22} color="white" />
-        </Button>
+      {/* Background with gradient and blur effect */}
+      <LinearGradient
+        colors={["#1a0f3d", "#0f0f23", "#000000"]}
+        className="absolute top-0 left-0 right-0 bottom-0"
+      />
 
-        <Text className="text-white text-lg font-semibold">
-          {isEdit ? "Edit" : "Add"}
-        </Text>
+      {/* Header with glassmorphism */}
+      <BlurView intensity={20} className="px-6 py-4">
+        <View className="flex-row justify-between items-center">
+          <Button onPress={router.back}>
+            <Feather name="arrow-left" size={22} color="white" />
+          </Button>
 
-        <Button onPress={handleSubmit(onSubmit)}>
-          {isSubmitting ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            <AntDesign name="check" size={22} color="white" />
-          )}
-        </Button>
-      </View>
+          <View className="items-center">
+            <Text className="text-white text-xl font-bold">
+              {isEdit ? "Edit Song" : "Create Song"}
+            </Text>
+            <Text className="text-gray-300 text-sm">
+              {Math.round(progress)}% complete
+            </Text>
+          </View>
 
-      <View className="flex-1">
-        <ScrollView keyboardDismissMode="on-drag">
-          <View className="px-8 pt-4 gap-8">
+          <Button onPress={handleSubmit(onSubmit)}>
+            {isSubmitting ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <AntDesign name="check" size={22} color="white" />
+            )}
+          </Button>
+        </View>
+
+        {/* Progress bar */}
+        <View className="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
+          <View
+            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </View>
+      </BlurView>
+
+      {/* Form Content */}
+      <ScrollView
+        keyboardDismissMode="on-drag"
+        showsVerticalScrollIndicator={false}
+        className="flex-1"
+      >
+        <View className="px-6 pt-6 pb-8">
+          {/* Basic Information Card */}
+          <FormCard title="🎵 Basic Information" variant="highlighted">
             <InputController
               name="title"
-              placeholder="Title of the Song*"
-              className="text-white text-3xl"
+              label="Song Title"
+              placeholder="Enter the song title"
+              variant="large"
               control={control}
               errors={errors}
               multiline
@@ -114,41 +174,88 @@ export default function SongForm(props: SongFormProps) {
 
             <InputController
               name="style"
-              placeholder="Style* (e.g. Rock, Pop, Hip-Hop)"
+              label="Musical Style"
+              placeholder="e.g. Rock, Pop, Hip-Hop, Jazz"
               control={control}
               errors={errors}
               disabled={isSubmitting}
             />
+          </FormCard>
 
-            <InputController
-              name="tempo"
-              placeholder="Tempo* (e.g. 120 BPM)"
+          {/* Musical Details Card */}
+          <FormCard title="🎼 Musical Details">
+            <View className="flex-row gap-4">
+              <View className="flex-1">
+                <InputController
+                  name="tempo"
+                  label="Tempo (BPM)"
+                  placeholder="120"
+                  control={control}
+                  errors={errors}
+                  disabled={isSubmitting}
+                />
+              </View>
+              <View className="flex-1">
+                <InputController
+                  name="transpose"
+                  label="Transpose"
+                  placeholder="-4"
+                  control={control}
+                  errors={errors}
+                  disabled={isSubmitting}
+                />
+              </View>
+            </View>
+
+            <CategorySelector
+              name="category"
+              label="Category"
               control={control}
               errors={errors}
               disabled={isSubmitting}
             />
+          </FormCard>
 
-            <InputController
-              name="transpose"
-              placeholder="Transpose* (e.g. -4)"
-              control={control}
-              errors={errors}
-              disabled={isSubmitting}
-            />
-
+          {/* Lyrics Card */}
+          <FormCard title="📝 Lyrics">
             <InputController
               name="lyrics"
-              placeholder={`Lyrics
-(e.g. Verse 1: ...)`}
+              label="Song Lyrics"
+              placeholder="Enter your lyrics here...&#10;&#10;Verse 1:&#10;...&#10;&#10;Chorus:&#10;..."
+              variant="multiline"
               control={control}
               errors={errors}
               multiline
+              textAlignVertical="top"
               disabled={isSubmitting}
-              className="text-white text-sm"
             />
+          </FormCard>
+
+          {/* Submit Button */}
+          <View className="mt-6">
+            <Button
+              onPress={handleSubmit(onSubmit)}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl py-4 px-8 items-center justify-center"
+              disabled={isSubmitting || !isDirty}
+            >
+              <View className="flex-row items-center">
+                {isSubmitting ? (
+                  <ActivityIndicator color="white" size="small" />
+                ) : (
+                  <AntDesign name="check" size={20} color="white" />
+                )}
+                <Text className="text-white text-lg font-semibold ml-2">
+                  {isSubmitting
+                    ? "Saving..."
+                    : isEdit
+                    ? "Update Song"
+                    : "Create Song"}
+                </Text>
+              </View>
+            </Button>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
+import Transition from "react-native-screen-transitions";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/Button";
