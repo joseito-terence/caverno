@@ -12,8 +12,8 @@ import Transition, {
 import { ThemeProvider, DarkTheme } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SystemUI from "expo-system-ui";
-import { Platform } from "react-native";
-import { useEffect } from "react";
+
+SystemUI.setBackgroundColorAsync("transparent");
 
 const { Navigator } = createNativeStackNavigator();
 const Stack = withLayoutContext<
@@ -24,20 +24,6 @@ const Stack = withLayoutContext<
 >(Navigator);
 
 export default function RootLayout() {
-  useEffect(() => {
-    // Set background color with error handling
-    const setBackgroundColor = async () => {
-      try {
-        await SystemUI.setBackgroundColorAsync("transparent");
-      } catch (error) {
-        // Silently handle the error - this can happen when the app is backgrounded
-        console.warn("Failed to set background color:", error);
-      }
-    };
-
-    setBackgroundColor();
-  }, []);
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={DarkTheme}>
@@ -48,19 +34,6 @@ export default function RootLayout() {
             name="songs/[id]/index"
             options={{
               ...Transition.presets.DraggableCard(),
-              enableTransitions: Platform.OS !== "web",
-              screenStyleInterpolator: ({ bounds, activeBoundId }) => {
-                "worklet";
-                if (!activeBoundId) return {};
-                // Drive shared element by id when present
-                const shared = bounds({
-                  method: "transform",
-                  space: "relative",
-                  scaleMode: "match",
-                  anchor: "center",
-                });
-                return { [activeBoundId]: shared };
-              },
             }}
           />
         </Stack>
