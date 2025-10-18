@@ -113,7 +113,7 @@ export default function SongForm(props: SongFormProps) {
     <View className="flex-1" style={{ paddingTop: insets.top }}>
       {/* Background with gradient and blur effect */}
       <LinearGradient
-        colors={["#1a0f3d", "#0f0f23", "#000000"]}
+        colors={["#0f172a", "#1e293b", "#0f172a"]}
         className="absolute top-0 left-0 right-0 bottom-0"
       />
 
@@ -145,7 +145,7 @@ export default function SongForm(props: SongFormProps) {
         {/* Progress bar */}
         <View className="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
           <View
-            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+            className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full"
             style={{ width: `${progress}%` }}
           />
         </View>
@@ -235,7 +235,7 @@ export default function SongForm(props: SongFormProps) {
           <View className="mt-6">
             <Button
               onPress={handleSubmit(onSubmit)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl py-4 px-8 items-center justify-center"
+              className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl py-4 px-8 items-center justify-center"
               disabled={isSubmitting || !isDirty}
             >
               <View className="flex-row items-center">
