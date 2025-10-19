@@ -30,11 +30,6 @@ export default function FormCard({
           borderColor: isHighlighted
             ? "rgba(96, 165, 250, 0.3)"
             : "rgba(75, 85, 99, 0.3)",
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
-          elevation: 4,
         }}
       >
         {title && (

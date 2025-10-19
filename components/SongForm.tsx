@@ -41,37 +41,13 @@ export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true;
   const insets = useSafeAreaInsets();
   const { addSong, updateSong } = useStore();
-  const [progress, setProgress] = useState(0);
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting, isDirty },
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   });
-
-  // Watch form values to calculate progress
-  const watchedValues = watch();
-  const calculateProgress = React.useCallback(() => {
-    const fields = [
-      "title",
-      "style",
-      "tempo",
-      "transpose",
-      "category",
-      "lyrics",
-    ];
-    const filledFields = fields.filter((field) => {
-      const value = watchedValues[field as keyof typeof watchedValues];
-      return value && value.toString().trim() !== "";
-    });
-    return (filledFields.length / fields.length) * 100;
-  }, [watchedValues]);
-
-  React.useEffect(() => {
-    setProgress(calculateProgress());
-  }, [calculateProgress]);
 
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (
     data
@@ -128,9 +104,6 @@ export default function SongForm(props: SongFormProps) {
             <Text className="text-white text-xl font-bold">
               {isEdit ? "Edit Song" : "Create Song"}
             </Text>
-            <Text className="text-gray-300 text-sm">
-              {Math.round(progress)}% complete
-            </Text>
           </View>
 
           <Button onPress={handleSubmit(onSubmit)}>
@@ -140,14 +113,6 @@ export default function SongForm(props: SongFormProps) {
               <AntDesign name="check" size={22} color="white" />
             )}
           </Button>
-        </View>
-
-        {/* Progress bar */}
-        <View className="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
-          <View
-            className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full"
-            style={{ width: `${progress}%` }}
-          />
         </View>
       </BlurView>
 
