@@ -9,7 +9,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: "./assets/images/icon.png",
   scheme: "caverno",
   userInterfaceStyle: "dark",
-  newArchEnabled: true,
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.jtf.caverno",
@@ -23,7 +22,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: "#000000",
     },
     package: "com.jtf.caverno",
-    edgeToEdgeEnabled: true,
   },
   web: {
     bundler: "metro",
@@ -33,6 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-font",
+    "expo-image",
     "@react-native-firebase/app",
     [
       "expo-splash-screen",
