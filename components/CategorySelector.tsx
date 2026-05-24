@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, ScrollView } from "react-native";
+import React, { useRef, useCallback } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import {
+  BottomSheetModal,
+  BottomSheetFlatList,
+  BottomSheetBackdrop,
+  type BottomSheetBackdropProps,
+} from "@gorhom/bottom-sheet";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useStore } from "@/store/useStore";
@@ -14,6 +20,19 @@ interface CategorySelectorProps {
   required?: boolean;
 }
 
+const CustomHandle = () => (
+  <View style={{ alignItems: "center", paddingVertical: 8 }}>
+    <View
+      style={{
+        width: 40,
+        height: 5,
+        borderRadius: 2.5,
+        backgroundColor: "#888",
+      }}
+    />
+  </View>
+);
+
 export default function CategorySelector({
   name,
   control,
@@ -22,10 +41,59 @@ export default function CategorySelector({
   label = "Category",
   required = false,
 }: CategorySelectorProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const sheetRef = useRef<BottomSheetModal>(null);
 
   const { categories } = useStore();
   const hasError = errors[name];
+
+  const handleOpen = useCallback(() => {
+    sheetRef.current?.present();
+  }, []);
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        onPress={() => sheetRef.current?.dismiss()}
+      />
+    ),
+    [],
+  );
+
+  const renderItem = useCallback(
+    (onChange: (id: string) => void, value: unknown) =>
+      function CategoryItem({ item }: { item: { id: string; name?: string } }) {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              onChange(item.id);
+              sheetRef.current?.close();
+            }}
+            style={{
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              borderRadius: 8,
+              backgroundColor:
+                value === item.id
+                  ? "rgba(96, 165, 250, 0.2)"
+                  : "transparent",
+              marginBottom: 4,
+            }}
+          >
+            <Text
+              className={`text-base ${
+                value === item.id ? "text-blue-400 font-medium" : "text-white"
+              }`}
+            >
+              {item.name ?? item.id}
+            </Text>
+          </TouchableOpacity>
+        );
+      },
+    [],
+  );
 
   return (
     <View className="mb-4">
@@ -37,7 +105,6 @@ export default function CategorySelector({
           required,
         }}
         render={({ field: { onChange, value } }) => {
-          // Find the display name for the selected category value
           const selectedCategory = categories.find((cat) => cat.id === value);
           const displayText = selectedCategory
             ? selectedCategory.name
@@ -57,7 +124,7 @@ export default function CategorySelector({
 
               {/* Selector Button */}
               <TouchableOpacity
-                onPress={() => !disabled && setIsOpen(true)}
+                onPress={() => !disabled && handleOpen()}
                 disabled={disabled}
                 style={{
                   borderWidth: 2,
@@ -72,11 +139,7 @@ export default function CategorySelector({
                 }}
               >
                 <Text className="text-white text-xl">{displayText}</Text>
-                <AntDesign
-                  name={isOpen ? "up" : "down"}
-                  size={16}
-                  color="#9ca3af"
-                />
+                <AntDesign name="down" size={16} color="#9ca3af" />
               </TouchableOpacity>
 
               {/* Error Message */}
@@ -88,67 +151,26 @@ export default function CategorySelector({
                 </Text>
               )}
 
-              {/* Modal Dropdown */}
-              <Modal
-                visible={isOpen}
-                transparent
-                animationType="fade"
-                onRequestClose={() => setIsOpen(false)}
+              {/* Bottom Sheet Modal */}
+              <BottomSheetModal
+                ref={sheetRef}
+                snapPoints={["60%"]}
+                enablePanDownToClose
+                handleComponent={CustomHandle}
+                backdropComponent={renderBackdrop}
+                backgroundStyle={{ backgroundColor: "#1f2937" }}
               >
-                <TouchableOpacity
-                  className="flex-1 bg-black/50 justify-center items-center px-6"
-                  activeOpacity={1}
-                  onPress={() => setIsOpen(false)}
-                >
-                  <View
-                    style={{
-                      backgroundColor: "rgba(17, 24, 39, 0.95)",
-                      borderRadius: 16,
-                      padding: 20,
-                      width: "100%",
-                      maxHeight: 400,
-                      borderWidth: 1,
-                      borderColor: "rgba(75, 85, 99, 0.3)",
-                    }}
-                  >
-                    <Text className="text-white text-lg font-semibold mb-4 text-center">
-                      Select Category
-                    </Text>
-
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                      {categories.map((category) => (
-                        <TouchableOpacity
-                          key={category.id}
-                          onPress={() => {
-                            onChange(category.id); // Use the category ID as the value
-                            setIsOpen(false);
-                          }}
-                          style={{
-                            paddingVertical: 12,
-                            paddingHorizontal: 16,
-                            borderRadius: 8,
-                            backgroundColor:
-                              value === category.id
-                                ? "rgba(96, 165, 250, 0.2)"
-                                : "transparent",
-                            marginBottom: 4,
-                          }}
-                        >
-                          <Text
-                            className={`text-base ${
-                              value === category.id
-                                ? "text-blue-400 font-medium"
-                                : "text-white"
-                            }`}
-                          >
-                            {category.name ?? category.id}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </ScrollView>
-                  </View>
-                </TouchableOpacity>
-              </Modal>
+                <Text className="text-white text-lg font-semibold mb-4 text-center">
+                  Select Category
+                </Text>
+                <BottomSheetFlatList
+                  data={categories}
+                  keyExtractor={(item) => item.id}
+                  renderItem={renderItem(onChange, value)}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 16 }}
+                />
+              </BottomSheetModal>
             </View>
           );
         }}

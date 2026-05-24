@@ -8,6 +8,7 @@ import Transition, {
   type NativeStackNavigationOptions,
 } from "react-native-screen-transitions";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import * as SystemUI from "expo-system-ui";
 
 SystemUI.setBackgroundColorAsync("transparent");
@@ -23,6 +24,7 @@ const Stack = withLayoutContext<
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "black" } }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="home" options={{ animation: "ios_from_left" }} />
@@ -33,6 +35,7 @@ export default function RootLayout() {
           }}
         />
       </Stack>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 }
