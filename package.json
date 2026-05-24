@@ -16,8 +16,6 @@
     "@gorhom/bottom-sheet": "^5.2.14",
     "@react-native-firebase/app": "^22.4.0",
     "@react-native-firebase/firestore": "^22.4.0",
-    "@react-navigation/native": "^7.1.8",
-    "babel-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",
     "expo": "~56.0.4",
     "expo-blur": "~56.0.3",
     "expo-constants": "~56.0.15",

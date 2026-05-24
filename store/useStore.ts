@@ -31,19 +31,19 @@ interface Store {
   categories: Category[];
   isLoading: boolean;
   error: string | null;
-  fetchSongs: () => Promise<void>;
+  fetchSongs: (silent?: boolean) => Promise<void>;
   fetchCategories: () => Promise<void>;
   addSong: (data: Omit<Song, "id" | "created_at">) => Promise<void>;
   updateSong: (id: string, data: Partial<Song>) => Promise<void>;
 }
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set, get) => ({
   songs: [],
   categories: [],
   isLoading: false,
   error: null,
-  fetchSongs: async () => {
-    set({ isLoading: true, error: null });
+  fetchSongs: async (silent = false) => {
+    if (!silent) set({ isLoading: true, error: null });
     try {
       const firestore = getFirestore();
       const songs = await getDocs(query(collection(firestore, "songs")));
@@ -102,6 +102,7 @@ export const useStore = create<Store>((set) => ({
         ...data,
         created_at: new Date().toISOString(),
       });
+      await get().fetchSongs(true);
       set({ isLoading: false });
     } catch (error) {
       set({
@@ -115,6 +116,7 @@ export const useStore = create<Store>((set) => ({
     try {
       const firestore = getFirestore();
       await updateDoc(doc(firestore, "songs", id), data);
+      await get().fetchSongs(true);
       set({ isLoading: false });
     } catch (error) {
       set({
