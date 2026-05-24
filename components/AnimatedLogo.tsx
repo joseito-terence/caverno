@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
 import { View, Image, Dimensions } from "react-native";
-import { LinearTransition, Easing } from "react-native-reanimated";
-import { MotiView } from 'moti';
+import { EaseView } from "react-native-ease";
 import AppNameTextSVG from "@/components/AppNameSVG";
 
-const SCREEN = Dimensions.get('screen');
+const SCREEN = Dimensions.get("screen");
 
 const TEXT_DURATION = 450;
 
 const AnimatedLogo = () => {
   return (
-    <MotiView
+    <EaseView
       className="flex-row"
-      layout={LinearTransition.easing(Easing.ease).duration(500)}
-      from={{
+      initialAnimate={{
         translateX: 0,
         translateY: 0,
         scale: 1,
@@ -24,33 +21,27 @@ const AnimatedLogo = () => {
         scale: 0.4,
       }}
       transition={{
-        type: 'timing',
+        type: "timing",
         duration: 600,
         delay: TEXT_DURATION,
       }}
     >
       <Image
-        source={require('../assets/images/adaptive-icon.png')}
+        source={require("../assets/images/adaptive-icon.png")}
         className="w-[195px] h-[195px]"
       />
       <AnimatedTextLogo />
-    </MotiView>
-  )
-}
+    </EaseView>
+  );
+};
 
 export default AnimatedLogo;
 
 const AnimatedTextLogo = () => {
-  const [showText, setShowText] = useState(false)
-
-  useEffect(() => {
-    setShowText(true)
-  }, [])
-
-  return showText && (
+  return (
     <View className="overflow-hidden translate-x-[-40px]">
-      <MotiView
-        from={{
+      <EaseView
+        initialAnimate={{
           opacity: 0,
           translateX: -SCREEN.width,
         }}
@@ -59,14 +50,13 @@ const AnimatedTextLogo = () => {
           translateX: 0,
         }}
         transition={{
-          type: 'timing',
+          type: "timing",
           duration: TEXT_DURATION,
         }}
         className="z-[-1]"
       >
         <AppNameTextSVG />
-      </MotiView>
+      </EaseView>
     </View>
-  )
-
-}
+  );
+};

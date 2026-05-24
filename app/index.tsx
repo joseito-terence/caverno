@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import { View } from "react-native";
-import { MotiView, MotiImage, MotiText } from "moti";
+import { View, Text, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
-import Animated from "react-native-reanimated";
+import { EaseView } from "react-native-ease";
 import { useStore } from "@/store/useStore";
 import SongsBottomSheet from "@/components/SongsBottomSheet";
 
@@ -25,57 +24,57 @@ export default function Index() {
 
   return (
     <View className="flex-1">
-      <Animated.View
+      <View
         className="
         absolute top-0 left-0 right-0 bottom-0 z-10
         w-full flex-1 justify-center items-center
       "
       >
         <AnimatedLogo />
-      </Animated.View>
+      </View>
 
-      <MotiView
-        from={{ opacity: 0 }}
+      <EaseView
+        initialAnimate={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ type: "timing", duration: 400, delay: 400 }}
         className="w-full"
       >
         <View className="items-center flex-row py-20 overflow-hidden">
-          <MotiView
-            from={{ translateY: -20, translateX: 10, scale: 0.9 }}
+          <EaseView
+            initialAnimate={{ translateY: -20, translateX: 10, scale: 0.9 }}
             animate={{ translateY: 0, translateX: 0, scale: 1 }}
-            transition={{ type: "timing", duration: 2000, loop: true }}
+            transition={{ type: "timing", duration: 2000, loop: "reverse" }}
             className="-ml-[200px] -mt-[100px]"
           >
-            <MotiView
-              from={{ scale: 0, opacity: 0 }}
+            <EaseView
+              initialAnimate={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "timing", duration: 800, delay: 800 }}
               style={{ filter: "blur(23px)" }}
             >
               <Circle size={500} colors={["#1dc9de 0%", "#0a3b41 100%"]} />
-            </MotiView>
-          </MotiView>
-          <MotiView
-            from={{ translateY: -20, translateX: -20, scale: 0.8 }}
+            </EaseView>
+          </EaseView>
+          <EaseView
+            initialAnimate={{ translateY: -20, translateX: -20, scale: 0.8 }}
             animate={{ translateY: 20, translateX: 0, scale: 1 }}
             transition={{
               type: "timing",
               delay: 1400,
               duration: 2000,
-              loop: true,
+              loop: "reverse",
             }}
             className="-ml-[100px] -mt-[80px]"
           >
-            <MotiView
-              from={{ scale: 0, opacity: 0 }}
+            <EaseView
+              initialAnimate={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "timing", duration: 800, delay: 600 }}
               style={{ filter: "blur(30px)" }}
             >
               <Circle size={450} colors={["#41a9e3 10%", "#183f54 100%"]} />
-            </MotiView>
-          </MotiView>
+            </EaseView>
+          </EaseView>
           <LinearGradient
             colors={["transparent", "#000000"]}
             start={[0.5, 0]}
@@ -102,35 +101,40 @@ export default function Index() {
                 <TrebleClef size={20} color="rgba(255, 255, 255, 0.5)" />
               </AnimatedMusicSymbol>
             </ZStack>
-            <MotiImage
-              source={require("../assets/images/keyboard.png")}
-              className="w-[350px] mx-auto"
-              resizeMode="contain"
-              from={{ translateY: 0, opacity: 0, scale: 0.5 }}
+            <EaseView
+              initialAnimate={{ translateY: 0, opacity: 0, scale: 0.5 }}
               animate={{ translateY: 50, opacity: 1, scale: 1 }}
               transition={{ type: "timing", duration: 800, delay: 800 }}
-            />
+            >
+              <Image
+                source={require("../assets/images/keyboard.png")}
+                className="w-[350px] mx-auto"
+                resizeMode="contain"
+              />
+            </EaseView>
           </View>
         </View>
         <View className="px-10 mt-20">
-          <MotiText
-            from={{ opacity: 0, translateX: 20 }}
+          <EaseView
+            initialAnimate={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ type: "timing", duration: 500, delay: 1000 }}
-            className="text-white/70 text-xl font-bold tracking-wider mb-4"
           >
-            Perform Your
-          </MotiText>
-          <MotiText
-            from={{ opacity: 0, translateX: 20 }}
+            <Text className="text-white/70 text-xl font-bold tracking-wider mb-4">
+              Perform Your
+            </Text>
+          </EaseView>
+          <EaseView
+            initialAnimate={{ opacity: 0, translateX: 20 }}
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ type: "timing", duration: 500, delay: 1200 }}
-            className="text-white text-6xl font-bold tracking-wider"
           >
-            Favourite Music
-          </MotiText>
+            <Text className="text-white text-6xl font-bold tracking-wider">
+              Favourite Music
+            </Text>
+          </EaseView>
         </View>
-      </MotiView>
+      </EaseView>
       {renderBottomSheet && <SongsBottomSheet />}
     </View>
   );
@@ -142,23 +146,26 @@ const AnimatedMusicSymbol = ({
 }: {
   position: number[];
   children: React.ReactNode;
-}) => (
-  <MotiView
-    from={{ translateX: 0, translateY: 0, opacity: 0 }}
-    animate={{ translateX: position[0], translateY: position[1], opacity: 1 }}
-    transition={{ type: "timing", duration: 800, delay: 800 }}
-  >
-    <MotiView
-      from={{ rotate: "-10deg" }}
-      animate={{ rotate: "10deg" }}
-      transition={{
-        type: "timing",
-        duration: 800,
-        loop: true,
-        delay: parseInt(Math.random() * 800 + ""),
-      }}
+}) => {
+  const [delay] = useState(() => parseInt(Math.random() * 800 + ""));
+  return (
+    <EaseView
+      initialAnimate={{ translateX: 0, translateY: 0, opacity: 0 }}
+      animate={{ translateX: position[0], translateY: position[1], opacity: 1 }}
+      transition={{ type: "timing", duration: 800, delay: 800 }}
     >
-      {children}
-    </MotiView>
-  </MotiView>
-);
+      <EaseView
+        initialAnimate={{ rotate: -10 }}
+        animate={{ rotate: 10 }}
+        transition={{
+          type: "timing",
+          duration: 1000,
+          loop: "reverse",
+          delay,
+        }}
+      >
+        {children}
+      </EaseView>
+    </EaseView>
+  );
+};

@@ -1,4 +1,5 @@
 import "../global.css";
+import "react-native-ease/nativewind";
 import type { ParamListBase, StackNavigationState } from "expo-router/react-navigation";
 import { withLayoutContext } from "expo-router";
 import Transition, {
