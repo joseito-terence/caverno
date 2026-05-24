@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, TextInput, TextInputProps, Text, Animated } from "react-native";
 import { Control, FieldErrors, useController } from "react-hook-form";
+import type { TSong } from "./SongForm";
 
 interface InputControllerProps extends TextInputProps {
-  name: string;
+  name: keyof TSong;
   required?: boolean;
-  control: Control<any>;
-  errors: FieldErrors<any>;
+  control: Control<TSong>;
+  errors: FieldErrors<TSong>;
   disabled?: boolean;
   label?: string;
   variant?: "default" | "large" | "multiline";
@@ -28,21 +29,27 @@ export default function InputController({
 
   const hasError = errors[name];
 
-  const animateLabel = useCallback((toValue: number) => {
-    Animated.timing(labelAnimation, {
-      toValue,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  }, [labelAnimation]);
+  const animateLabel = useCallback(
+    (toValue: number) => {
+      Animated.timing(labelAnimation, {
+        toValue,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    },
+    [labelAnimation],
+  );
 
-  const animateBorder = useCallback((toValue: number) => {
-    Animated.timing(borderAnimation, {
-      toValue,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  }, [borderAnimation]);
+  const animateBorder = useCallback(
+    (toValue: number) => {
+      Animated.timing(borderAnimation, {
+        toValue,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    },
+    [borderAnimation],
+  );
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -122,11 +129,7 @@ export default function InputController({
           >
             <Animated.Text
               style={{
-                color: hasError
-                  ? "#ef4444"
-                  : isFocused
-                  ? "#60a5fa"
-                  : "#9ca3af",
+                color: hasError ? "#ef4444" : isFocused ? "#60a5fa" : "#9ca3af",
                 fontSize: labelAnimation.interpolate({
                   inputRange: [0, 1],
                   outputRange: [variant === "large" ? 18 : 16, 12],
@@ -162,15 +165,14 @@ export default function InputController({
             }}
             onFocus={handleFocus}
             onChangeText={onChange}
-            value={value === 0 ? value : value?.toString() || ""}
+            value={value === 0 ? "" : value?.toString() || ""}
             className={styles.input}
             placeholderTextColor="transparent"
             editable={!disabled}
             style={{
               paddingTop: variant === "multiline" ? 8 : 0,
               minHeight: variant === "multiline" ? 120 : undefined,
-              textAlignVertical:
-                variant === "multiline" ? "top" : "center",
+              textAlignVertical: variant === "multiline" ? "top" : "center",
             }}
             {...props}
           />
@@ -179,7 +181,9 @@ export default function InputController({
         {/* Error Message */}
         {hasError && (
           <Text className="text-red-400 text-sm mt-1 ml-1">
-            {typeof errors[name]?.message === 'string' ? errors[name]?.message : `${label || name} is required`}
+            {typeof errors[name]?.message === "string"
+              ? errors[name]?.message
+              : `${label || name} is required`}
           </Text>
         )}
       </View>

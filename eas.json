@@ -14,8 +14,8 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_UNSPLASH_ACCESS_KEY": "YoL0qWSNUxQsuwmQsBZmOyZjipWbohU8mCt6yZVYSrk",
-        "EXPO_PUBLIC_READ_ONLY": "true"
+        "EXPO_PUBLIC_UNSPLASH_ACCESS_KEY": "YoL0qWSNUxQsuwmQsBZmOyZjipWbohU8mCt6yZVYSrk"
+        // "EXPO_PUBLIC_READ_ONLY": "true"
       }
     },
     "production": {},

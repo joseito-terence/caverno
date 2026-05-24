@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity, Modal, ScrollView } from "react-native";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useStore } from "@/store/useStore";
+import type { TSong } from "./SongForm";
 
 interface CategorySelectorProps {
-  name: string;
-  control: Control<any>;
-  errors: FieldErrors<any>;
+  name: keyof TSong;
+  control: Control<TSong>;
+  errors: FieldErrors<TSong>;
   disabled?: boolean;
   label?: string;
   required?: boolean;

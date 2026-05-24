@@ -62,8 +62,5 @@
   "resolutions": {
     "use-latest-callback": "0.1.9"
   },
-  "private": true,
-  "patchedDependencies": {
-    "react-native-css-interop@0.1.22": "patches/react-native-css-interop@0.1.22.patch"
-  }
+  "private": true
 }

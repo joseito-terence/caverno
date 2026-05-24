@@ -25,7 +25,7 @@ export default function SongsList() {
     // Filter by search keyword
     if (searchKeyword) {
       songs = data.filter((song) =>
-        song.title.toLowerCase().includes(searchKeyword.toLowerCase())
+        song.title.toLowerCase().includes(searchKeyword.toLowerCase()),
       );
     }
 
@@ -35,14 +35,17 @@ export default function SongsList() {
     }
 
     // Group by first letter
-    const result = songs.reduce((acc, curr) => {
-      const key = curr.title[0].toUpperCase();
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(curr);
-      return acc;
-    }, {} as Record<string, typeof songs>);
+    const result = songs.reduce(
+      (acc, curr) => {
+        const key = curr.title[0].toUpperCase();
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(curr);
+        return acc;
+      },
+      {} as Record<string, typeof songs>,
+    );
 
     // Format array for SectionList
     const letters = Object.keys(result).sort();

@@ -12,7 +12,6 @@ import CategorySelector from "@/components/CategorySelector";
 import { unsplash } from "@/utils/unsplash";
 import { useStore } from "@/store/useStore";
 import { LinearGradient } from "expo-linear-gradient";
-import { BlurView } from "expo-blur";
 
 const DEFAULT_VALUES = {
   title: "",
@@ -90,7 +89,7 @@ export default function SongForm(props: SongFormProps) {
       />
 
       {/* Header with glassmorphism */}
-      <BlurView intensity={20} className="px-6 py-4">
+      <View className="px-6 py-4">
         <View className="flex-row justify-between items-center">
           <Button onPress={router.back}>
             <Feather name="arrow-left" size={22} color="white" />
@@ -110,7 +109,7 @@ export default function SongForm(props: SongFormProps) {
             )}
           </Button>
         </View>
-      </BlurView>
+      </View>
 
       {/* Form Content */}
       <ScrollView
