@@ -34,9 +34,6 @@ type SongFormProps =
       edit?: false;
     };
 
-// Screen dimensions available for future use
-// const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
 export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true;
   const insets = useSafeAreaInsets();
@@ -50,7 +47,7 @@ export default function SongForm(props: SongFormProps) {
   });
 
   const onSubmit: SubmitHandler<typeof control._defaultValues> = async (
-    data
+    data,
   ) => {
     if (process.env.EXPO_PUBLIC_READ_ONLY === "true") {
       return console.warn("Read-only mode");
@@ -58,7 +55,6 @@ export default function SongForm(props: SongFormProps) {
 
     if (!isDirty) return;
     if (isEdit) {
-      console.warn("edit");
       return updateSong(props.song.id, {
         ...data,
         title: data.title!,
@@ -124,7 +120,7 @@ export default function SongForm(props: SongFormProps) {
       >
         <View className="px-6 pt-6 pb-8">
           {/* Basic Information Card */}
-          <FormCard title="🎵 Basic Information" variant="highlighted">
+          <FormCard title="🎵 Basic Information">
             <InputController
               name="title"
               label="Song Title"
@@ -213,8 +209,8 @@ export default function SongForm(props: SongFormProps) {
                   {isSubmitting
                     ? "Saving..."
                     : isEdit
-                    ? "Update Song"
-                    : "Create Song"}
+                      ? "Update Song"
+                      : "Create Song"}
                 </Text>
               </View>
             </Button>
