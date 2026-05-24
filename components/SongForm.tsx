@@ -190,30 +190,6 @@ export default function SongForm(props: SongFormProps) {
               disabled={isSubmitting}
             />
           </FormCard>
-
-          {/* Submit Button */}
-          <View className="mt-6">
-            <Button
-              onPress={handleSubmit(onSubmit)}
-              className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl py-4 px-8 items-center justify-center"
-              disabled={isSubmitting || !isDirty}
-            >
-              <View className="flex-row items-center">
-                {isSubmitting ? (
-                  <ActivityIndicator color="white" size="small" />
-                ) : (
-                  <AntDesign name="check" size={20} color="white" />
-                )}
-                <Text className="text-white text-lg font-semibold ml-2">
-                  {isSubmitting
-                    ? "Saving..."
-                    : isEdit
-                      ? "Update Song"
-                      : "Create Song"}
-                </Text>
-              </View>
-            </Button>
-          </View>
         </View>
       </ScrollView>
     </View>
