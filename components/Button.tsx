@@ -5,11 +5,8 @@ export const Button = (props: TouchableOpacityProps & { testID?: string }) => {
     <TouchableOpacity {...props} testID={props.testID}>
       <View
         className={
-          props.className ||
-          `
-        h-12 w-12 items-center justify-center
-        bg-gray-800/95 rounded-full
-      `
+          props?.className ||
+          "h-12 w-12 items-center justify-center bg-gray-800/95 rounded-full"
         }
       >
         {props.children}

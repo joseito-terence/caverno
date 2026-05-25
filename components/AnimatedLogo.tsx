@@ -1,5 +1,5 @@
 import { View, Image, Dimensions } from "react-native";
-import { EaseView } from "react-native-ease";
+import { EaseView } from "@/components/styled";
 import AppNameTextSVG from "@/components/AppNameSVG";
 
 const SCREEN = Dimensions.get("screen");

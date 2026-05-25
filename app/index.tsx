@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
-import { EaseView } from "react-native-ease";
+import { EaseView } from "@/components/styled";
 import { useStore } from "@/store/useStore";
 import SongsBottomSheet from "@/components/SongsBottomSheet";
 
@@ -24,12 +24,7 @@ export default function Index() {
 
   return (
     <View className="flex-1">
-      <View
-        className="
-        absolute top-0 left-0 right-0 bottom-0 z-10
-        w-full flex-1 justify-center items-center
-      "
-      >
+      <View className="absolute top-0 left-0 right-0 bottom-0 z-10 w-full flex-1 justify-center items-center">
         <AnimatedLogo />
       </View>
 

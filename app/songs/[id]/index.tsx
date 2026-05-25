@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/Button";
 import Feather from "@expo/vector-icons/Feather";
-import { BlurView } from "expo-blur";
+import { BlurView } from "@/components/styled";
 import BottomSheet, {
   BottomSheetScrollView,
   BottomSheetBackgroundProps,

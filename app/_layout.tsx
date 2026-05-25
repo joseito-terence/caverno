@@ -1,5 +1,4 @@
 import "../global.css";
-import "react-native-ease/nativewind";
 import type {
   ParamListBase,
   StackNavigationState,
@@ -12,6 +11,8 @@ import Transition, {
 } from "react-native-screen-transitions";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { SafeAreaListener } from "react-native-safe-area-context";
+import { Uniwind } from "uniwind";
 import * as SystemUI from "expo-system-ui";
 
 SystemUI.setBackgroundColorAsync("transparent");
@@ -27,7 +28,12 @@ const Stack = withLayoutContext<
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
+      <SafeAreaListener
+        onChange={({ insets }) => {
+          Uniwind.updateInsets(insets);
+        }}
+      >
+        <BottomSheetModalProvider>
         <Stack
           screenOptions={{
             headerShown: false,
@@ -46,6 +52,7 @@ export default function RootLayout() {
           />
         </Stack>
       </BottomSheetModalProvider>
+      </SafeAreaListener>
     </GestureHandlerRootView>
   );
 }

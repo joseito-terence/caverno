@@ -3,8 +3,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { Song } from '@/store/useStore'
 import { router } from 'expo-router';
 import { FlatList } from 'react-native-gesture-handler';
-import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
+import { LinearGradient, BlurView } from '@/components/styled';
 
 const SCREEN = Dimensions.get('screen')
 const SONG_CARD_WIDTH = SCREEN.width * 0.8

@@ -3,7 +3,7 @@ import { View, Text, Dimensions } from "react-native";
 import { Button } from "@/components/Button";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Entypo from "@expo/vector-icons/Entypo";
-import { LinearGradient } from "expo-linear-gradient";
+import { LinearGradient } from "@/components/styled";
 import SongsCarousel from "@/components/SongsCarousel";
 import { useRouter } from "expo-router";
 import { useStore } from "@/store/useStore";

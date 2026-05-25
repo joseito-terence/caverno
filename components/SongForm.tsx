@@ -11,7 +11,6 @@ import FormCard from "@/components/FormCard";
 import CategorySelector from "@/components/CategorySelector";
 import { unsplash } from "@/utils/unsplash";
 import { useStore } from "@/store/useStore";
-import { LinearGradient } from "expo-linear-gradient";
 
 const DEFAULT_VALUES = {
   title: "",
@@ -82,13 +81,6 @@ export default function SongForm(props: SongFormProps) {
 
   return (
     <View className="flex-1 bg-black" style={{ paddingTop: insets.top }}>
-      {/* Background with gradient and blur effect */}
-      <LinearGradient
-        colors={["#0f172a", "#1e293b", "#0f172a"]}
-        className="absolute top-0 left-0 right-0 bottom-0"
-      />
-
-      {/* Header with glassmorphism */}
       <View className="px-6 py-4">
         <View className="flex-row justify-between items-center">
           <Button onPress={router.back}>
