@@ -81,7 +81,7 @@ export default function SongForm(props: SongFormProps) {
   };
 
   return (
-    <View className="flex-1" style={{ paddingTop: insets.top }}>
+    <View className="flex-1 bg-black" style={{ paddingTop: insets.top }}>
       {/* Background with gradient and blur effect */}
       <LinearGradient
         colors={["#0f172a", "#1e293b", "#0f172a"]}

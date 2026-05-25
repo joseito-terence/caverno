@@ -1,6 +1,9 @@
 import "../global.css";
 import "react-native-ease/nativewind";
-import type { ParamListBase, StackNavigationState } from "expo-router/react-navigation";
+import type {
+  ParamListBase,
+  StackNavigationState,
+} from "expo-router/react-navigation";
 import { withLayoutContext } from "expo-router";
 import Transition, {
   createNativeStackNavigator,
@@ -25,16 +28,23 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "black" } }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="home" options={{ animation: "ios_from_left" }} />
-        <Stack.Screen
-          name="songs/[id]/index"
-          options={{
-            ...Transition.presets.DraggableCard(),
+        <Stack
+          screenOptions={{
+            headerShown: false,
           }}
-        />
-      </Stack>
+        >
+          <Stack.Screen
+            name="index"
+            options={{ contentStyle: { backgroundColor: "black" } }}
+          />
+          <Stack.Screen name="home" options={{ animation: "ios_from_left" }} />
+          <Stack.Screen
+            name="songs/[id]/index"
+            options={{
+              ...Transition.presets.DraggableCard(),
+            }}
+          />
+        </Stack>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
