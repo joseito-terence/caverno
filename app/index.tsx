@@ -74,12 +74,7 @@ export default function Index() {
             colors={["transparent", "#000000"]}
             start={[0.5, 0]}
             end={[0.5, 1]}
-            style={{
-              height: 100,
-              width: "100%",
-              position: "absolute",
-              bottom: 0,
-            }}
+            className="absolute left-0 right-0 bottom-0"
           />
           <View className="absolute left-0 right-0 -bottom-24">
             <ZStack className="absolute bottom-[50%] w-full items-center">
