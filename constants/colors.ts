@@ -1,0 +1,15 @@
+export const DARK_TEXTFIELD_COLORS = {
+  focusedTextColor: "#FFFFFF",
+  unfocusedTextColor: "#FFFFFF",
+  focusedContainerColor: "#1f2937",
+  unfocusedContainerColor: "transparent",
+  focusedIndicatorColor: "#FFFFFF",
+  unfocusedIndicatorColor: "#374151",
+  focusedLabelColor: "#FFFFFF",
+  unfocusedLabelColor: "#9CA3AF",
+  focusedPlaceholderColor: "#6B7280",
+  unfocusedPlaceholderColor: "#6B7280",
+  errorTextColor: "#EF4444",
+  errorIndicatorColor: "#EF4444",
+  errorLabelColor: "#EF4444",
+};

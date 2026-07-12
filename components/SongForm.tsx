@@ -1,11 +1,12 @@
-import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import { View, Text as RNText, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { Icon } from "@/components/Icon";
 import { IconButton } from "@/components/IconButton";
 import ArrowBack from "@expo/material-symbols/arrow_back.xml";
 import Check from "@expo/material-symbols/check.xml";
+import MusicNote from "@expo/material-symbols/music_note.xml";
+import LibraryMusic from "@expo/material-symbols/library_music.xml";
+import EditNote from "@expo/material-symbols/edit_note.xml";
 import { useForm } from "react-hook-form";
 import InputController from "@/components/InputController";
 import FormCard from "@/components/FormCard";
@@ -40,7 +41,7 @@ export default function SongForm(props: SongFormProps) {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
     getValues,
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
@@ -91,9 +92,9 @@ export default function SongForm(props: SongFormProps) {
           />
 
           <View className="items-center">
-            <Text className="text-white text-xl font-bold">
+            <RNText className="text-white text-xl font-bold">
               {isEdit ? "Edit Song" : "Create Song"}
-            </Text>
+            </RNText>
           </View>
 
           <IconButton
@@ -114,17 +115,15 @@ export default function SongForm(props: SongFormProps) {
       >
         <View className="px-6 pt-6 pb-8">
           {/* Basic Information Card */}
-          <FormCard title="🎵 Basic Information">
+          <FormCard title="Basic Information" icon={MusicNote}>
             <InputController
               name="title"
               label="Song Title"
               placeholder="Enter the song title"
-              variant="large"
               control={control}
-              errors={errors}
-              multiline
-              required
               disabled={isSubmitting}
+              required
+              variant="large"
             />
 
             <InputController
@@ -132,13 +131,12 @@ export default function SongForm(props: SongFormProps) {
               label="Musical Style"
               placeholder="e.g. Rock, Pop, Hip-Hop, Jazz"
               control={control}
-              errors={errors}
               disabled={isSubmitting}
             />
           </FormCard>
 
           {/* Musical Details Card */}
-          <FormCard title="🎼 Musical Details">
+          <FormCard title="Musical Details" icon={LibraryMusic}>
             <View className="flex-row gap-4">
               <View className="flex-1">
                 <InputController
@@ -146,7 +144,6 @@ export default function SongForm(props: SongFormProps) {
                   label="Tempo (BPM)"
                   placeholder="120"
                   control={control}
-                  errors={errors}
                   disabled={isSubmitting}
                 />
               </View>
@@ -156,7 +153,6 @@ export default function SongForm(props: SongFormProps) {
                   label="Transpose"
                   placeholder="-4"
                   control={control}
-                  errors={errors}
                   disabled={isSubmitting}
                 />
               </View>
@@ -166,23 +162,19 @@ export default function SongForm(props: SongFormProps) {
               name="category"
               label="Category"
               control={control}
-              errors={errors}
               disabled={isSubmitting}
             />
           </FormCard>
 
           {/* Lyrics Card */}
-          <FormCard title="📝 Lyrics">
+          <FormCard title="Lyrics" icon={EditNote}>
             <InputController
               name="lyrics"
               label="Song Lyrics"
               placeholder="Enter your lyrics here...&#10;&#10;Verse 1:&#10;...&#10;&#10;Chorus:&#10;..."
-              variant="multiline"
               control={control}
-              errors={errors}
-              multiline
-              textAlignVertical="top"
               disabled={isSubmitting}
+              variant="multiline"
             />
           </FormCard>
         </View>

@@ -1,25 +1,17 @@
-import React, { useRef, useCallback } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { useRef, useCallback, useEffect } from "react";
+import { View, Text as RNText, Pressable } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetFlatList,
   BottomSheetBackdrop,
   type BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
-import { Controller, Control, FieldErrors } from "react-hook-form";
-import { Icon } from "@/components/Icon";
+import { useController } from "react-hook-form";
+import { Host, OutlinedTextField, Text, Icon as EuiIcon, useNativeState } from "@expo/ui/jetpack-compose";
+import { fillMaxWidth } from "@expo/ui/jetpack-compose/modifiers";
 import KeyboardArrowDown from "@expo/material-symbols/keyboard_arrow_down.xml";
 import { useStore } from "@/store/useStore";
-import type { TSong } from "./SongForm";
-
-interface CategorySelectorProps {
-  name: keyof TSong;
-  control: Control<TSong>;
-  errors: FieldErrors<TSong>;
-  disabled?: boolean;
-  label?: string;
-  required?: boolean;
-}
+import { DARK_TEXTFIELD_COLORS } from "@/constants/colors";
 
 const CustomHandle = () => (
   <View style={{ alignItems: "center", paddingVertical: 8 }}>
@@ -34,22 +26,42 @@ const CustomHandle = () => (
   </View>
 );
 
+interface CategorySelectorProps {
+  name: string;
+  control: any;
+  disabled?: boolean;
+  label?: string;
+  required?: boolean;
+}
+
 export default function CategorySelector({
   name,
   control,
-  errors,
   disabled = false,
   label = "Category",
   required = false,
 }: CategorySelectorProps) {
   const sheetRef = useRef<BottomSheetModal>(null);
-
   const { categories } = useStore();
-  const hasError = errors[name];
+  const { field, fieldState } = useController({
+    name,
+    control,
+    rules: required ? { required: `${label} is required` } : undefined,
+  });
+
+  const selectedCategory = categories.find((cat) => cat.id === field.value);
+  const state = useNativeState(selectedCategory?.name ?? "");
+
+  useEffect(() => {
+    const name = selectedCategory?.name ?? "";
+    if (state.value !== name) {
+      state.value = name;
+    }
+  }, [field.value]);
 
   const handleOpen = useCallback(() => {
-    sheetRef.current?.present();
-  }, []);
+    if (!disabled) sheetRef.current?.present();
+  }, [disabled]);
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -67,7 +79,7 @@ export default function CategorySelector({
     (onChange: (id: string) => void, value: unknown) =>
       function CategoryItem({ item }: { item: { id: string; name?: string } }) {
         return (
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               onChange(item.id);
               sheetRef.current?.close();
@@ -83,99 +95,66 @@ export default function CategorySelector({
               marginBottom: 4,
             }}
           >
-            <Text
+            <RNText
               className={`text-base ${
                 value === item.id ? "text-blue-400 font-medium" : "text-white"
               }`}
             >
               {item.name ?? item.id}
-            </Text>
-          </TouchableOpacity>
+            </RNText>
+          </Pressable>
         );
       },
     [],
   );
 
   return (
-    <View className="mb-4">
-      <Controller
-        name={name}
-        control={control}
-        disabled={disabled}
-        rules={{
-          required,
-        }}
-        render={({ field: { onChange, value } }) => {
-          const selectedCategory = categories.find((cat) => cat.id === value);
-          const displayText = selectedCategory
-            ? selectedCategory.name
-            : "Select category";
+    <>
+      <Pressable onPress={handleOpen}>
+        <Host matchContents={{ vertical: true }} style={{ marginBottom: 16 }}>
+          <OutlinedTextField
+            modifiers={[fillMaxWidth()]}
+            value={state}
+            readOnly
+            singleLine
+            isError={!!fieldState.error}
+            textStyle={{ fontSize: 20, color: "#FFFFFF" }}
+            colors={DARK_TEXTFIELD_COLORS}
+          >
+            <OutlinedTextField.Label>
+              <Text>{label}</Text>
+            </OutlinedTextField.Label>
+            <OutlinedTextField.TrailingIcon>
+              <EuiIcon source={KeyboardArrowDown} size={16} tint="#9CA3AF" />
+            </OutlinedTextField.TrailingIcon>
+            {fieldState.error?.message && (
+              <OutlinedTextField.SupportingText>
+                <Text>{fieldState.error.message}</Text>
+              </OutlinedTextField.SupportingText>
+            )}
+          </OutlinedTextField>
+        </Host>
+      </Pressable>
 
-          return (
-            <View className="relative">
-              {/* Label */}
-              <Text
-                className={`text-sm font-medium mb-2 ${
-                  hasError ? "text-red-400" : "text-gray-300"
-                }`}
-              >
-                {label}
-                {required && " *"}
-              </Text>
-
-              {/* Selector Button */}
-              <TouchableOpacity
-                onPress={() => !disabled && handleOpen()}
-                disabled={disabled}
-                style={{
-                  borderWidth: 2,
-                  borderColor: hasError ? "#ef4444" : "#374151",
-                  borderRadius: 12,
-                  backgroundColor: "rgba(55, 65, 81, 0.3)",
-                  paddingHorizontal: 16,
-                  paddingVertical: 12,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Text className="text-white text-xl">{displayText}</Text>
-                <Icon source={KeyboardArrowDown} size={16} tint="#9ca3af" />
-              </TouchableOpacity>
-
-              {/* Error Message */}
-              {hasError && (
-                <Text className="text-red-400 text-sm mt-1 ml-1">
-                  {typeof errors[name]?.message === "string"
-                    ? errors[name]?.message
-                    : `${label} is required`}
-                </Text>
-              )}
-
-              {/* Bottom Sheet Modal */}
-              <BottomSheetModal
-                ref={sheetRef}
-                snapPoints={["60%"]}
-                enablePanDownToClose
-                handleComponent={CustomHandle}
-                backdropComponent={renderBackdrop}
-                backgroundStyle={{ backgroundColor: "#1f2937" }}
-              >
-                <Text className="text-white text-lg font-semibold mb-4 text-center">
-                  Select Category
-                </Text>
-                <BottomSheetFlatList
-                  data={categories}
-                  keyExtractor={(item) => item.id}
-                  renderItem={renderItem(onChange, value)}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 16 }}
-                />
-              </BottomSheetModal>
-            </View>
-          );
-        }}
-      />
-    </View>
+      <BottomSheetModal
+        ref={sheetRef}
+        snapPoints={["60%"]}
+        enablePanDownToClose
+        handleComponent={CustomHandle}
+        backdropComponent={renderBackdrop}
+        backgroundStyle={{ backgroundColor: "#1f2937" }}
+      >
+        <RNText className="text-white text-lg font-semibold mb-4 text-center">
+          Select Category
+        </RNText>
+        <BottomSheetFlatList
+          data={categories}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem(field.onChange, field.value)}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 16 }}
+        />
+      </BottomSheetModal>
+    </>
   );
 }

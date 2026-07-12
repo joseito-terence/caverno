@@ -1,18 +1,20 @@
-import React from "react";
-import { View, Text, ViewProps } from "react-native";
+import { View, Text } from "react-native";
+import { Icon } from "@/components/Icon";
 
-interface FormCardProps extends ViewProps {
+interface FormCardProps {
   title?: string;
+  icon?: any;
   children: React.ReactNode;
 }
 
-export default function FormCard({ title, children, ...props }: FormCardProps) {
+export default function FormCard({ title, icon, children }: FormCardProps) {
   return (
-    <View className="mb-6" {...props}>
+    <View className="mb-6">
       {title && (
-        <Text className="text-white text-lg font-semibold mb-4 text-center">
-          {title}
-        </Text>
+        <View className="flex-row items-center mb-4 gap-2">
+          {icon && <Icon source={icon} size={20} tint="#FFFFFF" />}
+          <Text className="text-white text-lg font-semibold">{title}</Text>
+        </View>
       )}
       {children}
     </View>
