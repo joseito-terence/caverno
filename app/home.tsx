@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
-import { Button } from "@/components/Button";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Entypo from "@expo/vector-icons/Entypo";
+import { Icon } from "@expo/ui/jetpack-compose";
+import { IconButton } from "@/components/IconButton";
+import Add from "@expo/material-symbols/add.xml";
+import Search from "@expo/material-symbols/search.xml";
 import { LinearGradient } from "@/components/styled";
 import SongsCarousel from "@/components/SongsCarousel";
 import { useRouter } from "expo-router";
@@ -26,15 +28,15 @@ export default function Home() {
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
       <View className="flex-row justify-between items-center px-8 py-4">
-        <Button testID="add-song" onPress={() => router.push("/songs/add")}>
-          <Entypo name="plus" size={24} color="white" />
-        </Button>
+        <IconButton onPress={() => router.push("/songs/add")} testID="add-song">
+          <Icon source={Add} size={24} tint="#FFFFFF" />
+        </IconButton>
 
         <Text className="text-white text-lg font-semibold">Home</Text>
 
-        <Button testID="search">
-          <Entypo name="magnifying-glass" size={22} color="white" />
-        </Button>
+        <IconButton testID="search">
+          <Icon source={Search} size={22} tint="#FFFFFF" />
+        </IconButton>
       </View>
 
       <View className="flex-1 rounded-t-[55px] mt-8 bottom-0 overflow-hidden z-20">

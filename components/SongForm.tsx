@@ -1,10 +1,11 @@
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Button } from "@/components/Button";
 import { router } from "expo-router";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Feather from "@expo/vector-icons/Feather";
+import { Icon, CircularProgressIndicator } from "@expo/ui/jetpack-compose";
+import { IconButton } from "@/components/IconButton";
+import ArrowBack from "@expo/material-symbols/arrow_back.xml";
+import Check from "@expo/material-symbols/check.xml";
 import { useForm, SubmitHandler } from "react-hook-form";
 import InputController from "@/components/InputController";
 import FormCard from "@/components/FormCard";
@@ -83,9 +84,9 @@ export default function SongForm(props: SongFormProps) {
     <View className="flex-1 bg-black" style={{ paddingTop: insets.top }}>
       <View className="px-6 py-4">
         <View className="flex-row justify-between items-center">
-          <Button onPress={router.back}>
-            <Feather name="arrow-left" size={22} color="white" />
-          </Button>
+          <IconButton onPress={router.back}>
+            <Icon source={ArrowBack} size={22} tint="#FFFFFF" />
+          </IconButton>
 
           <View className="items-center">
             <Text className="text-white text-xl font-bold">
@@ -93,13 +94,13 @@ export default function SongForm(props: SongFormProps) {
             </Text>
           </View>
 
-          <Button onPress={handleSubmit(onSubmit)}>
+          <IconButton onPress={handleSubmit(onSubmit)} enabled={!isSubmitting}>
             {isSubmitting ? (
-              <ActivityIndicator color="white" />
+              <CircularProgressIndicator color="#FFFFFF" />
             ) : (
-              <AntDesign name="check" size={22} color="white" />
+              <Icon source={Check} size={22} tint="#FFFFFF" />
             )}
-          </Button>
+          </IconButton>
         </View>
       </View>
 

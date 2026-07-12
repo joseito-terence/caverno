@@ -2,8 +2,10 @@ import React from "react";
 import { View, Text } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Button } from "@/components/Button";
-import Feather from "@expo/vector-icons/Feather";
+import { Icon } from "@expo/ui/jetpack-compose";
+import { IconButton } from "@/components/IconButton";
+import ArrowBack from "@expo/material-symbols/arrow_back.xml";
+import EditIcon from "@expo/material-symbols/edit.xml";
 import { BlurView } from "@/components/styled";
 import BottomSheet, {
   BottomSheetScrollView,
@@ -87,15 +89,15 @@ export default function Song() {
             className="flex-1"
           />
         </Animated.View>
-        <Button onPress={router.back}>
-          <Feather name="arrow-left" size={22} color="white" />
-        </Button>
+        <IconButton onPress={router.back}>
+          <Icon source={ArrowBack} size={22} tint="#FFFFFF" />
+        </IconButton>
 
         <View className="w-8" />
 
-        <Button onPress={() => router.push(`/songs/${id}/edit`)}>
-          <Entypo name="edit" size={20} color="white" />
-        </Button>
+        <IconButton onPress={() => router.push(`/songs/${id}/edit`)}>
+          <Icon source={EditIcon} size={20} tint="#FFFFFF" />
+        </IconButton>
       </Animated.View>
 
       <View className="flex-1 items-center justify-center">
