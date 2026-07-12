@@ -10,17 +10,22 @@ import { useStore } from "@/store/useStore";
 import SongsBottomSheet from "@/components/SongsBottomSheet";
 
 export default function Index() {
-  const { fetchCategories, fetchSongs } = useStore();
+  const { subscribeCategories, subscribeSongs } = useStore();
   const [renderBottomSheet, setRenderBottomSheet] = useState(false);
 
   useEffect(() => {
-    fetchCategories();
-    fetchSongs();
+    const unsubCategories = subscribeCategories();
+    const unsubSongs = subscribeSongs();
 
     setTimeout(() => {
       setRenderBottomSheet(true);
     }, 1500);
-  }, [fetchCategories, fetchSongs]);
+
+    return () => {
+      unsubCategories();
+      unsubSongs();
+    };
+  }, [subscribeCategories, subscribeSongs]);
 
   return (
     <View className="flex-1">
@@ -39,7 +44,7 @@ export default function Index() {
             initialAnimate={{ translateY: -20, translateX: 10, scale: 0.9 }}
             animate={{ translateY: 0, translateX: 0, scale: 1 }}
             transition={{ type: "timing", duration: 2000, loop: "reverse" }}
-            className="-ml-[200px] -mt-[100px]"
+            className="-ml-50 -mt-25"
           >
             <EaseView
               initialAnimate={{ scale: 0, opacity: 0 }}
