@@ -2,12 +2,11 @@ import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { CircularProgressIndicator } from "@expo/ui/jetpack-compose";
 import { Icon } from "@/components/Icon";
 import { IconButton } from "@/components/IconButton";
 import ArrowBack from "@expo/material-symbols/arrow_back.xml";
 import Check from "@expo/material-symbols/check.xml";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import InputController from "@/components/InputController";
 import FormCard from "@/components/FormCard";
 import CategorySelector from "@/components/CategorySelector";
@@ -41,19 +40,18 @@ export default function SongForm(props: SongFormProps) {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting },
+    getValues,
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   });
 
-  const onSubmit: SubmitHandler<typeof control._defaultValues> = async (
-    data,
-  ) => {
+  const onSubmit = async () => {
+    const data = getValues();
     if (process.env.EXPO_PUBLIC_READ_ONLY === "true") {
       return console.warn("Read-only mode");
     }
 
-    if (!isDirty) return;
     if (isEdit) {
       return updateSong(props.song.id, {
         ...data,
