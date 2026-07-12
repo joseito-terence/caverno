@@ -1,5 +1,6 @@
 import { Dimensions, View, Image, Text, Pressable } from 'react-native'
-import Entypo from '@expo/vector-icons/Entypo';
+import { Icon } from "@/components/Icon";
+import PlayArrow from "@expo/material-symbols/play_arrow.xml";
 import { Song } from '@/store/useStore'
 import { router } from 'expo-router';
 import { FlatList } from 'react-native-gesture-handler';
@@ -96,7 +97,7 @@ const SongCard = ({
 
         <BlurView intensity={20} className='w-12 h-12 rounded-full overflow-hidden justify-center items-center'>
           <View className='w-12 h-12 rounded-full bg-white/10 justify-center items-center'>
-            <Entypo name="controller-play" size={24} color="white" />
+            <Icon source={PlayArrow} size={24} tint="#FFFFFF" />
           </View>
         </BlurView>
       </View>

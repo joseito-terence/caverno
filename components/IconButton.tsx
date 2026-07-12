@@ -1,16 +1,15 @@
-import { Host, FilledIconButton } from "@expo/ui/jetpack-compose";
+import { Host, FilledIconButton, Icon, type IconProps } from "@expo/ui/jetpack-compose";
 import { testID } from "@expo/ui/jetpack-compose/modifiers";
 import type { ReactNode } from "react";
 import { useResolveClassNames } from "uniwind";
 
-interface Props {
-  children: ReactNode;
+interface Props extends IconProps {
   onPress?: () => void;
   testID?: string;
   enabled?: boolean;
 }
 
-export function IconButton({ children, onPress, testID: tid, enabled }: Props) {
+export function IconButton({ onPress, testID: tid, enabled, ...iconProps }: Props) {
   const styles = useResolveClassNames("bg-gray-800/95")
   return (
     <Host matchContents>
@@ -20,7 +19,7 @@ export function IconButton({ children, onPress, testID: tid, enabled }: Props) {
         colors={{ containerColor: styles.backgroundColor }}
         modifiers={tid ? [testID(tid)] : undefined}
       >
-        {children}
+        <Icon {...iconProps} />
       </FilledIconButton>
     </Host>
   );

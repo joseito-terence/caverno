@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, SectionList } from "react-native";
 import { router } from "expo-router";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { Icon } from "@/components/Icon";
+import Search from "@expo/material-symbols/search.xml";
+import Close from "@expo/material-symbols/close.xml";
 import { Song, useStore } from "@/store/useStore";
 import {
   BottomSheetTextInput,
@@ -67,7 +69,7 @@ export default function SongsList() {
       <View>
         <View className="px-8 py-2">
           <View className="bg-gray-800 rounded-full px-4 py-1 flex-row items-center">
-            <EvilIcons name="search" size={24} color="white" />
+            <Icon source={Search} size={24} tint="#FFFFFF" />
             <BottomSheetTextInput
               testID="search-input"
               placeholder="Search songs..."
@@ -79,7 +81,7 @@ export default function SongsList() {
 
             {searchKeyword.length > 0 && (
               <TouchableOpacity onPress={() => setSearchKeyword("")}>
-                <EvilIcons name="close" size={24} color="white" />
+                <Icon source={Close} size={24} tint="#FFFFFF" />
               </TouchableOpacity>
             )}
           </View>

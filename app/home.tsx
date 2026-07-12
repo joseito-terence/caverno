@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Icon } from "@expo/ui/jetpack-compose";
+import { Icon } from "@/components/Icon";
 import { IconButton } from "@/components/IconButton";
 import Add from "@expo/material-symbols/add.xml";
 import Search from "@expo/material-symbols/search.xml";
@@ -28,15 +28,22 @@ export default function Home() {
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
       <View className="flex-row justify-between items-center px-8 py-4">
-        <IconButton onPress={() => router.push("/songs/add")} testID="add-song">
-          <Icon source={Add} size={24} tint="#FFFFFF" />
-        </IconButton>
+        <IconButton 
+          onPress={() => router.push("/songs/add")}
+          testID="add-song"
+          source={Add}
+          size={24}
+          tint="#FFFFFF"
+        />
 
         <Text className="text-white text-lg font-semibold">Home</Text>
 
-        <IconButton testID="search">
-          <Icon source={Search} size={22} tint="#FFFFFF" />
-        </IconButton>
+        <IconButton 
+          testID="search" 
+          source={Search} 
+          size={22} 
+          tint="#FFFFFF"
+        />
       </View>
 
       <View className="flex-1 rounded-t-[55px] mt-8 bottom-0 overflow-hidden z-20">

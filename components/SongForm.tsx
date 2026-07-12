@@ -2,7 +2,8 @@ import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { Icon, CircularProgressIndicator } from "@expo/ui/jetpack-compose";
+import { CircularProgressIndicator } from "@expo/ui/jetpack-compose";
+import { Icon } from "@/components/Icon";
 import { IconButton } from "@/components/IconButton";
 import ArrowBack from "@expo/material-symbols/arrow_back.xml";
 import Check from "@expo/material-symbols/check.xml";
@@ -84,9 +85,12 @@ export default function SongForm(props: SongFormProps) {
     <View className="flex-1 bg-black" style={{ paddingTop: insets.top }}>
       <View className="px-6 py-4">
         <View className="flex-row justify-between items-center">
-          <IconButton onPress={router.back}>
-            <Icon source={ArrowBack} size={22} tint="#FFFFFF" />
-          </IconButton>
+          <IconButton
+            onPress={router.back} 
+            source={ArrowBack}
+            size={22}
+            tint="#FFFFFF"
+          />
 
           <View className="items-center">
             <Text className="text-white text-xl font-bold">
@@ -94,13 +98,13 @@ export default function SongForm(props: SongFormProps) {
             </Text>
           </View>
 
-          <IconButton onPress={handleSubmit(onSubmit)} enabled={!isSubmitting}>
-            {isSubmitting ? (
-              <CircularProgressIndicator color="#FFFFFF" />
-            ) : (
-              <Icon source={Check} size={22} tint="#FFFFFF" />
-            )}
-          </IconButton>
+          <IconButton
+            onPress={handleSubmit(onSubmit)}
+            enabled={!isSubmitting}
+            source={Check}
+            size={22}
+            tint="#FFFFFF"
+          />
         </View>
       </View>
 

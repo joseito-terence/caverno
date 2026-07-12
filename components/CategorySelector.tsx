@@ -7,7 +7,8 @@ import {
   type BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
 import { Controller, Control, FieldErrors } from "react-hook-form";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { Icon } from "@/components/Icon";
+import KeyboardArrowDown from "@expo/material-symbols/keyboard_arrow_down.xml";
 import { useStore } from "@/store/useStore";
 import type { TSong } from "./SongForm";
 
@@ -139,7 +140,7 @@ export default function CategorySelector({
                 }}
               >
                 <Text className="text-white text-xl">{displayText}</Text>
-                <AntDesign name="down" size={16} color="#9ca3af" />
+                <Icon source={KeyboardArrowDown} size={16} tint="#9ca3af" />
               </TouchableOpacity>
 
               {/* Error Message */}

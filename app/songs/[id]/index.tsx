@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Icon } from "@expo/ui/jetpack-compose";
+import { Icon } from "@/components/Icon";
 import { IconButton } from "@/components/IconButton";
 import ArrowBack from "@expo/material-symbols/arrow_back.xml";
 import EditIcon from "@expo/material-symbols/edit.xml";
@@ -18,8 +18,8 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from "react-native-reanimated";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Entypo from "@expo/vector-icons/Entypo";
+import MusicNote from "@expo/material-symbols/music_note.xml";
+import SwapVert from "@expo/material-symbols/swap_vert.xml";
 import { useSong } from "@/hooks/useSong";
 import { useKeepAwake } from "expo-keep-awake";
 
@@ -89,15 +89,21 @@ export default function Song() {
             className="flex-1"
           />
         </Animated.View>
-        <IconButton onPress={router.back}>
-          <Icon source={ArrowBack} size={22} tint="#FFFFFF" />
-        </IconButton>
+        <IconButton 
+          onPress={router.back}
+          source={ArrowBack}
+          size={22}
+          tint="#FFFFFF"
+        />
 
         <View className="w-8" />
 
-        <IconButton onPress={() => router.push(`/songs/${id}/edit`)}>
-          <Icon source={EditIcon} size={20} tint="#FFFFFF" />
-        </IconButton>
+        <IconButton
+          onPress={() => router.push(`/songs/${id}/edit`)}
+          source={EditIcon}
+          size={20}
+          tint="#FFFFFF"
+        />
       </Animated.View>
 
       <View className="flex-1 items-center justify-center">
@@ -150,11 +156,7 @@ export default function Song() {
                     display: song?.tempo && song?.tempo > 0 ? "flex" : "none",
                   }}
                 >
-                  <MaterialCommunityIcons
-                    name="music-note-quarter"
-                    size={18}
-                    color="white"
-                  />
+                  <Icon source={MusicNote} size={18} tint="#FFFFFF" />
                   <Text className="text-white text-sm font-medium ml-1">
                     {song?.tempo}
                   </Text>
@@ -163,7 +165,7 @@ export default function Song() {
                   className="flex-row items-center bg-gray-700/95 px-3 py-1 rounded-full"
                   style={{ display: song?.transpose ? "flex" : "none" }}
                 >
-                  <Entypo name="select-arrows" size={18} color="white" />
+                  <Icon source={SwapVert} size={18} tint="#FFFFFF" />
                   <Text className="text-white text-sm font-medium ml-1">
                     {song?.transpose}
                   </Text>
@@ -179,7 +181,7 @@ export default function Song() {
           <BottomSheetScrollView>
             <View className="p-6">
               <View className="flex-row items-center gap-2 mb-4">
-                <MaterialCommunityIcons name="music" size={24} color="white" />
+                <Icon source={MusicNote} size={24} tint="#FFFFFF" />
                 <Text className="text-white text-xl font-bold">Lyrics</Text>
               </View>
               <View className="bg-gray-700/95 rounded-xl p-4">

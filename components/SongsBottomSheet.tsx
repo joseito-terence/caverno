@@ -4,7 +4,8 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SongsList from "./SongsList";
 import { useFocusEffect, router } from "expo-router";
-import { Entypo } from "@expo/vector-icons";
+import { Icon } from "@/components/Icon";
+import Add from "@expo/material-symbols/add.xml";
 
 const SNAP_POINTS = [240, 600, "88%"];
 
@@ -55,7 +56,7 @@ function Footer() {
         activeOpacity={0.8}
         style={{}}
       >
-        <Entypo name="plus" size={30} color="white" />
+        <Icon source={Add} size={30} tint="#FFFFFF" />
       </TouchableOpacity>
     </View>
   );
