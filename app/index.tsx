@@ -64,7 +64,7 @@ export default function Index() {
               duration: 2000,
               loop: "reverse",
             }}
-            className="-ml-[100px] -mt-[80px]"
+            className="-ml-25 -mt-20"
           >
             <EaseView
               initialAnimate={{ scale: 0, opacity: 0 }}
@@ -103,7 +103,7 @@ export default function Index() {
             >
               <Image
                 source={require("../assets/images/keyboard.png")}
-                className="w-[350px] mx-auto"
+                className="w-87.5 mx-auto"
                 resizeMode="contain"
               />
             </EaseView>
