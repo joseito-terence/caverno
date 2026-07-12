@@ -28,3 +28,6 @@ ios/
 .cursor
 openspec
 AGENTS.md
+
+graphify-out/
+.opencode
