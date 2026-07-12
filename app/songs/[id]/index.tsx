@@ -4,8 +4,8 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
 import { IconButton } from "@/components/IconButton";
+import SongMenu from "@/components/SongMenu";
 import ArrowBack from "@expo/material-symbols/arrow_back.xml";
-import EditIcon from "@expo/material-symbols/edit.xml";
 import { BlurView } from "@/components/styled";
 import BottomSheet, {
   BottomSheetScrollView,
@@ -98,12 +98,7 @@ export default function Song() {
 
         <View className="w-8" />
 
-        <IconButton
-          onPress={() => router.push(`/songs/${id}/edit`)}
-          source={EditIcon}
-          size={20}
-          tint="#FFFFFF"
-        />
+        <SongMenu id={id} />
       </Animated.View>
 
       <View className="flex-1 items-center justify-center">
@@ -192,6 +187,7 @@ export default function Song() {
             </View>
           </BottomSheetScrollView>
         </BottomSheet>
+
       </View>
     </View>
   );
