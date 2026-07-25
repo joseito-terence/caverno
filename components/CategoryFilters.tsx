@@ -1,6 +1,7 @@
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { Text } from "react-native";
 import { useStore } from "@/store/useStore";
-import { Host, ToggleButton, Text } from "@expo/ui/jetpack-compose";
+import { Pressable, FlatList } from "react-native-gesture-handler";
+import Animated from "react-native-reanimated";
 
 export default function CategoryFilters({
   selectedCategory,
@@ -11,30 +12,48 @@ export default function CategoryFilters({
 }) {
   const categories = useStore((state) => state.categories);
 
+  const toggleCategory = (categoryId: string) => {
+    setSelectedCategory(selectedCategory === categoryId ? null : categoryId);
+  };
+
   return (
-    <BottomSheetScrollView
+    <FlatList
+      data={categories}
+      keyExtractor={(item) => item.id}
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ paddingHorizontal: 30, paddingVertical: 12, gap: 8 }}
-    >
-      {categories.map((item) => (
-        <Host key={item.id} matchContents>
-          <ToggleButton
-            checked={selectedCategory === item.id}
-            onCheckedChange={(checked) =>
-              setSelectedCategory(checked ? item.id : null)
-            }
-            colors={{
-              containerColor: "#1f2937",
-              checkedContainerColor: "#374151",
-              contentColor: "#9CA3AF",
-              checkedContentColor: "#FFFFFF",
+      contentContainerStyle={{
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        marginLeft: 12,
+        gap: 8,
+      }}
+      renderItem={({ item }) => (
+        <Pressable
+          onPress={() => {
+            toggleCategory(item.id);
+          }}
+        >
+          <Animated.View
+            className="flex-row items-center justify-center px-4 py-2"
+            style={{
+              borderRadius: selectedCategory === item.id ? 8 : 9999,
+              backgroundColor:
+                selectedCategory === item.id
+                  ? "#364153" 
+                  : "#1e2939",
+              transitionProperty: ['borderRadius', 'backgroundColor'],
+              transitionDuration: 300,
             }}
           >
-            <Text>{item.name}</Text>
-          </ToggleButton>
-        </Host>
-      ))}
-    </BottomSheetScrollView>
+            <Text
+              className={`text-sm font-medium ${selectedCategory === item.id ? "text-white" : "text-gray-400"}`}
+            >
+              {item.name}
+            </Text>
+          </Animated.View>
+        </Pressable>
+      )}
+    />
   );
 }
