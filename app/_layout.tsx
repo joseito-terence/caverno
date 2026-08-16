@@ -10,6 +10,7 @@ import Transition, {
   type NativeStackNavigationOptions,
 } from "react-native-screen-transitions";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { SafeAreaListener } from "react-native-safe-area-context";
 import { Uniwind } from "uniwind";
@@ -28,31 +29,33 @@ const Stack = withLayoutContext<
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaListener
-        onChange={({ insets }) => {
-          Uniwind.updateInsets(insets);
-        }}
-      >
-        <BottomSheetModalProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
+      <KeyboardProvider>
+        <SafeAreaListener
+          onChange={({ insets }) => {
+            Uniwind.updateInsets(insets);
           }}
         >
-          <Stack.Screen
-            name="index"
-            options={{ contentStyle: { backgroundColor: "black" } }}
-          />
-          <Stack.Screen name="home" options={{ animation: "ios_from_left" }} />
-          <Stack.Screen
-            name="songs/[id]/index"
-            options={{
-              ...Transition.presets.DraggableCard(),
+          <BottomSheetModalProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
             }}
-          />
-        </Stack>
-      </BottomSheetModalProvider>
-      </SafeAreaListener>
+          >
+            <Stack.Screen
+              name="index"
+              options={{ contentStyle: { backgroundColor: "black" } }}
+            />
+            <Stack.Screen name="home" options={{ animation: "ios_from_left" }} />
+            <Stack.Screen
+              name="songs/[id]/index"
+              options={{
+                ...Transition.presets.DraggableCard(),
+              }}
+            />
+          </Stack>
+        </BottomSheetModalProvider>
+        </SafeAreaListener>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   );
 }
