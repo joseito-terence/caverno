@@ -64,12 +64,12 @@ export default function Song() {
     };
   });
 
-  const rBlurIntensity = useAnimatedStyle(() => {
+  const rHeaderBgOpacity = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
         bottomsheetAnimatedIndex.value,
         [0, 1, 2],
-        [0, 0.5, 1],
+        [0, 0, 0.7],
         Extrapolation.CLAMP
       ),
     };
@@ -81,7 +81,7 @@ export default function Song() {
         style={[{ paddingTop: insets.top + 16 }]}
         className="flex-row justify-between items-center px-8 py-4 z-[4]"
       >
-        <Animated.View style={rBlurIntensity} className="absolute inset-0">
+        <Animated.View style={rHeaderBgOpacity} className="absolute inset-0 bg-black">
           <BlurView
             intensity={30}
             tint="dark"
