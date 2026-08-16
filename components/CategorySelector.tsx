@@ -1,5 +1,5 @@
 import { useRef, useCallback, useEffect } from "react";
-import { View, Text as RNText, Pressable } from "react-native";
+import { View, Text as RNText, Pressable, Keyboard } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetFlatList,
@@ -60,7 +60,10 @@ export default function CategorySelector({
   }, [field.value]);
 
   const handleOpen = useCallback(() => {
-    if (!disabled) sheetRef.current?.present();
+    if (!disabled) {
+      Keyboard.dismiss();
+      sheetRef.current?.present();
+    }
   }, [disabled]);
 
   const renderBackdrop = useCallback(

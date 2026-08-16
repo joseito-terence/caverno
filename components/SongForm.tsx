@@ -1,4 +1,11 @@
+import { useRef, useCallback } from "react";
 import { View, Text as RNText, ScrollView } from "react-native";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { runOnJS } from "react-native-worklets";
+import {
+  useKeyboardHandler,
+  useReanimatedKeyboardAnimation,
+} from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { IconButton } from "@/components/IconButton";
@@ -38,6 +45,11 @@ export default function SongForm(props: SongFormProps) {
   const isEdit = props.edit === true;
   const insets = useSafeAreaInsets();
   const { addSong, updateSong } = useStore();
+  const { height } = useReanimatedKeyboardAnimation();
+  const scrollRef = useRef<ScrollView>(null);
+  const keyboardPadding = useAnimatedStyle(() => ({
+    height: Math.max(-height.value, 0),
+  }));
   const {
     control,
     handleSubmit,
@@ -45,6 +57,21 @@ export default function SongForm(props: SongFormProps) {
     getValues,
   } = useForm({
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
+  });
+
+  const scrollToBottom = useCallback(() => {
+    scrollRef.current?.scrollToEnd({ animated: true });
+  }, []);
+
+  useKeyboardHandler({
+    onStart: (e) => {
+      "worklet";
+      if (e.height > 0) {
+        setTimeout(() => {
+          runOnJS(scrollToBottom)();
+        }, 100);
+      }
+    },
   });
 
   const onSubmit = async () => {
@@ -109,9 +136,11 @@ export default function SongForm(props: SongFormProps) {
 
       {/* Form Content */}
       <ScrollView
+        ref={scrollRef}
         keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}
         className="flex-1"
+        keyboardShouldPersistTaps="handled"
       >
         <View className="px-6 pt-6 pb-8">
           {/* Basic Information Card */}
@@ -168,16 +197,17 @@ export default function SongForm(props: SongFormProps) {
 
           {/* Lyrics Card */}
           <FormCard title="Lyrics" icon={EditNote}>
-            <InputController
-              name="lyrics"
-              label="Song Lyrics"
-              placeholder="Enter your lyrics here...&#10;&#10;Verse 1:&#10;...&#10;&#10;Chorus:&#10;..."
-              control={control}
-              disabled={isSubmitting}
-              variant="multiline"
-            />
-          </FormCard>
+              <InputController
+                name="lyrics"
+                label="Song Lyrics"
+                placeholder="Enter your lyrics here...&#10;&#10;Verse 1:&#10;...&#10;&#10;Chorus:&#10;..."
+                control={control}
+                disabled={isSubmitting}
+                variant="multiline"
+              />
+            </FormCard>
         </View>
+        <Animated.View style={keyboardPadding} />
       </ScrollView>
     </View>
   );
